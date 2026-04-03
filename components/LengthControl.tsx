@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { Slider } from "@/components/ui/slider"
 import { Badge } from "@/components/ui/badge"
 import { z } from "zod"
@@ -24,9 +24,16 @@ export function LengthControl({
   unit = "chars",
   variant = "default",
 }: LengthControlProps) {
+  /** Drives the slider locally; parent updates on commit only so drag keeps pointer capture. */
+  const [sliderLength, setSliderLength] = useState(length)
   const [inputValue, setInputValue] = useState(String(length))
 
   const schema = z.number().int().min(min).max(max)
+
+  useEffect(() => {
+    setSliderLength(length)
+    setInputValue(String(length))
+  }, [length])
 
   const handleInputBlur = useCallback(() => {
     const parsed = parseInt(inputValue, 10)
@@ -38,7 +45,11 @@ export function LengthControl({
     }
   }, [inputValue, length, onLengthChange, schema])
 
-  const handleSliderChange = useCallback(
+  const handleSliderValueChange = useCallback((values: number[]) => {
+    setSliderLength(values[0])
+  }, [])
+
+  const handleSliderValueCommit = useCallback(
     (values: number[]) => {
       const val = values[0]
       onLengthChange(val)
@@ -62,14 +73,15 @@ export function LengthControl({
             aria-live="polite"
             aria-atomic="true"
           >
-            {length}
+            {sliderLength}
           </span>
         </div>
         <div className="pt-1">
           <Slider
             id={`length-slider-${label.replace(/\s+/g, "-").toLowerCase()}`}
-            value={[length]}
-            onValueChange={handleSliderChange}
+            value={[sliderLength]}
+            onValueChange={handleSliderValueChange}
+            onValueCommit={handleSliderValueCommit}
             min={min}
             max={max}
             step={1}
@@ -77,7 +89,7 @@ export function LengthControl({
             aria-label={`${label} slider`}
             aria-valuemin={min}
             aria-valuemax={max}
-            aria-valuenow={length}
+            aria-valuenow={sliderLength}
           />
         </div>
       </div>
@@ -89,13 +101,14 @@ export function LengthControl({
       <div className="flex items-center justify-between">
         <label className="text-sm font-medium text-foreground">{label}</label>
         <Badge variant="secondary" className="text-xs">
-          {length} {unit}
+          {sliderLength} {unit}
         </Badge>
       </div>
       <div className="flex items-center gap-4">
         <Slider
-          value={[length]}
-          onValueChange={handleSliderChange}
+          value={[sliderLength]}
+          onValueChange={handleSliderValueChange}
+          onValueCommit={handleSliderValueCommit}
           min={min}
           max={max}
           step={1}
@@ -103,7 +116,7 @@ export function LengthControl({
           aria-label={`${label} slider`}
           aria-valuemin={min}
           aria-valuemax={max}
-          aria-valuenow={length}
+          aria-valuenow={sliderLength}
         />
         <input
           type="number"

@@ -22,6 +22,16 @@ import {
 import { cn } from "@/lib/utils"
 import { useCallback } from "react"
 
+/** Stepped font scale so long passwords stay readable without horizontal truncation. */
+function dashboardPasswordFontClass(length: number): string {
+  if (length <= 0) return "text-sm sm:text-base"
+  if (length <= 12) return "text-xl sm:text-2xl md:text-3xl leading-tight"
+  if (length <= 24) return "text-lg sm:text-xl md:text-2xl leading-tight"
+  if (length <= 40) return "text-base sm:text-lg md:text-xl leading-snug"
+  if (length <= 64) return "text-sm sm:text-base md:text-lg leading-snug"
+  return "text-xs sm:text-sm md:text-base leading-snug"
+}
+
 export interface PasswordOutputProps {
   password: string
   isRevealed: boolean
@@ -96,27 +106,28 @@ export function PasswordOutput({
 
   if (isDashboard) {
     const iconBtn =
-      "flex w-11 sm:w-12 self-stretch shrink-0 items-center justify-center " +
+      "flex h-12 sm:h-14 w-full sm:w-14 md:w-16 shrink-0 items-center justify-center " +
       "text-foreground transition-colors " +
       "hover:bg-muted/90 active:bg-muted " +
       "disabled:pointer-events-none disabled:opacity-40 " +
       "focus-visible:outline-none focus-visible:z-[1] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
 
     const showDashboardGenerate = showGenerateButton !== false
+    const passwordFontClass = dashboardPasswordFontClass(password.length)
 
     return (
       <section
         aria-label="Password"
         aria-busy={isGenerating && !password}
         className={cn(
-          "border border-border bg-card transition-colors",
+          "w-full border border-border bg-card transition-colors",
           isCopied && "border-primary bg-primary/4 dark:bg-primary/10"
         )}
       >
-        <div className="flex min-h-14 md:min-h-16 flex-col sm:flex-row sm:items-stretch">
-          <div className="flex min-h-14 md:min-h-16 min-w-0 flex-1">
+        <div className="flex w-full min-w-0 flex-col">
+          <div className="flex w-full min-h-16 md:min-h-18 min-w-0 items-stretch">
             <div
-              className="flex items-center justify-center px-3 sm:px-4 shrink-0 border-r border-border bg-muted/25"
+              className="flex items-center justify-center px-3 sm:px-4 shrink-0 border-b sm:border-b-0 sm:border-r border-border bg-muted/25"
               aria-hidden
             >
               <Lock className="size-5 sm:size-6 text-primary" weight="fill" />
@@ -124,8 +135,9 @@ export function PasswordOutput({
 
             <div
               className={cn(
-                "flex-1 min-w-0 flex items-center px-3 sm:px-4 font-mono text-base sm:text-lg md:text-xl tracking-tight",
-                "bg-muted/40 overflow-hidden",
+                "flex flex-1 min-w-0 items-center px-3 py-3 sm:px-5 sm:py-4 font-mono tracking-tight",
+                "border-b border-border",
+                "bg-primary/8 dark:bg-primary/14",
                 password && !isRevealed && "text-primary",
                 password && isRevealed && "text-foreground"
               )}
@@ -140,24 +152,34 @@ export function PasswordOutput({
               }
             >
               {password ? (
-                <span className="block min-w-0 w-full truncate py-2 select-text">{isRevealed ? password : displayPassword}</span>
+                <span
+                  className={cn(
+                    "block w-full min-w-0 select-text wrap-break-word break-all",
+                    passwordFontClass,
+                    isRevealed && "text-foreground"
+                  )}
+                >
+                  {isRevealed ? password : displayPassword}
+                </span>
               ) : isGenerating ? (
-                <div className="flex w-full min-w-0 items-center gap-2 py-2" aria-hidden>
-                  <Skeleton className="h-5 flex-1 max-w-[min(100%,20rem)] rounded-none" />
-                  <Skeleton className="h-5 w-16 shrink-0 rounded-none hidden sm:block" />
+                <div className="flex w-full min-w-0 flex-col gap-2 sm:flex-row sm:items-center" aria-hidden>
+                  <Skeleton className="h-6 w-full max-w-none rounded-none sm:flex-1" />
+                  <Skeleton className="h-6 w-full max-w-48 rounded-none sm:w-24 sm:shrink-0" />
                 </div>
               ) : (
-                <span className="py-2 text-sm text-muted-foreground font-mono normal-case tracking-normal truncate">
+                <span className="text-sm text-muted-foreground font-mono normal-case tracking-normal">
                   Generate to preview output
                 </span>
               )}
             </div>
+          </div>
 
-            <div
-              className="flex shrink-0 self-stretch border-l border-border divide-x divide-border"
-              role="toolbar"
-              aria-label="Password actions"
-            >
+          <div
+            className="flex w-full min-w-0 flex-col sm:flex-row sm:items-stretch border-border sm:divide-x sm:divide-border"
+            role="toolbar"
+            aria-label="Password actions"
+          >
+            <div className="grid min-h-12 grid-cols-3 divide-x divide-border border-b border-border sm:flex sm:min-h-14 sm:flex-1 sm:border-b-0 sm:divide-x">
               <button
                 type="button"
                 onClick={onRevealToggle}
@@ -184,35 +206,36 @@ export function PasswordOutput({
                 type="button"
                 onClick={handleSharePassword}
                 disabled={!password}
-                className={cn(iconBtn, "hover:bg-primary hover:text-primary-foreground active:bg-primary/90")}
+                className={cn(iconBtn, "hover:bg-primary/15 active:bg-primary/25 dark:hover:bg-primary/20")}
                 aria-label="Share password"
               >
                 <ShareNetwork size={22} weight="bold" aria-hidden />
               </button>
             </div>
-          </div>
 
-          {showDashboardGenerate && (
-            <button
-              type="button"
-              onClick={onGenerate}
-              disabled={isGenerating}
-              className={cn(
-                "flex min-h-12 sm:min-h-14 md:min-h-16 w-full sm:w-auto shrink-0 items-center justify-center gap-2 border-t sm:border-t-0 sm:border-l border-border",
-                "bg-primary px-4 text-primary-foreground hover:bg-primary/90",
-                "text-xs sm:text-sm font-medium uppercase tracking-wider font-mono transition-colors disabled:opacity-50",
-                "focus-visible:outline-none focus-visible:z-[1] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
-              )}
-            >
-              <motion.div
-                animate={prefersReduced || !isGenerating ? undefined : { rotate: 360 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
+            {showDashboardGenerate && (
+              <button
+                type="button"
+                onClick={onGenerate}
+                disabled={isGenerating}
+                className={cn(
+                  "flex min-h-12 sm:min-h-14 w-full shrink-0 items-center justify-center gap-2",
+                  "bg-primary px-4 text-primary-foreground hover:bg-primary/90",
+                  "text-xs sm:text-sm font-medium uppercase tracking-wider font-mono transition-colors disabled:opacity-50",
+                  "sm:min-w-[min(100%,14rem)] md:min-w-[16rem] sm:flex-1 md:flex-[1.25]",
+                  "focus-visible:outline-none focus-visible:z-1 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+                )}
               >
-                <ArrowsClockwise size={18} weight="bold" aria-hidden />
-              </motion.div>
-              Generate
-            </button>
-          )}
+                <motion.div
+                  animate={prefersReduced || !isGenerating ? undefined : { rotate: 360 }}
+                  transition={{ duration: 0.6, ease: "easeInOut" }}
+                >
+                  <ArrowsClockwise size={18} weight="bold" aria-hidden />
+                </motion.div>
+                Generate
+              </button>
+            )}
+          </div>
         </div>
       </section>
     )
