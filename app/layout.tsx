@@ -1,6 +1,7 @@
 import { Footer } from "@/components/Footer"
 import { GdprBanner } from "@/components/GdprBanner"
 import { Header } from "@/components/Header"
+import { ThemeColorMeta } from "@/components/ThemeColorMeta"
 import { ThemeProvider } from "@/components/ThemeProvider"
 import { defaultMetadata } from "@/lib/seo"
 import type { Metadata, Viewport } from "next"
@@ -32,10 +33,6 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = defaultMetadata
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0e0e10" },
-  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -63,6 +60,7 @@ export default function RootLayout({
           themes={["light", "dark", "sepia", "high-contrast", "system"]}
           disableTransitionOnChange={false}
         >
+          <ThemeColorMeta />
           <Header />
           <main className="flex-1 pt-16">{children}</main>
           <Footer />

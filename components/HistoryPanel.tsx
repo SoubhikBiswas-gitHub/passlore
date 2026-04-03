@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { STRENGTH_TIER_BADGE_CLASSES } from "@/lib/strengthTierStyles"
 import { cn } from "@/lib/utils"
 import { CheckSquare, ClockCounterClockwise, Copy, Trash } from "@phosphor-icons/react"
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
@@ -14,15 +15,6 @@ interface HistoryPanelProps {
   onClear: () => void
   variant?: "default" | "dashboard"
 }
-
-const strengthBadgeColors = [
-  "",
-  "bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400",
-  "bg-orange-50 dark:bg-orange-950 text-orange-600 dark:text-orange-400",
-  "bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400",
-  "bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400",
-  "bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400",
-]
 
 function getRelativeTime(timestamp: number): string {
   const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" })
@@ -86,7 +78,7 @@ function HistoryEntry({
           aria-label="Copy password from history"
         >
           {isCopied ? (
-            <CheckSquare size={16} weight="fill" className="text-green-700 dark:text-green-300" aria-hidden />
+            <CheckSquare size={16} weight="fill" className="text-secure" aria-hidden />
           ) : (
             <Copy size={16} weight="regular" aria-hidden />
           )}
@@ -112,7 +104,7 @@ function HistoryEntry({
         </span>
       </div>
       <span className="text-xs text-muted-foreground shrink-0">{getRelativeTime(item.timestamp)}</span>
-      <Badge className={cn("text-xs shrink-0", strengthBadgeColors[item.strength])}>
+      <Badge className={cn("text-xs shrink-0", STRENGTH_TIER_BADGE_CLASSES[item.strength])}>
         {item.bits}b
       </Badge>
       <Button
@@ -130,7 +122,7 @@ function HistoryEntry({
               animate={prefersReduced ? undefined : { scale: 1, opacity: 1 }}
               exit={prefersReduced ? undefined : { scale: 0.6, opacity: 0 }}
             >
-              <CheckSquare size={14} weight="fill" className="text-green-600 dark:text-green-400" />
+              <CheckSquare size={14} weight="fill" className="text-secure" />
             </motion.div>
           ) : (
             <motion.div

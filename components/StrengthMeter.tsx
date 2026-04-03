@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { estimateCrackTime, getCrackTimeColor } from "@/lib/crackTime"
+import { STRENGTH_TIER_BADGE_CLASSES } from "@/lib/strengthTierStyles"
 import { cn } from "@/lib/utils"
 import { Hourglass, Info, Lightning } from "@phosphor-icons/react"
 
@@ -41,19 +42,10 @@ function blocksFilledForStrength(strength: number): number {
 }
 
 function blockColorClass(strength: number): string {
-  if (strength <= 2) return "bg-red-400 dark:bg-red-400"
-  if (strength === 3) return "bg-amber-400 dark:bg-amber-400"
-  return "bg-green-400 dark:bg-green-400"
+  if (strength <= 2) return "bg-vulnerable"
+  if (strength === 3) return "bg-warning"
+  return "bg-secure"
 }
-
-const strengthBadgeColors = [
-  "",
-  "border border-red-200 bg-red-50 text-red-900 dark:border-red-900 dark:bg-red-950/90 dark:text-red-200",
-  "border border-red-200 bg-red-50/90 text-red-900 dark:border-red-900 dark:bg-red-950/80 dark:text-red-200",
-  "border border-amber-200 bg-amber-50 text-amber-950 dark:border-amber-800 dark:bg-amber-950/90 dark:text-amber-100",
-  "border border-green-200 bg-green-50 text-green-900 dark:border-green-800 dark:bg-green-950/90 dark:text-green-200",
-  "border border-green-200 bg-green-50 text-green-900 dark:border-green-800 dark:bg-green-950/90 dark:text-green-200",
-]
 
 function dashboardHeadline(strength: number): string {
   if (strength >= 4) return "CRYPTOGRAPHICALLY STRONG"
@@ -69,18 +61,18 @@ export function StrengthMeter({ bits, strength, variant = "default" }: StrengthM
   const activeColor = blockColorClass(strength)
 
   const crackTimeTextColor = {
-    red: "text-red-800 dark:text-red-200",
-    amber: "text-amber-900 dark:text-amber-200",
-    green: "text-green-800 dark:text-green-200",
+    red: "text-vulnerable",
+    amber: "text-foreground",
+    green: "text-secure",
   }[crackColor]
 
   if (variant === "dashboard") {
     const headlineClass =
       strength >= 4
-        ? "text-green-800 dark:text-green-200"
+        ? "text-secure"
         : strength === 3
-          ? "text-amber-900 dark:text-amber-200"
-          : "text-red-800 dark:text-red-200"
+          ? "text-foreground"
+          : "text-vulnerable"
 
     return (
       <div
@@ -136,7 +128,7 @@ export function StrengthMeter({ bits, strength, variant = "default" }: StrengthM
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-foreground">Password strength</span>
-            <Badge className={cn("text-[0.6875rem] uppercase tracking-[0.05em] rounded-none", strengthBadgeColors[strength])}>
+            <Badge className={cn("text-[0.6875rem] uppercase tracking-[0.05em] rounded-none", STRENGTH_TIER_BADGE_CLASSES[strength])}>
               {strengthLabels[strength]}
             </Badge>
           </div>

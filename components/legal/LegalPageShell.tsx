@@ -106,9 +106,9 @@ export function LegalPageShell({
           </div>
         </div>
 
-        <section className="bg-blue-600 border-t border-blue-500">
+        <section className="bg-primary border-t border-primary-foreground/20 text-primary-foreground">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-            <p className="font-headline text-sm font-bold text-white uppercase tracking-[0.1em] max-w-lg">
+            <p className="font-headline text-sm font-bold text-primary-foreground uppercase tracking-[0.1em] max-w-lg">
               Questions about this document? We respond to security and privacy inquiries as a priority.
             </p>
             <Link

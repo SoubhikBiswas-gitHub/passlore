@@ -483,10 +483,10 @@ export function PasswordOutput({
                 >
                   <div
                     role="alert"
-                    className="flex w-full max-w-md items-center gap-2.5 border border-amber-500/45 bg-amber-500/8 px-3 py-2 sm:max-w-lg dark:border-amber-500/50 dark:bg-amber-950/40"
+                    className="flex w-full max-w-md items-center gap-2.5 border border-warning/40 bg-warning/12 px-3 py-2 sm:max-w-lg"
                   >
-                    <Info className="size-4 shrink-0 text-amber-700 dark:text-amber-400" weight="regular" aria-hidden />
-                    <span className="min-w-0 text-left font-mono text-[10px] font-medium uppercase leading-snug tracking-[0.08em] text-balance text-amber-950 dark:text-amber-100">
+                    <Info className="size-4 shrink-0 text-warning" weight="regular" aria-hidden />
+                    <span className="min-w-0 text-left font-mono text-[10px] font-medium uppercase leading-snug tracking-[0.08em] text-balance text-foreground">
                       Check failed — try again
                     </span>
                   </div>
