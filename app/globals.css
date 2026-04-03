@@ -1,0 +1,241 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system: Precision Brutalism — High-Performance Security
+ * - Surfaces: tonal layering (no borders for sectioning; ghost border only at 20% zinc-800)
+ * - Typography: Geist Sans (UI) + Geist Mono (data); scale per spec §3
+ * - Primary actions: indigo-600 → indigo-500 hover; secondary: zinc-800 / zinc-50 text
+ */
+
+/* --- Semantic surfaces (Level 0 / 1 / 2) --- */
+:root,
+[data-theme="light"] {
+  --surface-0: 0 0% 100%;
+  --surface-1: 240 5% 96%;
+  --surface-2: 240 5% 92%;
+  --ghost-border: 240 4% 16%;
+
+  --background: var(--surface-0);
+  --foreground: 240 6% 10%;
+  --card: var(--surface-1);
+  --card-foreground: 240 6% 10%;
+  --popover: var(--surface-0);
+  --popover-foreground: 240 6% 10%;
+  --primary: 239 84% 53%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 240 4% 16%;
+  --secondary-foreground: 250 20% 98%;
+  --muted: var(--surface-2);
+  --muted-foreground: 240 4% 40%;
+  --accent: var(--surface-2);
+  --accent-foreground: 240 6% 10%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: var(--ghost-border);
+  --input: 240 6% 90%;
+  --ring: 239 84% 53%;
+  --radius: 0;
+
+  --secure: 142 76% 36%;
+  --secure-fg: 142 69% 58%;
+  --vulnerable: 0 84% 60%;
+  --vulnerable-fg: 0 91% 71%;
+  --warning: 45 93% 47%;
+  --warning-fg: 45 93% 58%;
+}
+
+.dark,
+[data-theme="dark"] {
+  --surface-0: 240 10% 4%;
+  --surface-1: 240 5% 10%;
+  --surface-2: 240 4% 16%;
+  --ghost-border: 240 4% 16%;
+
+  --background: var(--surface-0);
+  --foreground: 250 20% 98%;
+  --card: var(--surface-1);
+  --card-foreground: 250 20% 98%;
+  --popover: var(--surface-1);
+  --popover-foreground: 250 20% 98%;
+  --primary: 239 84% 67%;
+  --primary-foreground: 244 47% 20%;
+  --secondary: var(--surface-2);
+  --secondary-foreground: 250 20% 98%;
+  --muted: var(--surface-2);
+  --muted-foreground: 250 10% 70%;
+  --accent: var(--surface-2);
+  --accent-foreground: 250 20% 98%;
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 0 86% 97%;
+  --border: var(--ghost-border);
+  --input: var(--surface-2);
+  --ring: 239 84% 67%;
+
+  --secure: 142 76% 36%;
+  --secure-fg: 142 69% 58%;
+  --vulnerable: 0 84% 60%;
+  --vulnerable-fg: 0 91% 71%;
+  --warning: 45 93% 47%;
+  --warning-fg: 45 93% 58%;
+}
+
+[data-theme="sepia"] {
+  --surface-0: 42 38% 96%;
+  --surface-1: 42 30% 92%;
+  --surface-2: 42 25% 88%;
+  --ghost-border: 25 15% 40%;
+
+  --background: var(--surface-0);
+  --foreground: 25 25% 18%;
+  --card: var(--surface-1);
+  --card-foreground: 25 25% 18%;
+  --popover: var(--surface-1);
+  --popover-foreground: 25 25% 18%;
+  --primary: 28 45% 35%;
+  --primary-foreground: 42 38% 96%;
+  --secondary: 42 22% 80%;
+  --secondary-foreground: 25 25% 18%;
+  --muted: var(--surface-2);
+  --muted-foreground: 25 15% 45%;
+  --accent: var(--surface-2);
+  --accent-foreground: 25 25% 25%;
+  --destructive: 0 65% 45%;
+  --destructive-foreground: 0 0% 100%;
+  --border: var(--ghost-border);
+  --input: 42 20% 88%;
+  --ring: 28 45% 35%;
+  --radius: 0;
+}
+
+[data-theme="high-contrast"] {
+  --surface-0: 0 0% 100%;
+  --surface-1: 0 0% 94%;
+  --surface-2: 0 0% 88%;
+  --ghost-border: 0 0% 0%;
+
+  --background: var(--surface-0);
+  --foreground: 0 0% 0%;
+  --card: var(--surface-1);
+  --card-foreground: 0 0% 0%;
+  --popover: var(--surface-0);
+  --popover-foreground: 0 0% 0%;
+  --primary: 240 100% 30%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 20%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: var(--surface-2);
+  --muted-foreground: 0 0% 20%;
+  --accent: var(--surface-2);
+  --accent-foreground: 0 0% 0%;
+  --destructive: 0 100% 40%;
+  --destructive-foreground: 0 0% 100%;
+  --border: var(--ghost-border);
+  --input: 0 0% 85%;
+  --ring: 240 100% 30%;
+  --radius: 0;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-headline: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+
+  --color-surface-0: hsl(var(--surface-0));
+  --color-surface-1: hsl(var(--surface-1));
+  --color-surface-2: hsl(var(--surface-2));
+  --color-ghost-border: hsl(var(--ghost-border) / 0.2);
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border) / 0.2);
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-secure: hsl(var(--secure));
+  --color-secure-fg: hsl(var(--secure-fg));
+  --color-vulnerable: hsl(var(--vulnerable));
+  --color-vulnerable-fg: hsl(var(--vulnerable-fg));
+  --color-warning: hsl(var(--warning));
+  --color-warning-fg: hsl(var(--warning-fg));
+
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+
+  --text-body-md: 0.875rem;
+  --text-label-sm: 0.6875rem;
+}
+
+/* Typography scale — §3 (Geist Sans UI / Geist Mono data) */
+@utility ds-text-display-lg {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: clamp(1.375rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+@utility ds-text-headline-sm {
+  font-size: 1.5rem;
+  line-height: 1.25;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@utility ds-text-body-md {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+@utility ds-text-label-sm {
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Surface helpers — §2 (tonal layering, no section borders) */
+@utility ds-surface-0 {
+  background-color: hsl(var(--surface-0));
+}
+
+@utility ds-surface-1 {
+  background-color: hsl(var(--surface-1));
+}
+
+@utility ds-surface-2 {
+  background-color: hsl(var(--surface-2));
+}
+
+@utility ds-ghost-outline {
+  outline: 1px solid hsl(var(--ghost-border) / 0.2);
+  outline-offset: -1px;
+}
+
+@layer base {
+  * {
+    @apply outline-ring/50;
+    border-color: hsl(var(--ghost-border) / 0.2);
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
