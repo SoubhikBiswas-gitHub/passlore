@@ -40,7 +40,7 @@ export function HibpDatabasePanel({
               ? cn(
                   "w-full min-h-12 py-3 h-auto rounded-none border border-border",
                   "bg-secondary text-secondary-foreground hover:bg-secondary/90",
-                  "text-[0.6875rem] font-mono uppercase tracking-[0.14em]",
+                  "ds-text-label-sm font-mono tracking-[0.14em]",
                   "flex items-center justify-center gap-2.5"
                 )
               : "rounded-none"
@@ -70,7 +70,7 @@ export function HibpDatabasePanel({
             exit={prefersReduced ? undefined : { opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            <Badge className="rounded-none bg-green-950/40 text-green-600 dark:text-green-400 border-green-800/50 w-full max-w-none justify-center py-2.5 px-3 text-center font-mono text-[0.6875rem] uppercase tracking-wide leading-snug h-auto min-h-12 whitespace-normal [&>svg]:size-3.5">
+            <Badge className="rounded-none w-full max-w-none justify-center py-2.5 px-3 text-center font-mono ds-text-label-sm tracking-wide leading-snug h-auto min-h-14 whitespace-normal [&>svg]:size-3.5 border border-green-200 bg-green-50 text-green-900 dark:border-green-800 dark:bg-green-950/90 dark:text-green-200">
               <CheckCircle size={14} weight="fill" className="shrink-0" aria-hidden />
               <span>Not in Have I Been Pwned password corpus</span>
             </Badge>
@@ -85,7 +85,7 @@ export function HibpDatabasePanel({
             exit={prefersReduced ? undefined : { opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            <Badge variant="destructive" className="rounded-none w-full max-w-none justify-center py-2.5 px-3 text-center font-mono text-[0.6875rem] uppercase tracking-wide leading-snug h-auto min-h-12 whitespace-normal [&>svg]:size-3.5">
+            <Badge variant="destructive" className="rounded-none w-full max-w-none justify-center py-2.5 px-3 text-center font-mono ds-text-label-sm tracking-wide leading-snug h-auto min-h-12 whitespace-normal [&>svg]:size-3.5">
               <WarningCircle size={14} weight="bold" className="shrink-0" aria-hidden />
               <span>
                 Appeared {hibpCount.toLocaleString()} times in breach data — choose another
@@ -102,7 +102,7 @@ export function HibpDatabasePanel({
             exit={prefersReduced ? undefined : { opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            <Badge className="rounded-none bg-amber-950/40 text-amber-600 dark:text-amber-400 border-amber-800/50 w-full max-w-none justify-center py-2.5 px-3 font-mono text-[0.6875rem] uppercase tracking-wide leading-snug h-auto min-h-12 whitespace-normal [&>svg]:size-3.5">
+            <Badge className="rounded-none w-full max-w-none justify-center py-2.5 px-3 font-mono ds-text-label-sm tracking-wide leading-snug h-auto min-h-14 whitespace-normal [&>svg]:size-3.5 border border-amber-200 bg-amber-50 text-amber-950 dark:border-amber-800 dark:bg-amber-950/90 dark:text-amber-100">
               <Info size={14} weight="regular" className="shrink-0" aria-hidden />
               <span>Could not reach Have I Been Pwned</span>
             </Badge>
@@ -112,7 +112,7 @@ export function HibpDatabasePanel({
               size="sm"
               onClick={onHibpCheck}
               disabled={!password}
-              className={cn("w-full rounded-none font-mono text-[0.6875rem] uppercase tracking-widest", isDashboard && "min-h-10")}
+              className={cn("w-full rounded-none font-mono ds-text-label-sm tracking-widest", isDashboard && "min-h-10")}
             >
               <ArrowsClockwise size={14} weight="bold" className="mr-2 shrink-0" aria-hidden />
               Try again
@@ -127,7 +127,7 @@ export function HibpDatabasePanel({
     return (
       <section aria-label="Breach check" className="border border-border bg-card">
         <div className="px-5 py-4 sm:px-6 sm:py-5 border-b border-border bg-muted/20">
-          <h3 className="text-[0.6875rem] uppercase tracking-[0.18em] text-foreground font-bold font-mono">Breach check</h3>
+          <h3 className="ds-text-label-sm tracking-[0.18em] text-foreground font-bold font-mono">Breach check</h3>
           <p className="mt-2 text-xs text-muted-foreground leading-relaxed max-w-prose">
             SHA-1 hash is computed in your browser; only the first 5 hex characters are sent to Have I Been Pwned (k-anonymity). Plaintext never leaves this device.
           </p>

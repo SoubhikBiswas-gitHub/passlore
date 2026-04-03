@@ -31,14 +31,15 @@ function Slider({
       min={min}
       max={max}
       className={cn(
-        'relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col',
+        'relative flex w-full touch-none select-none items-center py-2.5 data-[disabled]:opacity-50 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col data-[orientation=vertical]:py-0 data-[orientation=vertical]:px-2.5',
+        'cursor-grab active:cursor-grabbing',
         className,
       )}
       {...props}
     >
       <SliderPrimitive.Track
         data-slot="slider-track"
-        className="bg-muted relative grow overflow-hidden rounded-none data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5"
+        className="bg-muted relative grow overflow-hidden rounded-none data-[orientation=horizontal]:h-2 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-2"
       >
         <SliderPrimitive.Range
           data-slot="slider-range"
@@ -49,7 +50,13 @@ function Slider({
         <SliderPrimitive.Thumb
           data-slot="slider-thumb"
           key={`${thumbValue}-${index}`}
-          className="border-primary ring-ring/50 block size-4 shrink-0 rounded-none border bg-background transition-colors hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+          className={cn(
+            'block size-5 shrink-0 rounded-none border-2 border-background bg-primary shadow-sm',
+            'ring-ring/40 transition-[box-shadow,filter] motion-safe:duration-150 motion-safe:ease-out',
+            'hover:brightness-110 focus-visible:ring-4 focus-visible:outline-none',
+            'motion-reduce:transition-none motion-reduce:hover:brightness-100',
+            'disabled:pointer-events-none disabled:opacity-50',
+          )}
         />
       ))}
     </SliderPrimitive.Root>

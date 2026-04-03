@@ -2,7 +2,6 @@
 
 import { useReducer, useCallback, useEffect, useRef } from "react"
 import { motion, useReducedMotion } from "framer-motion"
-import { ArrowsClockwise } from "@phosphor-icons/react"
 import { ModeSelector } from "./ModeSelector"
 import { LengthControl } from "./LengthControl"
 import { CharsetToggles } from "./CharsetToggles"
@@ -125,6 +124,26 @@ function buildInitialState(layout: "stack" | "dashboard"): State {
   return {
     ...initialState,
     length: layout === "dashboard" ? 32 : 16,
+    ...(layout === "dashboard" ? { isGenerating: true } : {}),
+  }
+}
+
+/** Upper bound for dashboard strength bar length scaling (matches slider ceilings). */
+function dashboardLengthScaleMax(mode: Mode, wordCount: number): number {
+  switch (mode) {
+    case "pin":
+      return 16
+    case "passphrase":
+      return Math.max(24, wordCount * 18)
+    case "pronounceable":
+      return 128
+    case "single":
+    case "bulk":
+      return 128
+    case "pattern":
+      return 128
+    default:
+      return 128
   }
 }
 
@@ -195,6 +214,7 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
   const [state, dispatch] = useReducer(reducer, layout, buildInitialState)
   const prefersReduced = useReducedMotion()
   const isDashboard = layout === "dashboard"
+  const dashboardInitialGenerateRef = useRef(false)
 
   const getOptions = useCallback((): GeneratorOptions => {
     return {
@@ -319,6 +339,13 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
       dispatch({ type: "SET_MODE", payload: "single" })
     }
   }, [layout, state.mode])
+
+  useEffect(() => {
+    if (!isDashboard) return
+    if (dashboardInitialGenerateRef.current) return
+    dashboardInitialGenerateRef.current = true
+    handleGenerate()
+  }, [isDashboard, handleGenerate])
 
   const entropy = calculateEntropy()
   const strengthLevel = getStrengthLevel(entropy)
@@ -531,11 +558,22 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
             onModeChange={(mode) => dispatch({ type: "SET_MODE", payload: mode })}
           />
 
-          <PasswordOutput {...passwordOutputProps} variant="dashboard" showGenerateButton={false} />
-
-          {state.password && state.mode !== "bulk" && (
-            <StrengthMeter bits={entropy} strength={strengthLevel} variant="dashboard" />
-          )}
+          <div className="flex flex-col gap-4">
+            <div className="min-w-0 w-full">
+              <PasswordOutput {...passwordOutputProps} variant="dashboard" />
+            </div>
+            {state.password && state.mode !== "bulk" && (
+              <div className="w-full min-w-0">
+                <StrengthMeter
+                  bits={entropy}
+                  strength={strengthLevel}
+                  variant="dashboard"
+                  passwordLength={state.password.length}
+                  lengthScaleMax={dashboardLengthScaleMax(state.mode, state.wordCount)}
+                />
+              </div>
+            )}
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>{dashboardLeftControls}</div>
@@ -547,21 +585,6 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
               )}
             </div>
           </div>
-
-          <button
-            type="button"
-            onClick={handleGenerate}
-            disabled={state.isGenerating}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-none bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium uppercase tracking-wider font-mono transition-colors disabled:opacity-50"
-          >
-            <motion.div
-              animate={prefersReduced || !state.isGenerating ? undefined : { rotate: 360 }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
-            >
-              <ArrowsClockwise size={18} weight="bold" />
-            </motion.div>
-            Generate password
-          </button>
 
           {state.mode === "bulk" && state.bulkPasswords.length > 0 && (
             <BulkOutput passwords={state.bulkPasswords} />

@@ -12,14 +12,16 @@ interface ISpecCardProps {
 function SpecCard({ id, label, title, detail, icon }: ISpecCardProps) {
   return (
     <article
-      className="group relative flex flex-col gap-4 border border-border bg-card p-6 sm:p-7 transition-colors duration-200 hover:bg-accent/60 hover:border-primary/35 focus-within:border-primary/50"
+      className="group relative flex flex-col gap-4 border border-border bg-card p-6 sm:p-7 transition-[border-color,background-color,box-shadow] duration-200 ease-out hover:border-primary/45 hover:bg-accent/65 hover:shadow-[0_1px_0_0_hsl(var(--primary)/0.12)] motion-reduce:transition-colors motion-reduce:hover:shadow-none focus-within:border-primary/50"
       aria-labelledby={id}
     >
       <div
-        className="flex size-12 shrink-0 items-center justify-center border border-border bg-background text-primary transition-colors duration-200 group-hover:border-primary/40 group-hover:bg-primary/6"
+        className="flex size-12 shrink-0 items-center justify-center overflow-hidden border border-border bg-background text-primary transition-[border-color,background-color] duration-200 ease-out group-hover:border-primary/50 group-hover:bg-primary/10 motion-reduce:group-hover:bg-primary/6"
         aria-hidden
       >
-        {icon}
+        <span className="flex size-full items-center justify-center motion-safe:origin-center motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-out group-hover:motion-safe:scale-110">
+          {icon}
+        </span>
       </div>
       <div className="flex min-h-0 flex-1 flex-col gap-3">
         <div className="ds-text-label-sm tracking-[0.2em] text-muted-foreground">{label}</div>

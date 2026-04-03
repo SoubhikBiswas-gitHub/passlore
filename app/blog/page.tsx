@@ -36,12 +36,7 @@ export default function BlogPage() {
       <div className="bg-background text-foreground min-h-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-8">
           <h1 className="font-headline text-4xl sm:text-5xl font-bold text-foreground tracking-tight mb-4">
-            Security{" "}
-            <span className="relative inline-block">
-              <span className="relative z-10">insights</span>
-              <span className="absolute left-0 right-0 bottom-0 h-1 bg-primary" aria-hidden />
-            </span>{" "}
-            &amp; best practices
+            Security <span className="text-primary">insights</span> &amp; best practices
           </h1>
           <p className="text-muted-foreground max-w-2xl text-sm sm:text-base leading-relaxed">
             Deep dives on password entropy, breach resilience, and the standards that keep credentials safe in

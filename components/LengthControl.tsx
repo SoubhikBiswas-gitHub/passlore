@@ -49,23 +49,37 @@ export function LengthControl({
 
   if (variant === "dashboard") {
     return (
-      <div className="space-y-4">
-        <div className="flex justify-between items-center mb-0">
-          <label className="text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-bold">{label}</label>
-          <span className="font-mono text-primary font-bold text-lg">{length}</span>
+      <div className="flex flex-col gap-5">
+        <div className="flex justify-between items-baseline gap-4">
+          <label
+            htmlFor={`length-slider-${label.replace(/\s+/g, "-").toLowerCase()}`}
+            className="text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-bold leading-relaxed pt-0.5"
+          >
+            {label}
+          </label>
+          <span
+            className="font-mono text-primary font-bold text-lg tabular-nums min-w-[2.5ch] text-right"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {length}
+          </span>
         </div>
-        <Slider
-          value={[length]}
-          onValueChange={handleSliderChange}
-          min={min}
-          max={max}
-          step={1}
-          className="w-full [&_[role=slider]]:bg-primary"
-          aria-label={`${label} slider`}
-          aria-valuemin={min}
-          aria-valuemax={max}
-          aria-valuenow={length}
-        />
+        <div className="pt-1">
+          <Slider
+            id={`length-slider-${label.replace(/\s+/g, "-").toLowerCase()}`}
+            value={[length]}
+            onValueChange={handleSliderChange}
+            min={min}
+            max={max}
+            step={1}
+            className="w-full"
+            aria-label={`${label} slider`}
+            aria-valuemin={min}
+            aria-valuemax={max}
+            aria-valuenow={length}
+          />
+        </div>
       </div>
     )
   }

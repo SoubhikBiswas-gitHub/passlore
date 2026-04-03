@@ -13,7 +13,7 @@ export function HomeSecurityBrief() {
   return (
     <section className="max-w-4xl mx-auto mb-24 px-0 pt-14 sm:pt-16 md:pt-20">
       <h2 className="text-2xl sm:text-3xl font-headline font-bold tracking-[0.14em] text-foreground mb-10 sm:mb-12 text-center uppercase">
-        Security technical brief
+        Security <span className="text-primary">technical brief</span>
       </h2>
       <Accordion type="single" collapsible className="space-y-px bg-border border border-border">
         {FAQ_ITEMS.map((item) => (

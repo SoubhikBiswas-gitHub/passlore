@@ -70,7 +70,7 @@ export function LegalPageShell({
             <article className="lg:col-span-9">
               <h1 className="font-headline text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mb-4">
                 <span className="text-foreground">{titleLine} </span>
-                <span className="text-violet-400">{titleAccent}</span>
+                <span className="text-primary">{titleAccent}</span>
               </h1>
               <p className="text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-mono mb-10">
                 {lastUpdatedLabel}

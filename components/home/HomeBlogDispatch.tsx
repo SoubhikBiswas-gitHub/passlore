@@ -10,7 +10,7 @@ export function HomeBlogDispatch() {
     <section className="mb-24">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
         <h2 className="text-xl sm:text-2xl font-headline font-bold text-foreground uppercase tracking-widest">
-          Security dispatch
+          Security <span className="text-primary">dispatch</span>
         </h2>
         <Link
           href="/blog"

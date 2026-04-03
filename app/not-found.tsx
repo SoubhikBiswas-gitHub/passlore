@@ -8,7 +8,7 @@ export default function NotFound() {
       <div className="p-6 bg-muted rounded-none mb-6">
         <ShieldCheck className="h-12 w-12 text-primary" weight="fill" />
       </div>
-      <h1 className="text-4xl font-bold text-foreground mb-2 tracking-tight">404</h1>
+      <h1 className="text-4xl font-headline font-bold text-primary mb-2 tracking-tight">404</h1>
       <h2 className="text-xs font-semibold uppercase tracking-[0.05em] text-muted-foreground mb-6">
         Page not found
       </h2>

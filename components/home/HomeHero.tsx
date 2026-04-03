@@ -21,7 +21,7 @@ export function HomeHero() {
       <h1 className="text-4xl sm:text-6xl md:text-[5.5rem] font-headline font-bold tracking-[0.08em] text-foreground mb-6 leading-[1.05] uppercase">
         Free strong
         <br />
-        password generator
+        <span className="text-primary">password</span> generator
       </h1>
       <p className="text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg leading-relaxed mb-12">
         Generate random passwords and passphrases locally in your browser. No account required. Optional Have I Been

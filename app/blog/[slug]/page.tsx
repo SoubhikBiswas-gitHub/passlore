@@ -268,9 +268,9 @@ export default async function BlogPostPage({ params }: PageProps) {
           </div>
         </div>
 
-        <section className="bg-violet-600 border-t border-violet-500">
+        <section className="bg-primary border-t border-primary/80">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-            <p className="font-headline text-lg sm:text-xl font-bold text-white uppercase tracking-[0.08em] max-w-xl leading-snug">
+            <p className="font-headline text-lg sm:text-xl font-bold text-primary-foreground uppercase tracking-[0.08em] max-w-xl leading-snug">
               More guides on entropy, passphrases, and zero-knowledge checks — all in one place.
             </p>
             <Link

@@ -70,7 +70,7 @@ export default function AboutPage() {
             <article className="lg:col-span-9">
               <h1 className="font-headline text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mb-6">
                 <span className="text-foreground">About SecurePass Pro &amp; </span>
-                <span className="text-violet-400">password security</span>
+                <span className="text-primary">password security</span>
               </h1>
               <div className="flex flex-wrap items-center gap-3 text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-mono mb-10">
                 <span>Last updated · {lastUpdatedAbout}</span>
@@ -149,7 +149,7 @@ const ch = charset[uniformIndex];`}</pre>
                   Entropy is drawn from the platform CSPRNG, then mapped into your selected character sets or word lists.
                   No server round-trip is required to produce credentials.
                 </p>
-                <h3 className="text-xs font-headline uppercase tracking-widest text-violet-400 mb-3">
+                <h3 className="text-xs font-headline uppercase tracking-widest text-primary mb-3">
                   CSPRNG and unbiased selection
                 </h3>
                 <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
@@ -255,7 +255,7 @@ const ch = charset[uniformIndex];`}</pre>
                       key={card.n}
                       className="flex gap-6 p-6 bg-card border border-border hover:border-muted-foreground/30 transition-colors"
                     >
-                      <span className="font-headline text-3xl font-bold text-violet-500/80 shrink-0">{card.n}</span>
+                      <span className="font-headline text-3xl font-bold text-primary/80 shrink-0">{card.n}</span>
                       <div>
                         <h3 className="font-headline text-sm font-bold uppercase tracking-wide text-foreground mb-2">
                           {card.t}
@@ -270,9 +270,9 @@ const ch = charset[uniformIndex];`}</pre>
           </div>
         </div>
 
-        <section className="bg-violet-600 border-t border-violet-500">
+        <section className="bg-primary border-t border-primary/80">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-            <p className="font-headline text-lg sm:text-xl font-bold text-white uppercase tracking-[0.08em] max-w-xl leading-snug">
+            <p className="font-headline text-lg sm:text-xl font-bold text-primary-foreground uppercase tracking-[0.08em] max-w-xl leading-snug">
               Ready to upgrade your security? Generate strong random passwords in your browser.
             </p>
             <Link

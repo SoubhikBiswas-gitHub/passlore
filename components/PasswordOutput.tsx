@@ -102,83 +102,117 @@ export function PasswordOutput({
       "disabled:pointer-events-none disabled:opacity-40 " +
       "focus-visible:outline-none focus-visible:z-[1] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
 
+    const showDashboardGenerate = showGenerateButton !== false
+
     return (
       <section
         aria-label="Password"
+        aria-busy={isGenerating && !password}
         className={cn(
           "border border-border bg-card transition-colors",
           isCopied && "border-primary bg-primary/4 dark:bg-primary/10"
         )}
       >
-        <div className="flex min-h-14 md:min-h-16">
-          <div
-            className="flex items-center justify-center px-3 sm:px-4 shrink-0 border-r border-border bg-muted/25"
-            aria-hidden
-          >
-            <Lock className="size-5 sm:size-6 text-primary" weight="fill" />
-          </div>
-
-          <div
-            className={cn(
-              "flex-1 min-w-0 flex items-center px-3 sm:px-4 font-mono text-base sm:text-lg md:text-xl tracking-tight",
-              "bg-muted/40 overflow-hidden",
-              password && !isRevealed && "text-primary",
-              password && isRevealed && "text-foreground"
-            )}
-            aria-label={
-              !password
-                ? "Password output"
-                : isRevealed
-                  ? password
-                  : `Concealed password, ${password.length} characters`
-            }
-          >
-            {password ? (
-              <span className="block min-w-0 w-full truncate py-2 select-text">{isRevealed ? password : displayPassword}</span>
-            ) : (
-              <span className="py-2 text-sm text-muted-foreground font-mono normal-case tracking-normal truncate">
-                Generate to preview output
-              </span>
-            )}
-          </div>
-
-          <div
-            className="flex shrink-0 self-stretch border-l border-border divide-x divide-border"
-            role="toolbar"
-            aria-label="Password actions"
-          >
-            <button
-              type="button"
-              onClick={onRevealToggle}
-              disabled={!password}
-              className={iconBtn}
-              aria-label={isRevealed ? "Hide password" : "Reveal password"}
+        <div className="flex min-h-14 md:min-h-16 flex-col sm:flex-row sm:items-stretch">
+          <div className="flex min-h-14 md:min-h-16 min-w-0 flex-1">
+            <div
+              className="flex items-center justify-center px-3 sm:px-4 shrink-0 border-r border-border bg-muted/25"
+              aria-hidden
             >
-              {isRevealed ? (
-                <EyeSlash size={22} weight="regular" aria-hidden />
-              ) : (
-                <Eye size={22} weight="regular" aria-hidden />
+              <Lock className="size-5 sm:size-6 text-primary" weight="fill" />
+            </div>
+
+            <div
+              className={cn(
+                "flex-1 min-w-0 flex items-center px-3 sm:px-4 font-mono text-base sm:text-lg md:text-xl tracking-tight",
+                "bg-muted/40 overflow-hidden",
+                password && !isRevealed && "text-primary",
+                password && isRevealed && "text-foreground"
               )}
-            </button>
-            <button type="button" onClick={onCopy} disabled={!password} className={iconBtn} aria-label="Copy password">
-              <AnimatePresence mode="wait">
-                {isCopied ? (
-                  <CheckSquare key="c" size={22} className="text-green-600 dark:text-green-400" weight="fill" aria-hidden />
+              aria-label={
+                !password
+                  ? isGenerating
+                    ? "Generating password"
+                    : "Password output"
+                  : isRevealed
+                    ? password
+                    : `Concealed password, ${password.length} characters`
+              }
+            >
+              {password ? (
+                <span className="block min-w-0 w-full truncate py-2 select-text">{isRevealed ? password : displayPassword}</span>
+              ) : isGenerating ? (
+                <div className="flex w-full min-w-0 items-center gap-2 py-2" aria-hidden>
+                  <Skeleton className="h-5 flex-1 max-w-[min(100%,20rem)] rounded-none" />
+                  <Skeleton className="h-5 w-16 shrink-0 rounded-none hidden sm:block" />
+                </div>
+              ) : (
+                <span className="py-2 text-sm text-muted-foreground font-mono normal-case tracking-normal truncate">
+                  Generate to preview output
+                </span>
+              )}
+            </div>
+
+            <div
+              className="flex shrink-0 self-stretch border-l border-border divide-x divide-border"
+              role="toolbar"
+              aria-label="Password actions"
+            >
+              <button
+                type="button"
+                onClick={onRevealToggle}
+                disabled={!password}
+                className={iconBtn}
+                aria-label={isRevealed ? "Hide password" : "Reveal password"}
+              >
+                {isRevealed ? (
+                  <EyeSlash size={22} weight="regular" aria-hidden />
                 ) : (
-                  <Copy key="o" size={22} weight="regular" aria-hidden />
+                  <Eye size={22} weight="regular" aria-hidden />
                 )}
-              </AnimatePresence>
-            </button>
+              </button>
+              <button type="button" onClick={onCopy} disabled={!password} className={iconBtn} aria-label="Copy password">
+                <AnimatePresence mode="wait">
+                  {isCopied ? (
+                    <CheckSquare key="c" size={22} className="text-green-600 dark:text-green-400" weight="fill" aria-hidden />
+                  ) : (
+                    <Copy key="o" size={22} weight="regular" aria-hidden />
+                  )}
+                </AnimatePresence>
+              </button>
+              <button
+                type="button"
+                onClick={handleSharePassword}
+                disabled={!password}
+                className={cn(iconBtn, "hover:bg-primary hover:text-primary-foreground active:bg-primary/90")}
+                aria-label="Share password"
+              >
+                <ShareNetwork size={22} weight="bold" aria-hidden />
+              </button>
+            </div>
+          </div>
+
+          {showDashboardGenerate && (
             <button
               type="button"
-              onClick={handleSharePassword}
-              disabled={!password}
-              className={cn(iconBtn, "hover:bg-primary hover:text-primary-foreground active:bg-primary/90")}
-              aria-label="Share password"
+              onClick={onGenerate}
+              disabled={isGenerating}
+              className={cn(
+                "flex min-h-12 sm:min-h-14 md:min-h-16 w-full sm:w-auto shrink-0 items-center justify-center gap-2 border-t sm:border-t-0 sm:border-l border-border",
+                "bg-primary px-4 text-primary-foreground hover:bg-primary/90",
+                "text-xs sm:text-sm font-medium uppercase tracking-wider font-mono transition-colors disabled:opacity-50",
+                "focus-visible:outline-none focus-visible:z-[1] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+              )}
             >
-              <ShareNetwork size={22} weight="bold" aria-hidden />
+              <motion.div
+                animate={prefersReduced || !isGenerating ? undefined : { rotate: 360 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+              >
+                <ArrowsClockwise size={18} weight="bold" aria-hidden />
+              </motion.div>
+              Generate
             </button>
-          </div>
+          )}
         </div>
       </section>
     )
@@ -365,7 +399,7 @@ export function PasswordOutput({
                   animate={prefersReduced ? undefined : { opacity: 1 }}
                   transition={{ duration: 0.15 }}
                 >
-                  <Badge className="rounded-none bg-green-950/40 text-green-600 dark:text-green-400 border-green-800/50">
+                  <Badge className="rounded-none border border-green-200 bg-green-50 text-green-900 dark:border-green-800 dark:bg-green-950/90 dark:text-green-200">
                     <CheckCircle size={14} weight="fill" className="mr-1" />
                     Not in HIBP password corpus
                   </Badge>
@@ -413,7 +447,7 @@ export function PasswordOutput({
           >
             <ArrowsClockwise size={18} weight="bold" />
           </motion.div>
-          Generate password
+          Generate
         </button>
       )}
     </div>
