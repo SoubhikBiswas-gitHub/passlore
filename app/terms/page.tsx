@@ -41,7 +41,7 @@ export default function TermsPage() {
       heroImageSrc={LEGAL_HERO_TERMS}
       heroImageAlt="Abstract brutalist illustration suggesting legal structure, grids, and policy layers"
       toc={toc}
-      statusLines={["Classification: public", "Channel: TLS 1.3", "Scope: securepass.pro"]}
+      statusLines={["Classification: public", "Transport: HTTPS (TLS negotiated)", "Scope: securepass.pro"]}
       crossLinkHref="/privacy"
       crossLinkText="Read privacy policy"
     >

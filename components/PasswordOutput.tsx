@@ -95,57 +95,77 @@ export function PasswordOutput({
   }
 
   if (isDashboard) {
+    const iconBtn =
+      "flex w-11 sm:w-12 self-stretch shrink-0 items-center justify-center " +
+      "text-foreground transition-colors " +
+      "hover:bg-muted/90 active:bg-muted " +
+      "disabled:pointer-events-none disabled:opacity-40 " +
+      "focus-visible:outline-none focus-visible:z-[1] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+
     return (
-      <div className="space-y-4">
-        <div
-          className={cn(
-            "flex flex-col md:flex-row items-stretch md:items-center gap-6 p-6 border-l-4 border-blue-600 bg-[#18181b] transition-colors duration-150",
-            isCopied && "bg-zinc-100 ring-1 ring-zinc-300"
-          )}
-        >
-          <div className="flex flex-1 items-center gap-4 min-w-0 w-full">
-            <Lock className="size-6 text-zinc-500 shrink-0" weight="fill" aria-hidden />
-            <div
-              className={cn(
-                "font-mono text-2xl md:text-4xl tracking-tight break-all select-all flex-1 px-4 py-2 bg-black/40 text-blue-400 min-h-12 flex items-center",
-                isCopied && "text-zinc-900 bg-zinc-100"
-              )}
-            >
-              {password ? (
-                isRevealed ? password : displayPassword
-              ) : (
-                <span className="text-sm md:text-base text-zinc-500 font-mono normal-case tracking-normal">
-                  Generate to preview output
-                </span>
-              )}
-            </div>
+      <section
+        aria-label="Password"
+        className={cn(
+          "border border-border bg-card transition-colors",
+          isCopied && "border-primary bg-primary/4 dark:bg-primary/10"
+        )}
+      >
+        <div className="flex min-h-14 md:min-h-16">
+          <div
+            className="flex items-center justify-center px-3 sm:px-4 shrink-0 border-r border-border bg-muted/25"
+            aria-hidden
+          >
+            <Lock className="size-5 sm:size-6 text-primary" weight="fill" />
           </div>
-          <div className="flex gap-2 justify-end shrink-0">
+
+          <div
+            className={cn(
+              "flex-1 min-w-0 flex items-center px-3 sm:px-4 font-mono text-base sm:text-lg md:text-xl tracking-tight",
+              "bg-muted/40 overflow-hidden",
+              password && !isRevealed && "text-primary",
+              password && isRevealed && "text-foreground"
+            )}
+            aria-label={
+              !password
+                ? "Password output"
+                : isRevealed
+                  ? password
+                  : `Concealed password, ${password.length} characters`
+            }
+          >
+            {password ? (
+              <span className="block min-w-0 w-full truncate py-2 select-text">{isRevealed ? password : displayPassword}</span>
+            ) : (
+              <span className="py-2 text-sm text-muted-foreground font-mono normal-case tracking-normal truncate">
+                Generate to preview output
+              </span>
+            )}
+          </div>
+
+          <div
+            className="flex shrink-0 self-stretch border-l border-border divide-x divide-border"
+            role="toolbar"
+            aria-label="Password actions"
+          >
             <button
               type="button"
               onClick={onRevealToggle}
               disabled={!password}
-              className="w-12 h-12 bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center transition-colors disabled:opacity-40"
+              className={iconBtn}
               aria-label={isRevealed ? "Hide password" : "Reveal password"}
             >
               {isRevealed ? (
-                <EyeSlash size={22} className="text-zinc-100" weight="regular" />
+                <EyeSlash size={22} weight="regular" aria-hidden />
               ) : (
-                <Eye size={22} className="text-zinc-100" weight="regular" />
+                <Eye size={22} weight="regular" aria-hidden />
               )}
             </button>
-            <button
-              type="button"
-              onClick={onCopy}
-              disabled={!password}
-              className="w-12 h-12 bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center transition-colors disabled:opacity-40"
-              aria-label="Copy password"
-            >
+            <button type="button" onClick={onCopy} disabled={!password} className={iconBtn} aria-label="Copy password">
               <AnimatePresence mode="wait">
                 {isCopied ? (
-                  <CheckSquare key="c" size={22} className="text-green-400" weight="fill" />
+                  <CheckSquare key="c" size={22} className="text-green-600 dark:text-green-400" weight="fill" aria-hidden />
                 ) : (
-                  <Copy key="o" size={22} className="text-zinc-100" weight="regular" />
+                  <Copy key="o" size={22} weight="regular" aria-hidden />
                 )}
               </AnimatePresence>
             </button>
@@ -153,14 +173,14 @@ export function PasswordOutput({
               type="button"
               onClick={handleSharePassword}
               disabled={!password}
-              className="w-12 h-12 bg-zinc-800 hover:bg-blue-600 flex items-center justify-center transition-colors disabled:opacity-40"
+              className={cn(iconBtn, "hover:bg-primary hover:text-primary-foreground active:bg-primary/90")}
               aria-label="Share password"
             >
-              <ShareNetwork size={22} weight="bold" className="text-zinc-100" />
+              <ShareNetwork size={22} weight="bold" aria-hidden />
             </button>
           </div>
         </div>
-      </div>
+      </section>
     )
   }
 
@@ -168,12 +188,9 @@ export function PasswordOutput({
     <div className="space-y-4">
       <div
         className={cn(
-          "group/password p-4 rounded-none border border-zinc-800 transition-colors duration-150",
-          "focus-within:border-indigo-600 dark:focus-within:border-indigo-400",
-          "focus-within:bg-black dark:focus-within:bg-black",
-          password && isCopied
-            ? "bg-zinc-900 text-zinc-50 border-zinc-900 dark:bg-zinc-50 dark:text-zinc-950 dark:border-zinc-50"
-            : "bg-white dark:bg-zinc-950"
+          "group/password p-4 rounded-none border border-border transition-colors duration-150 bg-card text-foreground",
+          "focus-within:border-ring focus-within:bg-muted/30",
+          password && isCopied && "bg-primary text-primary-foreground border-primary"
         )}
       >
         <div className="flex items-start gap-3">
@@ -182,13 +199,19 @@ export function PasswordOutput({
               <LockOpen
                 size={20}
                 weight="regular"
-                className="text-zinc-500 group-focus-within/password:text-zinc-400 dark:text-zinc-400 dark:group-focus-within/password:text-zinc-500"
+                className={cn(
+                  password && isCopied
+                    ? "text-primary-foreground/80"
+                    : "text-muted-foreground group-focus-within/password:text-muted-foreground/80"
+                )}
               />
             ) : (
               <Lock
                 size={20}
                 weight="fill"
-                className="text-indigo-600 group-focus-within/password:text-indigo-400 dark:text-indigo-400 dark:group-focus-within/password:text-indigo-300"
+                className={cn(
+                  password && isCopied ? "text-primary-foreground" : "text-primary group-focus-within/password:text-primary/90"
+                )}
               />
             )}
           </div>
@@ -198,11 +221,9 @@ export function PasswordOutput({
                 <motion.div
                   key={password}
                   className={cn(
-                    "font-mono ds-text-display-lg break-all select-all cursor-text",
-                    "text-zinc-900 dark:text-zinc-50",
-                    "group-focus-within/password:text-zinc-50 dark:group-focus-within/password:text-zinc-50",
-                    isCopied &&
-                      "text-zinc-50 dark:text-zinc-950 group-focus-within/password:text-zinc-50 dark:group-focus-within/password:text-zinc-950"
+                    "font-mono ds-text-display-lg break-all select-all cursor-text text-foreground",
+                    "group-focus-within/password:text-foreground",
+                    isCopied && "text-primary-foreground group-focus-within/password:text-primary-foreground"
                   )}
                   initial={prefersReduced ? undefined : { opacity: 0 }}
                   animate={prefersReduced ? undefined : { opacity: 1 }}
@@ -213,7 +234,7 @@ export function PasswordOutput({
                 </motion.div>
               </AnimatePresence>
             ) : (
-              <span className="ds-text-body-md italic text-zinc-500 dark:text-zinc-500 group-focus-within/password:text-zinc-400">
+              <span className="ds-text-body-md italic text-muted-foreground group-focus-within/password:text-muted-foreground/90">
                 Click Generate to create a password
               </span>
             )}
@@ -222,21 +243,31 @@ export function PasswordOutput({
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 rounded-none group-focus-within/password:text-zinc-300 dark:group-focus-within/password:text-zinc-300"
+              className={cn(
+                "h-8 w-8 rounded-none",
+                password && isCopied
+                  ? "text-primary-foreground/90 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                  : "text-muted-foreground hover:text-foreground group-focus-within/password:text-foreground/80"
+              )}
               onClick={onRevealToggle}
               aria-label={isRevealed ? "Hide password" : "Reveal password"}
               disabled={!password}
             >
               {isRevealed ? (
-                <EyeSlash size={18} weight="regular" className="text-zinc-500" />
+                <EyeSlash size={18} weight="regular" />
               ) : (
-                <Eye size={18} weight="regular" className="text-zinc-500" />
+                <Eye size={18} weight="regular" />
               )}
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 rounded-none group-focus-within/password:text-zinc-300 dark:group-focus-within/password:text-zinc-300"
+              className={cn(
+                "h-8 w-8 rounded-none",
+                password && isCopied
+                  ? "text-primary-foreground/90 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                  : "text-muted-foreground hover:text-foreground group-focus-within/password:text-foreground/80"
+              )}
               onClick={onCopy}
               aria-label="Copy password"
               disabled={!password}
@@ -250,7 +281,7 @@ export function PasswordOutput({
                     exit={prefersReduced ? undefined : { scale: 0.85, opacity: 0 }}
                     transition={{ duration: 0.12 }}
                   >
-                    <CheckSquare size={18} weight="fill" className="text-green-600 dark:text-green-500" />
+                    <CheckSquare size={18} weight="fill" className="text-green-600 dark:text-green-400" />
                   </motion.div>
                 ) : (
                   <motion.div
@@ -260,7 +291,7 @@ export function PasswordOutput({
                     exit={prefersReduced ? undefined : { opacity: 0 }}
                     transition={{ duration: 0.1 }}
                   >
-                    <Copy size={18} weight="regular" className="text-zinc-500" />
+                    <Copy size={18} weight="regular" />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -268,17 +299,27 @@ export function PasswordOutput({
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 rounded-none group-focus-within/password:text-zinc-300 dark:group-focus-within/password:text-zinc-300"
+              className={cn(
+                "h-8 w-8 rounded-none",
+                password && isCopied
+                  ? "text-primary-foreground/90 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                  : "text-muted-foreground hover:text-foreground group-focus-within/password:text-foreground/80"
+              )}
               onClick={handleDownload}
               aria-label="Download password"
               disabled={!password}
             >
-              <DownloadSimple size={18} weight="regular" className="text-zinc-500" />
+              <DownloadSimple size={18} weight="regular" />
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 rounded-none group-focus-within/password:text-zinc-300 dark:group-focus-within/password:text-zinc-300"
+              className={cn(
+                "h-8 w-8 rounded-none",
+                password && isCopied
+                  ? "text-primary-foreground/90 hover:text-primary-foreground hover:bg-primary-foreground/10"
+                  : "text-muted-foreground hover:text-foreground group-focus-within/password:text-foreground/80"
+              )}
               onClick={onGenerate}
               aria-label="Regenerate password"
             >
@@ -286,7 +327,7 @@ export function PasswordOutput({
                 animate={prefersReduced || !isGenerating ? undefined : { rotate: 360 }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
               >
-                <ArrowsClockwise size={18} weight="bold" className="text-zinc-500" />
+                <ArrowsClockwise size={18} weight="bold" />
               </motion.div>
             </Button>
           </div>
@@ -295,16 +336,16 @@ export function PasswordOutput({
         {password && (
           <div
             className={cn(
-              "mt-3 pt-3 flex flex-wrap items-center justify-between gap-3 -mx-4 -mb-4 px-4 pb-4",
-              "bg-zinc-100 dark:bg-zinc-900",
-              "group-focus-within/password:bg-zinc-950 dark:group-focus-within/password:bg-black"
+              "mt-3 pt-3 flex flex-wrap items-center justify-between gap-3 -mx-4 -mb-4 px-4 pb-4 border-t",
+              isCopied
+                ? "border-primary-foreground/25 bg-primary/20"
+                : "border-border bg-muted/50 group-focus-within/password:bg-muted/70"
             )}
           >
             <div
               className={cn(
                 "ds-text-label-sm flex items-center gap-1 normal-case",
-                isCopied ? "text-zinc-300 dark:text-zinc-600" : "text-zinc-500",
-                "group-focus-within/password:text-zinc-400 dark:group-focus-within/password:text-zinc-500"
+                isCopied ? "text-primary-foreground/90" : "text-muted-foreground"
               )}
             >
               <Info size={12} weight="regular" />
@@ -326,7 +367,7 @@ export function PasswordOutput({
                 >
                   <Badge className="rounded-none bg-green-950/40 text-green-600 dark:text-green-400 border-green-800/50">
                     <CheckCircle size={14} weight="fill" className="mr-1" />
-                    Not found in any breach
+                    Not in HIBP password corpus
                   </Badge>
                 </motion.div>
               )}
@@ -338,7 +379,7 @@ export function PasswordOutput({
                 >
                   <Badge variant="destructive" className="rounded-none">
                     <WarningCircle size={14} weight="bold" className="mr-1" />
-                    Found in {hibpCount.toLocaleString()} breaches!
+                    Appeared {hibpCount.toLocaleString()} times in breach data
                   </Badge>
                 </motion.div>
               )}
@@ -364,7 +405,7 @@ export function PasswordOutput({
           type="button"
           onClick={onGenerate}
           disabled={isGenerating}
-          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-none bg-indigo-600 hover:bg-indigo-500 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white text-sm font-medium transition-colors disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-none bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium transition-colors disabled:opacity-50"
         >
           <motion.div
             animate={prefersReduced || !isGenerating ? undefined : { rotate: 360 }}

@@ -40,22 +40,23 @@ export function GdprBanner() {
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
           className="fixed bottom-0 left-0 right-0 z-50 p-4"
         >
-          <div className="max-w-3xl mx-auto bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-none p-4">
+          <div className="max-w-3xl mx-auto bg-card border border-border rounded-none p-4 text-card-foreground shadow-lg">
             <div className="flex items-start gap-3">
-              <div className="p-2 bg-indigo-50 dark:bg-indigo-950 rounded-none shrink-0">
-                <Cookie className="h-5 w-5 text-indigo-600 dark:text-indigo-400" weight="fill" />
+              <div className="p-2 bg-primary/10 rounded-none shrink-0">
+                <Cookie className="h-5 w-5 text-primary" weight="fill" />
               </div>
               <div className="flex-1 space-y-3">
                 <div className="space-y-1">
-                  <h3 className="font-semibold text-zinc-900 dark:text-zinc-50 text-sm">
+                  <h3 className="font-semibold text-foreground text-sm">
                     We value your privacy
                   </h3>
-                  <p className="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed">
-                    We use cookies to enhance your experience. Your passwords are never
-                    stored or transmitted.{" "}
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    We use cookies for theme preference and to remember this choice. If you accept, optional
+                    third-party advertising may load; the password generator still runs locally and we do not receive
+                    your generated passwords.{" "}
                     <Link
                       href="/privacy"
-                      className="text-indigo-600 dark:text-indigo-400 hover:underline"
+                      className="text-primary hover:underline"
                     >
                       Privacy Policy
                     </Link>
@@ -73,7 +74,7 @@ export function GdprBanner() {
                   <Button
                     size="sm"
                     onClick={handleAccept}
-                    className="h-8 text-xs bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white"
+                    className="h-8 text-xs"
                   >
                     Accept
                   </Button>
@@ -86,7 +87,7 @@ export function GdprBanner() {
                 className="h-8 w-8 shrink-0 -mt-1 -mr-1"
                 aria-label="Dismiss"
               >
-                <X className="h-4 w-4 text-zinc-500" />
+                <X className="h-4 w-4 text-muted-foreground" />
               </Button>
             </div>
           </div>

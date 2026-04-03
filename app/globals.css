@@ -82,7 +82,8 @@
   --warning-fg: 45 93% 58%;
 }
 
-[data-theme="sepia"] {
+[data-theme="sepia"],
+.sepia {
   --surface-0: 42 38% 96%;
   --surface-1: 42 30% 92%;
   --surface-2: 42 25% 88%;
@@ -110,7 +111,8 @@
   --radius: 0;
 }
 
-[data-theme="high-contrast"] {
+[data-theme="high-contrast"],
+.high-contrast {
   --surface-0: 0 0% 100%;
   --surface-1: 0 0% 94%;
   --surface-2: 0 0% 88%;

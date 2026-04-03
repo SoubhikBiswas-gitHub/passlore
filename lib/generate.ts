@@ -5,6 +5,8 @@ const SYMS = "!@#$%^&*()-_=+[]{}|;:,.<>?"
 const SIMILAR = "0O1lI|"
 const AMBIGUOUS = "{}[]()/\\'\"`~,;:.<>"
 
+import { randomIndex } from "./unbiased-random"
+
 const CONSONANTS = "bcdfghjklmnpqrstvwxyz"
 const VOWELS = "aeiou"
 
@@ -23,9 +25,7 @@ export type GeneratorOptions = {
 }
 
 function cryptoRandom(max: number): number {
-  const array = new Uint32Array(1)
-  crypto.getRandomValues(array)
-  return array[0] % max
+  return randomIndex(max)
 }
 
 export function buildCharset(opts: GeneratorOptions): string {

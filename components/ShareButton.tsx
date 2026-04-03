@@ -55,7 +55,7 @@ export function ShareButton() {
             animate={{ opacity: 1, y: 0 }}
             exit={prefersReduced ? { opacity: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-zinc-900 dark:bg-zinc-100 text-zinc-50 dark:text-zinc-900 text-sm rounded-none border border-zinc-700 dark:border-zinc-300"
+            className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-popover text-popover-foreground text-sm rounded-none border border-border shadow-md"
           >
             Link copied to clipboard
           </motion.div>

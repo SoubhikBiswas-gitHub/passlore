@@ -1,6 +1,6 @@
 "use client"
 
-import { useReducer, useCallback, useEffect } from "react"
+import { useReducer, useCallback, useEffect, useRef } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import { ArrowsClockwise } from "@phosphor-icons/react"
 import { ModeSelector } from "./ModeSelector"
@@ -323,20 +323,49 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
   const entropy = calculateEntropy()
   const strengthLevel = getStrengthLevel(entropy)
 
+  const passwordRef = useRef(state.password)
+  passwordRef.current = state.password
+  const hibpAbortRef = useRef<AbortController | null>(null)
+
+  useEffect(() => {
+    hibpAbortRef.current?.abort()
+    hibpAbortRef.current = null
+  }, [state.password])
+
+  useEffect(() => {
+    return () => hibpAbortRef.current?.abort()
+  }, [])
+
   const runHibpCheck = useCallback(() => {
+    const pwd = state.password
+    if (!pwd) return
+
+    hibpAbortRef.current?.abort()
+    const ac = new AbortController()
+    hibpAbortRef.current = ac
+
     dispatch({ type: "SET_HIBP_STATUS", payload: "loading" })
-    import("@/lib/hibp").then(({ checkHibp }) => {
-      checkHibp(state.password).then((result) => {
+
+    import("@/lib/hibp")
+      .then(({ checkHibp }) => checkHibp(pwd, { signal: ac.signal }))
+      .then((result) => {
+        if (passwordRef.current !== pwd) return
         if (result === null) {
           dispatch({ type: "SET_HIBP_STATUS", payload: "error" })
-        } else if (result.breached) {
+          return
+        }
+        if (result.breached) {
           dispatch({ type: "SET_HIBP_STATUS", payload: "breached" })
           dispatch({ type: "SET_HIBP_COUNT", payload: result.count })
         } else {
           dispatch({ type: "SET_HIBP_STATUS", payload: "clean" })
         }
       })
-    })
+      .catch((e: unknown) => {
+        if (e instanceof DOMException && e.name === "AbortError") return
+        if (passwordRef.current !== pwd) return
+        dispatch({ type: "SET_HIBP_STATUS", payload: "error" })
+      })
   }, [state.password])
 
   const copyPassword = useCallback(() => {
@@ -428,25 +457,25 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
       )}
       {state.mode === "pattern" && (
         <div className="space-y-2">
-          <label className="text-[0.6875rem] uppercase tracking-widest text-zinc-500 font-bold">
+          <label className="text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-bold">
             Pattern (A=upper, a=lower, 0=digit, !=symbol, *=any)
           </label>
           <input
             type="text"
             value={state.patternString}
             onChange={(e) => dispatch({ type: "SET_PATTERN", payload: e.target.value })}
-            className="w-full px-3 py-2 text-sm font-mono border border-zinc-800 rounded-none bg-[#18181b] text-zinc-50 focus:outline-none focus:border-blue-600"
+            className="w-full px-3 py-2 text-sm font-mono border border-border rounded-none bg-card text-foreground focus:outline-none focus:border-primary"
             placeholder="e.g. Aaaa-0000-!!!!"
           />
         </div>
       )}
       {state.mode === "bulk" && (
         <div className="flex flex-col gap-2">
-          <label className="text-[0.6875rem] uppercase tracking-widest text-zinc-500 font-bold">Count</label>
+          <label className="text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-bold">Count</label>
           <select
             value={state.bulkCount}
             onChange={(e) => dispatch({ type: "SET_BULK_COUNT", payload: Number(e.target.value) as BulkCount })}
-            className="w-full px-3 py-2 text-sm border border-zinc-800 rounded-none bg-[#18181b] text-zinc-50 focus:outline-none focus:border-blue-600"
+            className="w-full px-3 py-2 text-sm border border-border rounded-none bg-card text-foreground focus:outline-none focus:border-primary"
           >
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -457,11 +486,11 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
       )}
       {state.mode === "passphrase" && (
         <div className="flex flex-col gap-2">
-          <label className="text-[0.6875rem] uppercase tracking-widest text-zinc-500 font-bold">Separator</label>
+          <label className="text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-bold">Separator</label>
           <select
             value={state.separator}
             onChange={(e) => dispatch({ type: "SET_SEPARATOR", payload: e.target.value as Separator })}
-            className="w-full px-3 py-2 text-sm border border-zinc-800 rounded-none bg-[#18181b] text-zinc-50 focus:outline-none focus:border-blue-600"
+            className="w-full px-3 py-2 text-sm border border-border rounded-none bg-card text-foreground focus:outline-none focus:border-primary"
           >
             <option value="-">Hyphen (-)</option>
             <option value=".">Dot (.)</option>
@@ -493,9 +522,9 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
         initial={prefersReduced ? undefined : { opacity: 0, y: 16 }}
         animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
         transition={{ duration: 0.45, delay: 0.12, ease: "easeOut" }}
-        className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-zinc-900 p-1 border border-zinc-800/80"
+        className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-border p-1 border border-border"
       >
-        <div className="lg:col-span-8 bg-[#0a0a0a] p-6 sm:p-8 space-y-8">
+        <div className="lg:col-span-8 bg-background p-6 sm:p-8 space-y-8">
           <ModeSelector
             variant="dashboard"
             mode={state.mode}
@@ -512,7 +541,7 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
             <div>{dashboardLeftControls}</div>
             <div>
               {dashboardRightColumn ?? (
-                <p className="text-xs font-mono text-zinc-600 uppercase tracking-widest">
+                <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
                   Breach check available in single and bulk modes.
                 </p>
               )}
@@ -523,7 +552,7 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
             type="button"
             onClick={handleGenerate}
             disabled={state.isGenerating}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-none bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium uppercase tracking-wider font-mono transition-colors disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-none bg-primary text-primary-foreground hover:bg-primary/90 text-sm font-medium uppercase tracking-wider font-mono transition-colors disabled:opacity-50"
           >
             <motion.div
               animate={prefersReduced || !state.isGenerating ? undefined : { rotate: 360 }}
@@ -539,7 +568,7 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
           )}
         </div>
 
-        <div className="lg:col-span-4 flex flex-col gap-px bg-[#18181b] min-h-0">
+        <div className="lg:col-span-4 flex flex-col gap-px bg-card min-h-0">
           <HistoryPanel
             variant="dashboard"
             history={state.history}
@@ -612,14 +641,14 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
 
           {state.mode === "pattern" && (
             <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
+              <label className="text-sm font-medium text-foreground">
                 Pattern (A=upper, a=lower, 0=digit, !=symbol, *=any)
               </label>
               <input
                 type="text"
                 value={state.patternString}
                 onChange={(e) => dispatch({ type: "SET_PATTERN", payload: e.target.value })}
-                className="w-full px-3 py-2 text-sm font-mono border border-zinc-200 dark:border-zinc-800 rounded-none bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-50 focus:outline-none focus:border-indigo-600 dark:focus:border-indigo-400"
+                className="w-full px-3 py-2 text-sm font-mono border border-border rounded-none bg-background text-foreground focus:outline-none focus:border-ring"
                 placeholder="e.g. Aaaa-0000-!!!!"
               />
             </div>
@@ -629,11 +658,11 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
 
           {state.mode === "bulk" && (
             <div className="flex items-center gap-4">
-              <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">Count:</label>
+              <label className="text-sm font-medium text-foreground">Count:</label>
               <select
                 value={state.bulkCount}
                 onChange={(e) => dispatch({ type: "SET_BULK_COUNT", payload: Number(e.target.value) as BulkCount })}
-                className="px-3 py-2 text-sm border border-zinc-200 dark:border-zinc-800 rounded-none bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 focus:outline-none focus:border-indigo-600 dark:focus:border-indigo-400"
+                className="px-3 py-2 text-sm border border-border rounded-none bg-background text-foreground focus:outline-none focus:border-ring"
               >
                 <option value={10}>10</option>
                 <option value={20}>20</option>
@@ -645,11 +674,11 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
 
           {state.mode === "passphrase" && (
             <div className="flex items-center gap-4">
-              <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">Separator:</label>
+              <label className="text-sm font-medium text-foreground">Separator:</label>
               <select
                 value={state.separator}
                 onChange={(e) => dispatch({ type: "SET_SEPARATOR", payload: e.target.value as Separator })}
-                className="px-3 py-2 text-sm border border-zinc-200 dark:border-zinc-800 rounded-none bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 focus:outline-none focus:border-indigo-600 dark:focus:border-indigo-400"
+                className="px-3 py-2 text-sm border border-border rounded-none bg-background text-foreground focus:outline-none focus:border-ring"
               >
                 <option value="-">Hyphen (-)</option>
                 <option value=".">Dot (.)</option>

@@ -2,16 +2,17 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { blogPosts, type BlogPost, type ContentSection } from "@/lib/blogPosts"
+import { blogPosts, formatBlogDate, type BlogPost, type ContentSection } from "@/lib/blogPosts"
 import {
   ArrowLeft,
   ArrowRight,
   CalendarBlank,
   Clock,
   FileText,
-  Plus,
+  Key,
   User,
 } from "@phosphor-icons/react/dist/ssr"
+import { TocScrollNav } from "@/components/TocScrollNav"
 import { getBlogPostSchema, getBreadcrumbSchema } from "@/lib/seo"
 
 interface PageProps {
@@ -36,6 +37,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const site = "https://securepass.pro"
   const ogImage = post.coverImage ? [{ url: `${site}${post.coverImage}`, alt: post.title }] : undefined
+  const publishedTime = `${post.datePublished}T12:00:00.000Z`
+  const modifiedTime = `${(post.dateModified ?? post.datePublished)}T12:00:00.000Z`
 
   return {
     title: `${post.title} — SecurePass Pro`,
@@ -44,7 +47,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: post.title,
       description: post.description,
       type: "article",
-      publishedTime: post.datePublished,
+      publishedTime,
+      modifiedTime,
       authors: [post.author],
       url: `${site}/blog/${post.slug}`,
       ...(ogImage && { images: ogImage }),
@@ -111,93 +115,80 @@ export default async function BlogPostPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <div className="bg-[#0a0a0a] text-zinc-50 min-h-full">
+      <div className="bg-background text-foreground min-h-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 lg:py-16">
           <div className="lg:grid lg:grid-cols-12 lg:gap-12 lg:items-start">
             <aside className="lg:col-span-3 mb-12 lg:mb-0 lg:sticky lg:top-24 space-y-8">
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-2 text-sm font-headline uppercase tracking-widest text-zinc-500 hover:text-blue-400 transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-headline uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
               >
                 <ArrowLeft className="size-4" weight="bold" aria-hidden />
                 Back to blog
               </Link>
 
               <div>
-                <p className="text-[0.6875rem] uppercase tracking-widest text-blue-500 font-headline font-bold mb-2 flex items-center gap-2">
+                <p className="text-[0.6875rem] uppercase tracking-widest text-primary font-headline font-bold mb-2 flex items-center gap-2">
                   <FileText className="size-4" weight="bold" aria-hidden />
                   {post.dispatchTag ?? "Article"}
                 </p>
-                <p className="text-xs text-zinc-500 leading-snug line-clamp-3">{post.title}</p>
+                <p className="text-xs text-muted-foreground leading-snug line-clamp-3">{post.title}</p>
               </div>
 
-              {toc.length > 0 && (
-                <nav aria-label="On this page">
-                  <p className="text-[0.6875rem] uppercase tracking-widest text-zinc-500 font-headline font-bold mb-4">
-                    On this page
-                  </p>
-                  <ul className="space-y-2">
-                    {toc.map((item) => (
-                      <li key={item.id}>
-                        <a
-                          href={`#${item.id}`}
-                          className="text-sm text-zinc-400 hover:text-blue-400 transition-colors font-mono leading-snug"
-                        >
-                          {item.label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-              )}
+              {toc.length > 0 && <TocScrollNav items={toc} />}
 
-              <div className="p-4 bg-[#18181b] border border-zinc-800 space-y-2 font-mono text-[11px] text-emerald-400 leading-relaxed">
+              <div className="p-4 bg-card border border-border space-y-2 font-mono text-[11px] text-secure-fg leading-relaxed">
                 <p className="uppercase tracking-wide">Format: long-form guide</p>
-                <p className="uppercase tracking-wide">Updated: {post.dateModified ?? post.datePublished}</p>
+                <p className="uppercase tracking-wide">
+                  Updated: {formatBlogDate(post.dateModified ?? post.datePublished)}
+                </p>
               </div>
 
               <Link
                 href="/"
-                className="inline-flex items-center gap-2 text-sm font-headline uppercase tracking-widest text-blue-500 hover:text-blue-400"
+                className="inline-flex items-center gap-2 text-sm font-headline uppercase tracking-widest text-primary hover:text-primary/90"
               >
-                <Plus className="size-4" weight="bold" aria-hidden />
+                <Key className="size-4" weight="bold" aria-hidden />
                 Try our free password generator
               </Link>
             </aside>
 
             <article className="lg:col-span-9">
               <header className="mb-10">
-                <h1 className="font-headline text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] text-zinc-50 mb-6 text-balance">
+                <h1 className="font-headline text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] text-foreground mb-6 text-balance">
                   {post.title}
                 </h1>
 
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.6875rem] uppercase tracking-widest text-zinc-500 font-mono mb-6">
-                  <span className="inline-flex items-center gap-1.5">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-mono mb-6">
+                  <time
+                    dateTime={post.datePublished}
+                    className="inline-flex items-center gap-1.5"
+                  >
                     <CalendarBlank className="size-3.5" weight="regular" aria-hidden />
-                    {post.datePublished}
-                  </span>
-                  <span className="text-zinc-700" aria-hidden>
+                    {formatBlogDate(post.datePublished)}
+                  </time>
+                  <span className="text-muted-foreground/60" aria-hidden>
                     ·
                   </span>
                   <span className="inline-flex items-center gap-1.5">
                     <Clock className="size-3.5" weight="regular" aria-hidden />
                     {post.readingTime}
                   </span>
-                  <span className="text-zinc-700" aria-hidden>
+                  <span className="text-muted-foreground/60" aria-hidden>
                     ·
                   </span>
-                  <span className="inline-flex items-center gap-1.5 text-zinc-400">
+                  <span className="inline-flex items-center gap-1.5 text-muted-foreground">
                     <User className="size-3.5" weight="regular" aria-hidden />
                     {post.author}
                   </span>
                 </div>
 
-                <p className="text-zinc-400 text-sm sm:text-base leading-relaxed max-w-3xl mb-10">
+                <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl mb-10">
                   {post.description}
                 </p>
 
                 {post.coverImage && (
-                  <div className="relative aspect-[21/9] w-full border border-zinc-800 overflow-hidden bg-zinc-900">
+                  <div className="relative aspect-[21/9] w-full border border-border overflow-hidden bg-muted">
                     <Image
                       src={post.coverImage}
                       alt={`Illustration for ${post.title}`}
@@ -207,7 +198,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                       priority
                     />
                     <div
-                      className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#0a0a0a]/90 via-transparent to-transparent"
+                      className="absolute inset-0 pointer-events-none bg-gradient-to-t from-background/90 via-transparent to-transparent"
                       aria-hidden
                     />
                   </div>
@@ -219,15 +210,15 @@ export default async function BlogPostPage({ params }: PageProps) {
               </div>
 
               {post.keywords && post.keywords.length > 0 && (
-                <div className="mt-12 pt-10 border-t border-zinc-800 max-w-3xl">
-                  <p className="text-[0.6875rem] uppercase tracking-widest text-zinc-500 font-headline font-bold mb-4">
+                <div className="mt-12 pt-10 border-t border-border max-w-3xl">
+                  <p className="text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-headline font-bold mb-4">
                     Topics
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {post.keywords.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2.5 py-1.5 bg-[#18181b] border border-zinc-800 text-zinc-400 text-[0.6875rem] uppercase tracking-widest font-mono"
+                        className="px-2.5 py-1.5 bg-card border border-border text-muted-foreground text-[0.6875rem] uppercase tracking-widest font-mono"
                       >
                         {tag}
                       </span>
@@ -237,40 +228,40 @@ export default async function BlogPostPage({ params }: PageProps) {
               )}
 
               <nav
-                className="mt-12 max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-px bg-zinc-800 border border-zinc-800"
+                className="mt-12 max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-px bg-border border border-border"
                 aria-label="Previous and next articles"
               >
                 {prevPost ? (
                   <Link
                     href={`/blog/${prevPost.slug}`}
-                    className="group p-6 bg-[#18181b] hover:bg-zinc-900 transition-colors flex flex-col min-h-[7rem]"
+                    className="group p-6 bg-card hover:bg-accent transition-colors flex flex-col min-h-[7rem]"
                   >
-                    <span className="text-[0.625rem] uppercase tracking-wider text-zinc-500 font-mono flex items-center gap-1 mb-2">
+                    <span className="text-[0.625rem] uppercase tracking-wider text-muted-foreground font-mono flex items-center gap-1 mb-2">
                       <ArrowLeft className="size-3.5" weight="bold" aria-hidden />
                       Previous
                     </span>
-                    <span className="font-headline text-sm font-bold text-zinc-50 group-hover:text-blue-400 transition-colors line-clamp-2 leading-snug mt-auto">
+                    <span className="font-headline text-sm font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-snug mt-auto">
                       {prevPost.title}
                     </span>
                   </Link>
                 ) : (
-                  <div className="bg-[#18181b] min-h-[7rem] hidden sm:block" aria-hidden />
+                  <div className="bg-card min-h-[7rem] hidden sm:block" aria-hidden />
                 )}
                 {nextPost ? (
                   <Link
                     href={`/blog/${nextPost.slug}`}
-                    className="group p-6 bg-[#18181b] hover:bg-zinc-900 transition-colors flex flex-col min-h-[7rem] sm:text-right"
+                    className="group p-6 bg-card hover:bg-accent transition-colors flex flex-col min-h-[7rem] sm:text-right"
                   >
-                    <span className="text-[0.625rem] uppercase tracking-wider text-zinc-500 font-mono flex items-center gap-1 mb-2 sm:justify-end">
+                    <span className="text-[0.625rem] uppercase tracking-wider text-muted-foreground font-mono flex items-center gap-1 mb-2 sm:justify-end">
                       Next
                       <ArrowRight className="size-3.5" weight="bold" aria-hidden />
                     </span>
-                    <span className="font-headline text-sm font-bold text-zinc-50 group-hover:text-blue-400 transition-colors line-clamp-2 leading-snug mt-auto">
+                    <span className="font-headline text-sm font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-snug mt-auto">
                       {nextPost.title}
                     </span>
                   </Link>
                 ) : (
-                  <div className="bg-[#18181b] min-h-[7rem] hidden sm:block" aria-hidden />
+                  <div className="bg-card min-h-[7rem] hidden sm:block" aria-hidden />
                 )}
               </nav>
             </article>
@@ -284,7 +275,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             </p>
             <Link
               href="/blog"
-              className="inline-flex items-center justify-center px-8 py-4 bg-white text-zinc-950 font-headline text-xs font-bold uppercase tracking-widest hover:bg-zinc-100 transition-colors shrink-0"
+              className="inline-flex items-center justify-center px-8 py-4 bg-background text-foreground font-headline text-xs font-bold uppercase tracking-widest hover:bg-accent border border-foreground/15 transition-colors shrink-0"
             >
               View all posts
             </Link>
@@ -308,30 +299,30 @@ function BlogContent({ post, firstHeadingIndex }: { post: BlogPost; firstHeading
           {section.type === "heading" && (
             <h2
               id={`section-${index}`}
-              className={`scroll-mt-28 font-headline text-sm font-bold uppercase tracking-[0.14em] text-zinc-200 mb-4 ${
-                index !== firstHeadingIndex ? "mt-12 pt-10 border-t border-zinc-800" : ""
+              className={`scroll-mt-28 font-headline text-sm font-bold uppercase tracking-[0.14em] text-foreground mb-4 ${
+                index !== firstHeadingIndex ? "mt-12 pt-10 border-t border-border" : ""
               }`}
             >
               {section.text}
             </h2>
           )}
           {section.type === "paragraph" && (
-            <p className="text-sm text-zinc-400 leading-relaxed mb-4">{section.text}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-4">{section.text}</p>
           )}
           {section.type === "list" && (
-            <ul className="list-disc pl-5 space-y-2 text-sm text-zinc-400 leading-relaxed mb-6">
+            <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground leading-relaxed mb-6">
               {section.items?.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
           )}
           {section.type === "code" && (
-            <pre className="bg-[#18181b] border border-zinc-800 p-4 overflow-x-auto text-xs font-mono text-zinc-300 mb-6">
+            <pre className="bg-card border border-border p-4 overflow-x-auto text-xs font-mono text-foreground/90 mb-6">
               <code>{section.text}</code>
             </pre>
           )}
           {section.type === "quote" && (
-            <blockquote className="border-l-4 border-violet-500 pl-4 py-3 mb-6 bg-[#18181b]/80 text-sm text-zinc-400 italic leading-relaxed">
+            <blockquote className="border-l-4 border-primary pl-4 py-3 mb-6 bg-card/80 text-sm text-muted-foreground italic leading-relaxed">
               {section.text}
             </blockquote>
           )}

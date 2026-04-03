@@ -51,8 +51,8 @@ export function LengthControl({
     return (
       <div className="space-y-4">
         <div className="flex justify-between items-center mb-0">
-          <label className="text-[0.6875rem] uppercase tracking-widest text-zinc-500 font-bold">{label}</label>
-          <span className="font-mono text-blue-400 font-bold text-lg">{length}</span>
+          <label className="text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-bold">{label}</label>
+          <span className="font-mono text-primary font-bold text-lg">{length}</span>
         </div>
         <Slider
           value={[length]}
@@ -60,7 +60,7 @@ export function LengthControl({
           min={min}
           max={max}
           step={1}
-          className="w-full [&_[role=slider]]:bg-blue-500"
+          className="w-full [&_[role=slider]]:bg-primary"
           aria-label={`${label} slider`}
           aria-valuemin={min}
           aria-valuemax={max}
@@ -73,7 +73,7 @@ export function LengthControl({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-zinc-900 dark:text-zinc-50">{label}</label>
+        <label className="text-sm font-medium text-foreground">{label}</label>
         <Badge variant="secondary" className="text-xs">
           {length} {unit}
         </Badge>
@@ -98,7 +98,7 @@ export function LengthControl({
           onBlur={handleInputBlur}
           min={min}
           max={max}
-          className="w-16 px-2 py-1 text-sm text-center border border-zinc-200 dark:border-zinc-800 rounded-none bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50"
+          className="w-16 px-2 py-1 text-sm text-center border border-border rounded-none bg-background text-foreground"
         />
       </div>
     </div>

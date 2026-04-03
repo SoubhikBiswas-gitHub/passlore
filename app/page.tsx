@@ -1,6 +1,5 @@
 import { PasswordGenerator } from "@/components/PasswordGenerator"
 import { HomeHero } from "@/components/home/HomeHero"
-import { HomeAdPlaceholder } from "@/components/home/HomeAdPlaceholder"
 import { HomeStatsStrip } from "@/components/home/HomeStatsStrip"
 import { HomeSecurityBrief } from "@/components/home/HomeSecurityBrief"
 import { HomeBlogDispatch } from "@/components/home/HomeBlogDispatch"
@@ -18,17 +17,13 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <div className="bg-[#0a0a0a] text-zinc-50 min-h-full">
+      <div className="bg-background text-foreground min-h-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-8 sm:pt-12 pb-16">
           <HomeHero />
-
-          <HomeAdPlaceholder format="leaderboard" />
 
           <PasswordGenerator layout="dashboard" />
 
           <HomeStatsStrip />
-
-          <HomeAdPlaceholder format="rectangle" />
 
           <HomeSecurityBrief />
 

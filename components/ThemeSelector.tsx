@@ -49,7 +49,7 @@ export function ThemeSelector() {
         <Button
           variant="ghost"
           size="icon"
-          className="h-9 w-9 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
+          className="h-9 w-9 text-muted-foreground hover:text-foreground"
           aria-label="Select theme"
         >
           <CurrentIcon className="h-4 w-4" weight={currentTheme.weight} />
@@ -75,7 +75,7 @@ export function ThemeSelector() {
                   onClick={() => setTheme(value)}
                   className={cn(
                     "flex items-center justify-between gap-2 cursor-pointer",
-                    theme === value && "bg-zinc-100 dark:bg-zinc-800"
+                    theme === value && "bg-accent"
                   )}
                 >
                   <span className="flex items-center gap-2">
@@ -83,7 +83,7 @@ export function ThemeSelector() {
                     <span>{label}</span>
                   </span>
                   {theme === value && (
-                    <CheckCircle className="h-3.5 w-3.5 text-green-600 dark:text-green-400" weight="fill" />
+                    <CheckCircle className="h-3.5 w-3.5 text-secure" weight="fill" />
                   )}
                 </DropdownMenuItem>
               ))}

@@ -69,11 +69,11 @@ function HistoryEntry({
             handleCopy()
           }
         }}
-        className="flex items-center justify-between group hover:bg-zinc-900 p-2 cursor-pointer transition-colors border-b border-zinc-900/50"
+        className="flex items-center justify-between group hover:bg-accent p-2 cursor-pointer transition-colors border-b border-border"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <span className="font-mono text-xs text-zinc-400 truncate pr-2">
+        <span className="font-mono text-xs text-muted-foreground truncate pr-2">
           {isHovered ? preview : maskedPassword}
         </span>
         <button
@@ -82,7 +82,7 @@ function HistoryEntry({
             e.stopPropagation()
             handleCopy()
           }}
-          className="shrink-0 p-1 text-zinc-700 hover:text-blue-400 transition-colors"
+          className="shrink-0 p-1 text-muted-foreground hover:text-primary transition-colors"
           aria-label="Copy password from history"
         >
           {isCopied ? (
@@ -102,23 +102,23 @@ function HistoryEntry({
       animate={prefersReduced ? undefined : { opacity: 1, height: "auto", y: 0 }}
       exit={prefersReduced ? undefined : { opacity: 0, height: 0 }}
       transition={{ duration: 0.22, ease: "easeOut" }}
-      className="group py-2 px-3 flex items-center justify-between gap-2 rounded-none hover:bg-zinc-100 dark:hover:bg-zinc-800/80 mb-2"
+      className="group py-2 px-3 flex items-center justify-between gap-2 rounded-none hover:bg-accent mb-2"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="flex-1 min-w-0">
-        <span className="font-mono text-xs truncate block text-zinc-700 dark:text-zinc-300">
+        <span className="font-mono text-xs truncate block text-foreground/90">
           {isHovered ? item.password.slice(0, 24) + (item.password.length > 24 ? "..." : "") : maskedPassword}
         </span>
       </div>
-      <span className="text-xs text-zinc-400 shrink-0">{getRelativeTime(item.timestamp)}</span>
+      <span className="text-xs text-muted-foreground shrink-0">{getRelativeTime(item.timestamp)}</span>
       <Badge className={cn("text-xs shrink-0", strengthBadgeColors[item.strength])}>
         {item.bits}b
       </Badge>
       <Button
         variant="ghost"
         size="icon"
-        className={cn("h-6 w-6 shrink-0", isCopied && "bg-green-50 dark:bg-green-950")}
+        className={cn("h-6 w-6 shrink-0", isCopied && "bg-secure/15")}
         onClick={handleCopy}
         aria-label="Copy password"
       >
@@ -139,7 +139,7 @@ function HistoryEntry({
               animate={prefersReduced ? undefined : { scale: 1, opacity: 1 }}
               exit={prefersReduced ? undefined : { scale: 0.6, opacity: 0 }}
             >
-              <Copy size={14} weight="regular" className="text-zinc-500" />
+              <Copy size={14} weight="regular" className="text-muted-foreground" />
             </motion.div>
           )}
         </AnimatePresence>
@@ -153,21 +153,21 @@ export function HistoryPanel({ history, onClear, variant = "default" }: HistoryP
 
   if (variant === "dashboard") {
     return (
-      <div className="bg-zinc-950 p-6 min-h-0 flex flex-col h-[400px]">
+      <div className="bg-card p-6 min-h-0 flex flex-col h-[400px]">
         <div className="flex justify-between items-center mb-6 shrink-0">
-          <h3 className="text-[0.6875rem] uppercase tracking-widest font-bold text-zinc-500">Session history</h3>
+          <h3 className="text-[0.6875rem] uppercase tracking-widest font-bold text-muted-foreground">Session history</h3>
           {history.length > 0 && (
             <button
               type="button"
               onClick={onClear}
-              className="text-[10px] uppercase font-mono text-zinc-600 hover:text-red-400 transition-colors"
+              className="text-[10px] uppercase font-mono text-muted-foreground hover:text-destructive transition-colors"
             >
               Clear all
             </button>
           )}
         </div>
         {history.length === 0 ? (
-          <p className="text-sm text-zinc-600 font-mono text-center py-8">No session entries</p>
+          <p className="text-sm text-muted-foreground font-mono text-center py-8">No session entries</p>
         ) : (
           <ScrollArea className="flex-1 min-h-0 pr-2">
             <div className="space-y-0">
@@ -185,15 +185,15 @@ export function HistoryPanel({ history, onClear, variant = "default" }: HistoryP
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <ClockCounterClockwise size={20} weight="regular" className="text-zinc-500 dark:text-zinc-400" />
-          <h3 className="text-sm font-medium text-zinc-900 dark:text-zinc-50">Recent</h3>
+          <ClockCounterClockwise size={20} weight="regular" className="text-muted-foreground" />
+          <h3 className="text-sm font-medium text-foreground">Recent</h3>
         </div>
         {history.length > 0 && (
           <Button
             variant="ghost"
             size="sm"
             onClick={onClear}
-            className="h-7 text-xs text-zinc-500 hover:text-red-600"
+            className="h-7 text-xs text-muted-foreground hover:text-destructive"
           >
             <Trash size={14} weight="bold" className="mr-1" />
             Clear
@@ -207,8 +207,8 @@ export function HistoryPanel({ history, onClear, variant = "default" }: HistoryP
           animate={prefersReduced ? undefined : { opacity: 1 }}
           className="py-8 text-center"
         >
-          <ClockCounterClockwise size={32} weight="regular" className="mx-auto text-zinc-300 dark:text-zinc-600 mb-2" />
-          <p className="text-sm text-zinc-400 dark:text-zinc-500">No passwords generated yet</p>
+          <ClockCounterClockwise size={32} weight="regular" className="mx-auto text-muted-foreground/50 mb-2" />
+          <p className="text-sm text-muted-foreground">No passwords generated yet</p>
         </motion.div>
       ) : (
         <ScrollArea className="max-h-64">

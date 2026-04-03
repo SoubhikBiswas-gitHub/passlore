@@ -82,8 +82,8 @@ export function CharsetToggles({
             return (
               <div key={id} className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
-                  <Icon size={20} weight="regular" className="text-zinc-500 shrink-0" />
-                  <span className="text-xs uppercase tracking-wider text-zinc-200 truncate">
+                  <Icon size={20} weight="regular" className="text-muted-foreground shrink-0" />
+                  <span className="text-xs uppercase tracking-wider text-foreground truncate">
                     {label} {hint}
                   </span>
                 </div>
@@ -93,11 +93,11 @@ export function CharsetToggles({
                       <span
                         className={cn(
                           "w-10 h-5 flex items-center px-0.5 shrink-0",
-                          value ? "bg-blue-600 justify-end" : "bg-zinc-800 justify-start"
+                          value ? "bg-primary justify-end" : "bg-muted justify-start"
                         )}
                         aria-hidden
                       >
-                        <span className="w-4 h-4 bg-white block" />
+                        <span className="w-4 h-4 bg-background block" />
                       </span>
                     </TooltipTrigger>
                     <TooltipContent>Cannot disable last active charset</TooltipContent>
@@ -111,10 +111,10 @@ export function CharsetToggles({
                     onClick={() => onChange(!value)}
                     className={cn(
                       "w-10 h-5 flex items-center px-0.5 cursor-pointer shrink-0 transition-colors",
-                      value ? "bg-blue-600 justify-end" : "bg-zinc-800 justify-start"
+                      value ? "bg-primary justify-end" : "bg-muted justify-start"
                     )}
                   >
-                    <span className={cn("w-4 h-4 block", value ? "bg-white" : "bg-zinc-500")} />
+                    <span className={cn("w-4 h-4 block", value ? "bg-background" : "bg-muted-foreground/50")} />
                   </button>
                 )}
               </div>
@@ -129,7 +129,7 @@ export function CharsetToggles({
     <TooltipProvider>
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-zinc-900 dark:text-zinc-50">Character Sets</span>
+          <span className="text-sm font-medium text-foreground">Character Sets</span>
           {isLastActive && (
             <Badge variant="destructive" className="text-xs flex items-center gap-1">
               <WarningCircle size={12} weight="bold" />
@@ -144,18 +144,18 @@ export function CharsetToggles({
             return (
               <div
                 key={id}
-                className="flex items-center justify-between py-2 px-3 rounded-none bg-zinc-50 dark:bg-zinc-900"
+                className="flex items-center justify-between py-2 px-3 rounded-none bg-muted/60"
               >
                 <div className="flex items-center gap-3">
-                  <Icon size={20} weight="regular" className="text-zinc-500 dark:text-zinc-400" />
-                  <span className="text-sm text-zinc-900 dark:text-zinc-50">{label}</span>
-                  <span className="text-xs text-zinc-400 dark:text-zinc-600">{hint}</span>
+                  <Icon size={20} weight="regular" className="text-muted-foreground" />
+                  <span className="text-sm text-foreground">{label}</span>
+                  <span className="text-xs text-muted-foreground">{hint}</span>
                 </div>
                 {isDisabled ? (
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div>
-                        <Switch checked={value} disabled className="data-[state=checked]:bg-blue-600" />
+                        <Switch checked={value} disabled className="data-[state=checked]:bg-primary" />
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>Cannot disable last active charset</TooltipContent>
@@ -164,7 +164,7 @@ export function CharsetToggles({
                   <Switch
                     checked={value}
                     onCheckedChange={onChange}
-                    className="data-[state=checked]:bg-blue-600"
+                    className="data-[state=checked]:bg-primary"
                   />
                 )}
               </div>

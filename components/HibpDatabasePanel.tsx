@@ -4,7 +4,8 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { ShieldCheck, WarningCircle, CheckCircle, Info, MagnifyingGlass } from "@phosphor-icons/react"
+import { ShieldCheck, WarningCircle, CheckCircle, Info, MagnifyingGlass, ArrowsClockwise } from "@phosphor-icons/react"
+import { cn } from "@/lib/utils"
 
 export interface HibpDatabasePanelProps {
   password: string
@@ -13,6 +14,8 @@ export interface HibpDatabasePanelProps {
   onHibpCheck: () => void
   variant?: "default" | "dashboard"
 }
+
+const statusSlotMin = "min-h-[3.25rem] flex flex-col justify-center"
 
 export function HibpDatabasePanel({
   password,
@@ -34,55 +37,86 @@ export function HibpDatabasePanel({
           disabled={!password}
           className={
             isDashboard
-              ? "w-full py-3 h-auto rounded-none border border-zinc-700 bg-zinc-800 hover:bg-zinc-700 text-xs font-mono uppercase tracking-widest flex items-center justify-center gap-2 text-zinc-100"
+              ? cn(
+                  "w-full min-h-12 py-3 h-auto rounded-none border border-border",
+                  "bg-secondary text-secondary-foreground hover:bg-secondary/90",
+                  "text-[0.6875rem] font-mono uppercase tracking-[0.14em]",
+                  "flex items-center justify-center gap-2.5"
+                )
               : "rounded-none"
           }
         >
-          <MagnifyingGlass className={isDashboard ? "text-red-400" : ""} size={18} weight="bold" />
+          <MagnifyingGlass className={cn(isDashboard && "text-red-400 shrink-0")} size={18} weight="bold" aria-hidden />
           {isDashboard ? "Quick-check database" : (
             <>
-              <ShieldCheck size={14} weight="fill" className="mr-1" />
+              <ShieldCheck size={14} weight="fill" className="mr-1 shrink-0" aria-hidden />
               Check for breaches
             </>
           )}
         </Button>
       )}
-      {hibpStatus === "loading" && <Skeleton className="w-full h-12 rounded-none" />}
+      {hibpStatus === "loading" && (
+        <div className={statusSlotMin}>
+          <Skeleton className="w-full min-h-12 rounded-none" />
+        </div>
+      )}
       <AnimatePresence mode="wait">
         {hibpStatus === "clean" && (
           <motion.div
+            key="clean"
+            className={statusSlotMin}
             initial={prefersReduced ? undefined : { opacity: 0 }}
             animate={prefersReduced ? undefined : { opacity: 1 }}
+            exit={prefersReduced ? undefined : { opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            <Badge className="rounded-none bg-green-950/40 text-green-600 dark:text-green-400 border-green-800/50 w-full justify-center py-2">
-              <CheckCircle size={14} weight="fill" className="mr-1" />
-              Not found in any breach
+            <Badge className="rounded-none bg-green-950/40 text-green-600 dark:text-green-400 border-green-800/50 w-full max-w-none justify-center py-2.5 px-3 text-center font-mono text-[0.6875rem] uppercase tracking-wide leading-snug h-auto min-h-12 whitespace-normal [&>svg]:size-3.5">
+              <CheckCircle size={14} weight="fill" className="shrink-0" aria-hidden />
+              <span>Not in Have I Been Pwned password corpus</span>
             </Badge>
           </motion.div>
         )}
         {hibpStatus === "breached" && (
           <motion.div
+            key="breached"
+            className={statusSlotMin}
             initial={prefersReduced ? undefined : { opacity: 0 }}
             animate={prefersReduced ? undefined : { opacity: 1 }}
+            exit={prefersReduced ? undefined : { opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            <Badge variant="destructive" className="rounded-none w-full justify-center py-2">
-              <WarningCircle size={14} weight="bold" className="mr-1" />
-              Found in {hibpCount.toLocaleString()} breaches!
+            <Badge variant="destructive" className="rounded-none w-full max-w-none justify-center py-2.5 px-3 text-center font-mono text-[0.6875rem] uppercase tracking-wide leading-snug h-auto min-h-12 whitespace-normal [&>svg]:size-3.5">
+              <WarningCircle size={14} weight="bold" className="shrink-0" aria-hidden />
+              <span>
+                Appeared {hibpCount.toLocaleString()} times in breach data — choose another
+              </span>
             </Badge>
           </motion.div>
         )}
         {hibpStatus === "error" && (
           <motion.div
+            key="error"
+            className={cn(statusSlotMin, "gap-2")}
             initial={prefersReduced ? undefined : { opacity: 0 }}
             animate={prefersReduced ? undefined : { opacity: 1 }}
+            exit={prefersReduced ? undefined : { opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            <Badge className="rounded-none bg-amber-950/40 text-amber-600 dark:text-amber-400 border-amber-800/50 w-full justify-center py-2">
-              <Info size={14} weight="regular" className="mr-1" />
-              Check failed — try again
+            <Badge className="rounded-none bg-amber-950/40 text-amber-600 dark:text-amber-400 border-amber-800/50 w-full max-w-none justify-center py-2.5 px-3 font-mono text-[0.6875rem] uppercase tracking-wide leading-snug h-auto min-h-12 whitespace-normal [&>svg]:size-3.5">
+              <Info size={14} weight="regular" className="shrink-0" aria-hidden />
+              <span>Could not reach Have I Been Pwned</span>
             </Badge>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={onHibpCheck}
+              disabled={!password}
+              className={cn("w-full rounded-none font-mono text-[0.6875rem] uppercase tracking-widest", isDashboard && "min-h-10")}
+            >
+              <ArrowsClockwise size={14} weight="bold" className="mr-2 shrink-0" aria-hidden />
+              Try again
+            </Button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -91,12 +125,15 @@ export function HibpDatabasePanel({
 
   if (isDashboard) {
     return (
-      <div className="bg-zinc-900/50 p-6 border border-zinc-800">
-        <h3 className="text-[0.6875rem] uppercase tracking-widest text-zinc-500 font-bold mb-4">
-          Breach check
-        </h3>
-        {inner}
-      </div>
+      <section aria-label="Breach check" className="border border-border bg-card">
+        <div className="px-5 py-4 sm:px-6 sm:py-5 border-b border-border bg-muted/20">
+          <h3 className="text-[0.6875rem] uppercase tracking-[0.18em] text-foreground font-bold font-mono">Breach check</h3>
+          <p className="mt-2 text-xs text-muted-foreground leading-relaxed max-w-prose">
+            SHA-1 hash is computed in your browser; only the first 5 hex characters are sent to Have I Been Pwned (k-anonymity). Plaintext never leaves this device.
+          </p>
+        </div>
+        <div className="p-5 sm:p-6">{inner}</div>
+      </section>
     )
   }
 

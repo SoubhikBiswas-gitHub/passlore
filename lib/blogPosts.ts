@@ -4,12 +4,28 @@ export interface ContentSection {
   items?: string[]
 }
 
+/** Format YYYY-MM-DD for display (UTC calendar date). */
+export function formatBlogDate(isoDate: string): string {
+  const parts = isoDate.split("-").map(Number)
+  const y = parts[0]
+  const m = parts[1]
+  const d = parts[2]
+  if (!y || !m || !d) return isoDate
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  })
+}
+
 export interface BlogPost {
   slug: string
   title: string
   description: string
   content: ContentSection[]
   author: string
+  /** ISO 8601 date YYYY-MM-DD (schema.org, sitemap, Open Graph) */
   datePublished: string
   dateModified?: string
   readingTime: string
@@ -25,7 +41,7 @@ export const blogPosts: BlogPost[] = [
     slug: "how-to-create-a-strong-password-in-2025",
     title: "How to Create a Strong Password in 2025: Complete Guide",
     description:
-      "Learn the essential techniques for creating unbreakable passwords in 2025. Expert tips on length, complexity, and modern security practices.",
+      "Practical techniques for creating strong passwords in 2025: length, complexity, and practices aligned with current guidance.",
     content: [
       {
         type: "paragraph",
@@ -49,7 +65,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "A truly strong password should incorporate several key elements. First and foremost is length — security experts now recommend a minimum of 16 characters, though longer is always better.",
+        text: "A truly strong password should incorporate several key elements. First and foremost is length — many guidelines suggest at least 16 characters for general use, though longer is often better.",
       },
       {
         type: "list",
@@ -66,7 +82,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "Passphrases consist of multiple random words strung together, often with numbers and symbols. For example, correct-horse-battery-staple is more secure and memorable than many complex passwords.",
+        text: "Passphrases consist of multiple random words from a large word list, often with separators or extra characters. Avoid famous examples or quotes—pick words randomly (for example using the EFF long wordlist) so the phrase is not predictable.",
       },
       {
         type: "paragraph",
@@ -82,8 +98,8 @@ export const blogPosts: BlogPost[] = [
       },
     ],
     author: "SecurePass Pro Team",
-    datePublished: "Jan 15, 2025",
-    dateModified: "Jan 20, 2025",
+    datePublished: "2025-01-15",
+    dateModified: "2025-01-20",
     readingTime: "8 min read",
     keywords: ["strong password", "how to create password", "password security 2025"],
     dispatchTag: "Industry report",
@@ -109,7 +125,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "Entropy is measured in bits, where each bit represents a doubling of possible combinations. A password with 40 bits of entropy has roughly one trillion possible combinations.",
+        text: "Entropy is measured in bits, where each bit represents a doubling of possible combinations under a uniform model. A password with 40 bits of entropy has on the order of one trillion equally likely values (2^40).",
       },
       {
         type: "heading",
@@ -152,8 +168,8 @@ export const blogPosts: BlogPost[] = [
       },
     ],
     author: "SecurePass Pro Team",
-    datePublished: "Jan 10, 2025",
-    dateModified: "Jan 18, 2025",
+    datePublished: "2025-01-10",
+    dateModified: "2025-01-18",
     readingTime: "9 min read",
     keywords: ["password entropy", "entropy bits", "password strength"],
     dispatchTag: "Tutorial",
@@ -167,7 +183,7 @@ export const blogPosts: BlogPost[] = [
     content: [
       {
         type: "paragraph",
-        text: "The debate between passphrases and traditional passwords has intensified as security experts refine their recommendations. Both approaches have merits — understanding the nuances helps you make the best choice.",
+        text: "The debate between passphrases and traditional passwords continues as standards bodies and practitioners refine recommendations. Both approaches have merits — understanding the nuances helps you make the best choice.",
       },
       {
         type: "heading",
@@ -215,8 +231,8 @@ export const blogPosts: BlogPost[] = [
       },
     ],
     author: "SecurePass Pro Team",
-    datePublished: "Jan 5, 2025",
-    dateModified: "Jan 12, 2025",
+    datePublished: "2025-01-05",
+    dateModified: "2025-01-12",
     readingTime: "10 min read",
     keywords: ["passphrase vs password", "passphrase security", "EFF wordlist"],
     dispatchTag: "Opinion",
@@ -271,7 +287,7 @@ export const blogPosts: BlogPost[] = [
       },
     ],
     author: "SecurePass Pro Team",
-    datePublished: "Dec 28, 2024",
+    datePublished: "2024-12-28",
     readingTime: "7 min read",
     keywords: ["password manager", "password generator", "password tools"],
     dispatchTag: "Deep dive",
@@ -331,7 +347,7 @@ export const blogPosts: BlogPost[] = [
       },
     ],
     author: "SecurePass Pro Team",
-    datePublished: "Dec 20, 2024",
+    datePublished: "2024-12-20",
     readingTime: "6 min read",
     keywords: ["NIST password guidelines", "password policy", "security standards"],
     dispatchTag: "Standards",

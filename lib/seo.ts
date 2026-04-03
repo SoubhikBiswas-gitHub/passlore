@@ -3,10 +3,13 @@ import type { Metadata } from "next"
 const SITE_URL = "https://securepass.pro"
 const SITE_NAME = "SecurePass Pro"
 
+/** Defensible site summary for meta tags and JSON-LD (no user counts or ratings). */
+export const SITE_DESCRIPTION =
+  "Generate random passwords and passphrases in your browser using crypto.getRandomValues. No account required. Passwords are not sent to our servers. Optional Have I Been Pwned check uses k-anonymity (only a SHA-1 hash prefix leaves your browser). Free to use."
+
 export const defaultMetadata: Metadata = {
   title: "Free Strong Password Generator — SecurePass Pro",
-  description:
-    "Generate cryptographically secure passwords instantly. No signup. No data stored. HIBP breach check. Entropy meter. Trusted by 2M+ users. 100% free.",
+  description: SITE_DESCRIPTION,
   keywords: [
     "password generator",
     "strong password generator",
@@ -31,8 +34,7 @@ export const defaultMetadata: Metadata = {
   },
   openGraph: {
     title: "Free Strong Password Generator — SecurePass Pro",
-    description:
-      "Generate cryptographically secure passwords instantly. No signup. No data stored. HIBP breach check. Entropy meter. Trusted by 2M+ users. 100% free.",
+    description: SITE_DESCRIPTION,
     url: SITE_URL,
     siteName: SITE_NAME,
     type: "website",
@@ -41,8 +43,7 @@ export const defaultMetadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Free Strong Password Generator — SecurePass Pro",
-    description:
-      "Generate cryptographically secure passwords instantly. No signup. No data stored. HIBP breach check. Entropy meter. Trusted by 2M+ users. 100% free.",
+    description: SITE_DESCRIPTION,
   },
   alternates: {
     canonical: SITE_URL,
@@ -50,13 +51,13 @@ export const defaultMetadata: Metadata = {
 }
 
 export const aboutMetadata: Metadata = {
-  title: "About SecurePass Pro — Password Security Experts",
+  title: "About SecurePass Pro",
   description:
-    "Learn about SecurePass Pro's mission to make password security accessible to everyone. Our free tools help millions create stronger, safer passwords.",
+    "How SecurePass Pro works: client-side generation with the Web Crypto API, optional breach checks, and privacy-minded defaults.",
   openGraph: {
-    title: "About SecurePass Pro — Password Security Experts",
+    title: "About SecurePass Pro",
     description:
-      "Learn about SecurePass Pro's mission to make password security accessible to everyone.",
+      "Client-side password and passphrase generation, optional Have I Been Pwned k-anonymity checks, and how we handle data.",
     url: `${SITE_URL}/about`,
     siteName: SITE_NAME,
     type: "website",
@@ -69,7 +70,7 @@ export const aboutMetadata: Metadata = {
 export const privacyMetadata: Metadata = {
   title: "Privacy Policy — SecurePass Pro",
   description:
-    "SecurePass Pro privacy policy. Your passwords never leave your browser. We respect your privacy and collect minimal data.",
+    "SecurePass Pro privacy policy. Passwords are generated in your browser. We collect minimal data and explain cookies, analytics, and third parties.",
   robots: {
     index: true,
     follow: true,
@@ -77,7 +78,7 @@ export const privacyMetadata: Metadata = {
   openGraph: {
     title: "Privacy Policy — SecurePass Pro",
     description:
-      "How SecurePass Pro handles your data: client-side generation, k-anonymity breach checks, and minimal analytics.",
+      "How SecurePass Pro handles your data: client-side generation, k-anonymity breach checks, cookies, and analytics.",
     url: `${SITE_URL}/privacy`,
     siteName: SITE_NAME,
     type: "website",
@@ -110,11 +111,11 @@ export const termsMetadata: Metadata = {
 export const blogMetadata: Metadata = {
   title: "Password Security Blog — SecurePass Pro",
   description:
-    "Expert articles on password security, best practices, and the latest security guidelines. Stay informed and protect your digital life.",
+    "Articles on password security, passphrases, entropy, and practical guidance aligned with current standards.",
   openGraph: {
     title: "Password Security Blog — SecurePass Pro",
     description:
-      "Expert articles on password security, best practices, and the latest security guidelines.",
+      "Articles on password security, passphrases, entropy, and practical guidance aligned with current standards.",
     url: `${SITE_URL}/blog`,
     siteName: SITE_NAME,
     type: "website",
@@ -129,8 +130,7 @@ export const webApplicationSchema = {
   "@type": "WebApplication",
   name: "SecurePass Pro",
   url: SITE_URL,
-  description:
-    "Generate cryptographically secure passwords instantly. No signup. No data stored. HIBP breach check. Entropy meter. Trusted by 2M+ users. 100% free.",
+  description: SITE_DESCRIPTION,
   applicationCategory: "SecurityApplication",
   operatingSystem: "Web Browser",
   offers: {
@@ -142,14 +142,8 @@ export const webApplicationSchema = {
     "@type": "Organization",
     name: "SecurePass Pro",
   },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: "2847",
-  },
 }
 
-// FAQ Schema defined inline to avoid module resolution issues
 export const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -159,7 +153,7 @@ export const faqSchema = {
       name: "What makes a strong password?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "A strong password has high entropy, meaning it's difficult to guess or crack. Key factors include: length (longer is better, at least 16 characters), character variety (uppercase, lowercase, numbers, symbols), and true randomness (not based on words or patterns). We recommend passwords with at least 80 bits of entropy for important accounts.",
+        text: "A strong password has high entropy: it is difficult to guess or crack. Key factors include length (often 16+ characters for general use), character variety when using random strings, and randomness (avoid predictable words and personal information). Higher entropy (for example 80+ bits) generally means a much larger search space for an attacker.",
       },
     },
     {
@@ -167,7 +161,7 @@ export const faqSchema = {
       name: "How long should a password be?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "For most accounts, we recommend at least 16 characters. For high-security accounts like your email or password manager, use 20+ characters. The longer your password, the exponentially harder it is to crack.",
+        text: "For most accounts, at least 16 characters is a common recommendation; use more for high-value accounts (email, password manager). Longer secrets increase the search space; exact risk depends on how the secret is stored and attacked (online guessing vs offline hash cracking).",
       },
     },
     {
@@ -175,7 +169,7 @@ export const faqSchema = {
       name: "Is this password generator safe to use?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes, absolutely. Our password generator uses cryptographically secure random number generation (crypto.getRandomValues) built into your browser. Your passwords are generated entirely on your device and never sent to our servers.",
+        text: "Passwords and passphrases are built in your browser using crypto.getRandomValues (a cryptographically strong source). They are not sent to SecurePass Pro servers for generation. Optional breach checks contact Have I Been Pwned using only a k-anonymity hash prefix, not your plaintext password.",
       },
     },
     {
@@ -183,7 +177,7 @@ export const faqSchema = {
       name: "What is password entropy?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Entropy measures the randomness or unpredictability of a password, expressed in bits. Each bit doubles the number of possible combinations. A password with 80 bits of entropy has 2^80 possible combinations, making it extremely difficult to crack.",
+        text: "Entropy measures unpredictability, often expressed in bits. Each extra bit doubles the number of equally likely possibilities under idealized assumptions. Real-world risk also depends on storage, hashing, and attacker capabilities—not bits alone.",
       },
     },
     {
@@ -191,7 +185,7 @@ export const faqSchema = {
       name: "Passphrase vs password — which is more secure?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Both can be equally secure depending on length. Passphrases combine multiple random words, making them easier to remember while maintaining high security. A 4-6 word passphrase can have 50-80+ bits of entropy.",
+        text: "Either can be strong if it is long and random enough. Passphrases built from randomly chosen words (for example from a large word list) can be memorable and high-entropy. Random character passwords are often used with a password manager. Avoid famous example phrases or quotes.",
       },
     },
     {
@@ -199,7 +193,7 @@ export const faqSchema = {
       name: "How often should I change my password?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Current security guidance (including NIST) recommends against routine password changes. Only change passwords when there's evidence of a breach, you've shared it with someone, or you see suspicious account activity.",
+        text: "NIST SP 800-63B and similar guidance de-emphasize routine rotation without cause. Change a password when you know or suspect compromise, reuse on a breached service, or your provider requires it— not on a fixed calendar alone.",
       },
     },
     {
@@ -207,7 +201,7 @@ export const faqSchema = {
       name: "What does 'Have I Been Pwned' check mean?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Have I Been Pwned (HIBP) is a service that tracks passwords exposed in data breaches. Our check uses k-anonymity: only the first 5 characters of your password's SHA-1 hash are sent to HIBP. Your actual password never leaves your browser.",
+        text: "Have I Been Pwned (HIBP) publishes known breached password hashes. This app hashes your password with SHA-1 locally, then sends only the first five hexadecimal characters of that hash to HIBP's range API (k-anonymity). The full hash suffix is matched locally. Your plaintext password is not sent. Requests use HIBP's recommended padding header to reduce observer inference.",
       },
     },
     {
@@ -215,7 +209,7 @@ export const faqSchema = {
       name: "Should I use a password manager?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Absolutely! Password managers let you use unique, strong passwords for every account without memorizing them. They encrypt your vault with a master password and can auto-fill credentials.",
+        text: "Yes, for most people a reputable password manager helps you use unique, strong secrets per site. This generator can create a secret in the browser; you then store it in your manager.",
       },
     },
   ],
@@ -224,6 +218,11 @@ export const faqSchema = {
 export const homePageSchema = {
   "@context": "https://schema.org",
   "@graph": [webApplicationSchema, faqSchema],
+}
+
+function toIsoDateTime(calendarDate: string): string {
+  if (calendarDate.includes("T")) return calendarDate
+  return `${calendarDate}T12:00:00.000Z`
 }
 
 export function getBlogPostSchema(post: {
@@ -235,17 +234,19 @@ export function getBlogPostSchema(post: {
   dateModified?: string
   keywords?: string[]
 }) {
+  const published = toIsoDateTime(post.datePublished)
+  const modified = toIsoDateTime(post.dateModified ?? post.datePublished)
   return {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
     description: post.description,
     author: {
-      "@type": "Person",
+      "@type": "Organization",
       name: post.author,
     },
-    datePublished: post.datePublished,
-    dateModified: post.dateModified || post.datePublished,
+    datePublished: published,
+    dateModified: modified,
     keywords: post.keywords?.join(", ") || "",
     publisher: {
       "@type": "Organization",

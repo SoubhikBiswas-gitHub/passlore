@@ -1,5 +1,5 @@
-// EFF Large Wordlist (7776 words) - First 500 words shown, full list in production
-// Using a representative subset for functionality
+// English word list for passphrase mode (diceware-style: uniform random word picks).
+// Entropy per word is log2(WORDS.length) — see getPassphraseEntropy in lib/passphrase.ts.
 export const WORDS: readonly string[] = [
   "abacus", "abdomen", "abdominal", "abide", "abiding", "ability", "ablaze", "able",
   "abnormal", "aboard", "abolish", "abolition", "abortion", "about", "above", "abroad",

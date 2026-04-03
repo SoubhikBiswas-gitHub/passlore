@@ -77,7 +77,7 @@ export function StrengthMeter({ bits, strength, variant = "default" }: StrengthM
     return (
       <div className="mb-10">
         <div className="flex justify-between items-end mb-3 gap-4">
-          <span className="text-[0.6875rem] font-mono text-zinc-500 uppercase tracking-[0.2em]">
+          <span className="text-[0.6875rem] font-mono text-muted-foreground uppercase tracking-[0.2em]">
             Security score
           </span>
           <span className={cn("text-sm font-headline font-bold text-right", headlineClass)}>
@@ -94,12 +94,12 @@ export function StrengthMeter({ bits, strength, variant = "default" }: StrengthM
               key={segmentKey}
               className={cn(
                 "flex-1 min-w-0 min-h-0 self-stretch",
-                blockIndex < filled ? activeColor : "bg-zinc-800"
+                blockIndex < filled ? activeColor : "bg-muted"
               )}
             />
           ))}
         </div>
-        <div className="mt-4 flex flex-wrap justify-between gap-2 text-xs font-mono text-zinc-500">
+        <div className="mt-4 flex flex-wrap justify-between gap-2 text-xs font-mono text-muted-foreground">
           <span>ENTROPY: {bits} bits</span>
           <span className={crackTimeTextColor}>CRACK TIME: {crackTime}</span>
         </div>
@@ -112,7 +112,7 @@ export function StrengthMeter({ bits, strength, variant = "default" }: StrengthM
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-zinc-900 dark:text-zinc-50">Password strength</span>
+            <span className="text-sm font-medium text-foreground">Password strength</span>
             <Badge className={cn("text-[0.6875rem] uppercase tracking-[0.05em] rounded-none", strengthBadgeColors[strength])}>
               {strengthLabels[strength]}
             </Badge>
@@ -129,18 +129,18 @@ export function StrengthMeter({ bits, strength, variant = "default" }: StrengthM
               key={segmentKey}
               className={cn(
                 "h-2 flex-1 min-w-0 rounded-none",
-                blockIndex < filled ? activeColor : "bg-zinc-200 dark:bg-zinc-800"
+                blockIndex < filled ? activeColor : "bg-muted"
               )}
             />
           ))}
         </div>
 
         <div className="flex items-center justify-between text-sm">
-          <div className="flex items-center gap-1 text-zinc-600 dark:text-zinc-400">
+          <div className="flex items-center gap-1 text-muted-foreground">
             <Tooltip>
               <TooltipTrigger asChild>
                 <span className="flex items-center gap-1 cursor-help font-mono text-xs">
-                  <Lightning size={14} weight="fill" className="text-indigo-600 dark:text-indigo-400" />
+                  <Lightning size={14} weight="fill" className="text-primary" />
                   {bits} bits
                 </span>
               </TooltipTrigger>

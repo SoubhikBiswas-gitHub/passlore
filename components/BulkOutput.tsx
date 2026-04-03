@@ -34,7 +34,7 @@ export function BulkOutput({ passwords }: BulkOutputProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-zinc-900 dark:text-zinc-50">
+        <span className="text-sm font-medium text-foreground">
           Generated {passwords.length} passwords
         </span>
         <Button
@@ -48,7 +48,7 @@ export function BulkOutput({ passwords }: BulkOutputProps) {
         </Button>
       </div>
 
-      <ScrollArea className="h-64 border border-zinc-200 dark:border-zinc-800 rounded-none">
+      <ScrollArea className="h-64 border border-border rounded-none bg-card">
         <div className="p-2">
           {passwords.map((password, idx) => (
             <motion.div
@@ -57,11 +57,11 @@ export function BulkOutput({ passwords }: BulkOutputProps) {
               animate={prefersReduced ? undefined : { opacity: 1, height: "auto" }}
               transition={{ duration: 0.22, delay: idx * 0.02, ease: "easeOut" }}
               className={cn(
-                "flex items-center justify-between py-2 px-3 rounded-none hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors",
-                idx !== passwords.length - 1 && "border-b border-zinc-100 dark:border-zinc-800"
+                "flex items-center justify-between py-2 px-3 rounded-none hover:bg-accent transition-colors",
+                idx !== passwords.length - 1 && "border-b border-border"
               )}
             >
-              <span className="font-mono text-xs text-zinc-700 dark:text-zinc-300 truncate flex-1 mr-2">
+              <span className="font-mono text-xs text-foreground/90 truncate flex-1 mr-2">
                 {password}
               </span>
               <Button
@@ -90,7 +90,7 @@ export function BulkOutput({ passwords }: BulkOutputProps) {
                       exit={prefersReduced ? undefined : { scale: 0.6, opacity: 0 }}
                       transition={{ duration: 0.1 }}
                     >
-                      <Copy size={14} weight="regular" className="text-zinc-500" />
+                      <Copy size={14} weight="regular" className="text-muted-foreground" />
                     </motion.div>
                   )}
                 </AnimatePresence>

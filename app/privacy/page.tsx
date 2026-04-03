@@ -38,7 +38,7 @@ export default function PrivacyPage() {
       heroImageSrc={LEGAL_HERO_PRIVACY}
       heroImageAlt="Abstract brutalist illustration suggesting data boundaries, shield geometry, and privacy"
       toc={toc}
-      statusLines={["Classification: public", "Channel: TLS 1.3", "Scope: securepass.pro"]}
+      statusLines={["Classification: public", "Transport: HTTPS (TLS negotiated)", "Scope: securepass.pro"]}
       crossLinkHref="/terms"
       crossLinkText="Read terms of service"
     >
@@ -72,8 +72,7 @@ export default function PrivacyPage() {
 
       <LegalSection id="analytics" title="Analytics">
         <p>
-          We may use privacy-preserving analytics (e.g. Vercel Analytics) for aggregated traffic insight — page views,
-          device class, and coarse region. We do not use it to build individual profiles or sell data.
+          We may use privacy-preserving analytics (e.g. Vercel Analytics) for aggregated traffic insight — page views; device class; coarse region. We do not use it to build individual profiles or sell data.
         </p>
       </LegalSection>
 
@@ -99,7 +98,10 @@ export default function PrivacyPage() {
             <strong>Hosting / CDN</strong> — delivery of the static site and edge functions
           </li>
         </ul>
-        <p>We do not load advertising or social trackers for core generator functionality.</p>
+        <p>
+          We do not load advertising or social trackers until you accept optional cookies where applicable. Core
+          password generation does not require ad scripts.
+        </p>
       </LegalSection>
 
       <LegalSection id="your-rights" title="Your rights">

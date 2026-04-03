@@ -1,4 +1,4 @@
-// FAQ data for Schema.org structured data and FAQ component
+// FAQ copy for the home accordion — keep aligned with lib/seo.ts faqSchema where topics overlap.
 export interface FaqItem {
   question: string
   answer: string
@@ -8,51 +8,51 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "What makes a strong password?",
     answer:
-      "A strong password has high entropy, meaning it's difficult to guess or crack. Key factors include: length (longer is better, at least 16 characters), character variety (uppercase, lowercase, numbers, symbols), and true randomness (not based on words or patterns). We recommend passwords with at least 80 bits of entropy for important accounts.",
+      "A strong password has high entropy: it is hard to guess or crack. Practical factors include length (often 16+ characters for general accounts), variety of characters when using random strings, and randomness (avoid personal information and predictable patterns). More bits of entropy mean a larger search space under idealized assumptions—real risk also depends on how sites store and hash passwords.",
   },
   {
     question: "How long should a password be?",
     answer:
-      "For most accounts, we recommend at least 16 characters. For high-security accounts like your email or password manager, use 20+ characters. The longer your password, the exponentially harder it is to crack. A 16-character password with mixed character types would take trillions of years to crack with current technology.",
+      "A common baseline is at least 16 characters; use more for high-value accounts (email, password manager). Longer secrets increase the search space. Actual resistance depends on the threat model—for example online rate-limited login vs offline cracking of a stolen hash—so focus on length, randomness, and uniqueness per site.",
   },
   {
     question: "Is this password generator safe to use?",
     answer:
-      "Yes, absolutely. Our password generator uses cryptographically secure random number generation (crypto.getRandomValues) built into your browser. Your passwords are generated entirely on your device and never sent to our servers. We have no way to see, store, or access any passwords you generate.",
+      "Passwords and passphrases are assembled in your browser using crypto.getRandomValues, with indices chosen without modulo bias. They are not sent to our servers for generation. If you use the optional Have I Been Pwned check, only the first five hexadecimal characters of the password's SHA-1 hash are sent (k-anonymity); the plaintext password is not transmitted.",
   },
   {
     question: "What is password entropy?",
     answer:
-      "Entropy measures the randomness or unpredictability of a password, expressed in bits. Each bit doubles the number of possible combinations. For example, a password with 80 bits of entropy has 2^80 possible combinations (about 1.2 septillion), making it extremely difficult to crack even with powerful computers. We display entropy in real-time so you can gauge your password strength.",
+      "Entropy describes unpredictability, often in bits. Under simple models, each extra bit doubles the number of equally likely values. This app estimates entropy from character set size and length (or wordlist size for passphrases). Treat the number as guidance: real attacks depend on many factors beyond the estimate alone.",
   },
   {
     question: "Passphrase vs password — which is more secure?",
     answer:
-      "Both can be equally secure depending on length. Passphrases combine multiple random words (like 'correct-horse-battery-staple'), making them easier to remember while maintaining high security. A 4-6 word passphrase can have 50-80+ bits of entropy. Traditional passwords are shorter but use more character variety. Choose passphrases for passwords you type often, random passwords for those stored in a manager.",
+      "Either can be strong if it is long and random enough. Passphrases built from randomly chosen words (for example from a large list such as the EFF long list) can be memorable and high-entropy. Random character strings pair well with a password manager. Avoid famous quotes, song lyrics, or well-known examples—they appear in attack dictionaries.",
   },
   {
     question: "How often should I change my password?",
     answer:
-      "Current security guidance (including NIST) recommends against routine password changes. Only change passwords when: there's evidence of a breach, you've shared it with someone, you used it on a compromised device, or you see suspicious account activity. Frequent forced changes often lead to weaker passwords as people use predictable patterns.",
+      "NIST SP 800-63B and similar guidance de-emphasize rotating passwords on a fixed schedule without cause. Change a password when you suspect or know compromise, after a breach affecting that secret, or when a service requires it—not solely because a calendar said so.",
   },
   {
     question: "What are the NIST password guidelines?",
     answer:
-      "NIST Special Publication 800-63B recommends: allowing long passwords (at least 64 characters), checking against breached password lists, dropping arbitrary complexity rules, eliminating periodic password changes, and using multi-factor authentication. Our generator follows these guidelines by focusing on length and true randomness over arbitrary complexity.",
+      "NIST Special Publication 800-63B (memorized secrets) emphasizes long passwords, checking against breached-password lists, avoiding arbitrary composition rules that hurt usability, not requiring periodic changes without reason, and leaning on MFA. This tool supports long random secrets and optional breach checking; it is not a formal NIST certification.",
   },
   {
     question: "What does 'Have I Been Pwned' check mean?",
     answer:
-      "Have I Been Pwned (HIBP) is a service that tracks passwords exposed in data breaches. Our check uses k-anonymity: only the first 5 characters of your password's SHA-1 hash are sent to HIBP. Your actual password never leaves your browser. If your generated password appears in any known breach, we'll warn you so you can generate a new one.",
+      "Have I Been Pwned publishes known breached password hashes. We SHA-1 hash your password locally, send only the first five hexadecimal characters of that hash to HIBP's range API, then match the remainder of the hash locally against the returned bucket. Your plaintext password is not sent. We send HIBP's recommended Add-Padding header to reduce observer inference.",
   },
   {
     question: "Should I use a password manager?",
     answer:
-      "Absolutely! Password managers let you use unique, strong passwords for every account without memorizing them. They encrypt your vault with a master password and can auto-fill credentials. Our generator works great with password managers — generate a strong password here, then save it in your manager. Popular options include 1Password, Bitwarden, and Dashlane.",
+      "For most people, yes—a reputable password manager helps you use unique secrets per site. You can generate a random password here and store it in your manager. Examples of widely used managers include 1Password, Bitwarden, and Dashlane; choose one you trust and enable MFA on the vault.",
   },
   {
     question: "What characters make a password strongest?",
     answer:
-      "Using all character types (uppercase A-Z, lowercase a-z, numbers 0-9, and symbols like !@#$%^&*) maximizes your character set size, increasing entropy. However, length matters more than complexity. A 20-character lowercase password is stronger than an 8-character password with all character types. Use symbols when allowed, but prioritize length above all else.",
+      "A larger alphabet (uppercase, lowercase, digits, symbols) increases entropy per character when characters are chosen uniformly. Length usually dominates: a long random password from a smaller alphabet can beat a short one from a larger alphabet. Use the longest secret the service allows, generated randomly.",
   },
 ] as const

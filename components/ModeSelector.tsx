@@ -46,8 +46,8 @@ export function ModeSelector({ mode, onModeChange, variant = "default" }: ModeSe
               className={cn(
                 "px-4 py-2 flex items-center gap-2 font-mono text-xs uppercase tracking-wider transition-colors",
                 isActive
-                  ? "bg-blue-600 text-white"
-                  : "bg-[#18181b] text-zinc-400 hover:bg-zinc-800"
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-card text-muted-foreground hover:bg-accent"
               )}
             >
               <Icon size={16} weight={isActive ? "fill" : "regular"} aria-hidden />
@@ -74,8 +74,8 @@ export function ModeSelector({ mode, onModeChange, variant = "default" }: ModeSe
                       "flex items-center justify-center gap-1.5 py-2 px-3 text-sm font-medium rounded-none transition-colors",
                       "data-[state=active]:shadow-none",
                       isActive
-                        ? "bg-surface-0 dark:bg-surface-1 text-indigo-600 dark:text-indigo-400"
-                        : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-surface-0/90 dark:hover:bg-surface-1"
+                        ? "bg-card text-primary shadow-sm ring-1 ring-border"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent"
                     )}
                   >
                     <Icon size={18} weight={isActive ? "fill" : "regular"} />
