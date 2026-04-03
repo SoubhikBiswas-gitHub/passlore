@@ -1,6 +1,6 @@
-import Link from "next/link"
-import { Lock, ShieldCheck, Terminal } from "@phosphor-icons/react/dist/ssr"
 import DotPattern from "@/components/ui/dot-pattern-1"
+import { Lock, ShieldCheck, Terminal } from "@phosphor-icons/react/dist/ssr"
+import Link from "next/link"
 
 export function HomeHero() {
   return (

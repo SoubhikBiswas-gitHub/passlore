@@ -147,12 +147,12 @@ export function HistoryPanel({ history, onClear, variant = "default" }: HistoryP
     return (
       <div className="flex max-h-[min(50vh,24rem)] min-h-48 flex-1 flex-col overflow-hidden bg-card p-6 lg:max-h-none">
         <div className="mb-4 flex shrink-0 items-center justify-between">
-          <h3 className="text-[0.6875rem] uppercase tracking-widest font-bold text-muted-foreground">Session history</h3>
+          <h3 className="text-[0.6875rem] uppercase tracking-widest font-bold text-foreground/90">Session history</h3>
           {history.length > 0 && (
             <button
               type="button"
               onClick={onClear}
-              className="text-[10px] uppercase font-mono text-muted-foreground hover:text-destructive transition-colors"
+              className="text-[10px] uppercase font-mono text-foreground/75 hover:text-destructive transition-colors"
             >
               Clear all
             </button>

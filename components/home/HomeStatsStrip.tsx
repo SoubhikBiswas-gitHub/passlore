@@ -16,7 +16,7 @@ function SpecCard({ id, label, title, detail, icon }: ISpecCardProps) {
       aria-labelledby={id}
     >
       <div
-        className="flex size-12 shrink-0 items-center justify-center overflow-hidden border border-border bg-background text-primary transition-[border-color,background-color] duration-200 ease-out group-hover:border-primary/45 group-hover:bg-accent-3/25 group-hover:text-primary motion-reduce:group-hover:bg-primary/8"
+        className="flex size-12 shrink-0 items-center justify-center overflow-hidden border border-border bg-muted/60 text-primary transition-[border-color,background-color] duration-200 ease-out group-hover:border-primary/45 group-hover:bg-accent-3/25 group-hover:text-primary motion-reduce:group-hover:bg-primary/8"
         aria-hidden
       >
         <span className="flex size-full items-center justify-center motion-safe:origin-center motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-out group-hover:motion-safe:scale-110">

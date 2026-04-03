@@ -1,7 +1,7 @@
-import dynamic from "next/dynamic"
-import { HomeHero } from "@/components/home/HomeHero"
 import { PasswordGenerator } from "@/components/PasswordGenerator"
+import { HomeHero } from "@/components/home/HomeHero"
 import { faqSchema, webApplicationSchema } from "@/lib/seo"
+import dynamic from "next/dynamic"
 
 /** Static import avoids Turbopack/dev SSR–client skew for `next/dynamic` (hydration class mismatches). */
 const HomeStatsStrip = dynamic(

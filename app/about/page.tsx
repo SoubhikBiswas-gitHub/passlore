@@ -96,14 +96,7 @@ export default function AboutPage() {
                 role="img"
                 aria-label="Abstract server infrastructure visualization"
               >
-                <div
-                  className="absolute inset-0 opacity-30"
-                  style={{
-                    backgroundImage:
-                      "repeating-linear-gradient(90deg, transparent, transparent 7px, hsl(var(--foreground) / 0.06) 8px)",
-                  }}
-                  aria-hidden
-                />
+                <div className="absolute inset-0 opacity-30 ds-repeating-fg-lines" aria-hidden />
               </div>
 
               <section id="our-mission" className="scroll-mt-28 mb-14">

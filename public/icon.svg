@@ -1,12 +1,11 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
   <style>
-    @media (prefers-color-scheme: light) {
-      .background { fill: black; }
-      .foreground { fill: white; }
+    /* Matches app :root --primary / --primary-foreground (indigo + white); favicon is static. */
+    .background {
+      fill: hsl(239 84% 53%);
     }
-    @media (prefers-color-scheme: dark) {
-      .background { fill: white; }
-      .foreground { fill: black; }
+    .foreground {
+      fill: hsl(0 0% 100%);
     }
   </style>
   <g clip-path="url(#clip0_7960_43945)">

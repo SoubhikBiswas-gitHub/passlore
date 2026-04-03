@@ -46,7 +46,7 @@ function Slider({
   return (
     <ReactSlider
       className={cn(
-        'relative flex w-full touch-none select-none items-center py-2.5',
+        'ssp-slider relative flex h-11 w-full touch-none select-none items-center',
         'cursor-grab active:cursor-grabbing',
         disabled && 'pointer-events-none opacity-50',
         className,
@@ -70,8 +70,10 @@ function Slider({
             {...trackProps}
             className={cn(
               trackProps.className,
-              'h-2 overflow-hidden rounded-none',
-              state.index === 0 ? 'bg-primary' : 'bg-muted',
+              'z-[1] h-2 overflow-hidden rounded-none',
+              state.index === 0
+                ? 'bg-primary shadow-[inset_0_0_0_1px_hsl(var(--primary-foreground)/0.22)]'
+                : 'bg-transparent',
             )}
           />
         )
@@ -85,7 +87,8 @@ function Slider({
             id={id}
             className={cn(
               thumbProps.className,
-              'size-5 rounded-none border-2 border-background bg-primary shadow-sm',
+              'size-5 rounded-none border-2 border-primary-foreground/35 bg-primary',
+              'shadow-[0_0_0_1px_hsl(var(--foreground)/0.12),0_1px_2px_hsl(var(--foreground)/0.08)]',
               'ring-ring/40 transition-[box-shadow,filter] motion-safe:duration-150 motion-safe:ease-out',
               'hover:brightness-110 focus-visible:ring-4 focus-visible:outline-none',
               'motion-reduce:transition-none motion-reduce:hover:brightness-100',

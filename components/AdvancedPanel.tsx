@@ -98,7 +98,7 @@ export function AdvancedPanel({
               )}
             >
               <div className="flex min-w-0 flex-1 items-start gap-3 sm:items-center">
-                <span className="flex size-10 shrink-0 items-center justify-center border border-border bg-background text-foreground transition-colors group-hover:border-primary/40 group-hover:bg-accent-2/50">
+                <span className="flex size-10 shrink-0 items-center justify-center border border-border bg-card/80 text-foreground transition-colors group-hover:border-primary/40 group-hover:bg-accent-2/50">
                   <Gear size={18} weight="regular" aria-hidden />
                 </span>
                 <div className="flex min-w-0 flex-1 flex-col gap-1">

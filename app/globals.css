@@ -254,6 +254,44 @@
     outline: 1px solid hsl(var(--ghost-border) / 0.2);
     outline-offset: -1px;
   }
+
+  /** Subtle vertical lines; uses --foreground so all themes stay coherent (about hero). */
+  .ds-repeating-fg-lines {
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 7px,
+      hsl(var(--foreground) / 0.06) 8px
+    );
+  }
+}
+
+/* react-slider: full-width rail + vertical centering (no transform on thumb — avoids conflicts). */
+@layer components {
+  .ssp-slider::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 0.5rem;
+    margin-top: -0.25rem;
+    pointer-events: none;
+    border: 1px solid hsl(var(--ghost-border) / 0.35);
+    background-color: hsl(var(--foreground) / 0.09);
+  }
+
+  .ssp-slider [class*="ssp-slider-track"] {
+    top: 50%;
+    margin-top: -0.25rem;
+    height: 0.5rem;
+  }
+
+  .ssp-slider .ssp-slider-thumb {
+    top: 50% !important;
+    margin-top: -0.625rem;
+  }
 }
 
 @layer base {
