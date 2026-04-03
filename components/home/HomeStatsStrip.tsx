@@ -43,27 +43,27 @@ export function HomeStatsStrip() {
         Cryptographic and privacy specifications
       </h2>
       <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3 md:gap-5 lg:gap-6">
-      <SpecCard
-        id="spec-randomness-source"
-        label="Randomness source"
-        title="Web Crypto API"
-        detail="crypto.getRandomValues — uniform indices via rejection sampling"
-        icon={<Cpu className="size-7" weight="duotone" />}
-      />
-      <SpecCard
-        id="spec-guidance-alignment"
-        label="Guidance alignment"
-        title="NIST SP 800-63B-style"
-        detail="Long secrets, optional breach check — not a formal certification"
-        icon={<Scales className="size-7" weight="duotone" />}
-      />
-      <SpecCard
-        id="spec-breach-check"
-        label="Breach check"
-        title="HIBP k-anonymity"
-        detail="SHA-1 hash prefix only; plaintext stays in your browser"
-        icon={<MagnifyingGlass className="size-7" weight="duotone" />}
-      />
+        <SpecCard
+          id="spec-randomness-source"
+          label="Randomness source"
+          title="Web Crypto API"
+          detail="crypto.getRandomValues — uniform indices via rejection sampling"
+          icon={<Cpu className="size-7" weight="duotone" />}
+        />
+        <SpecCard
+          id="spec-guidance-alignment"
+          label="Guidance alignment"
+          title="NIST SP 800-63B-style"
+          detail="Long secrets, optional breach check — not a formal certification"
+          icon={<Scales className="size-7" weight="duotone" />}
+        />
+        <SpecCard
+          id="spec-breach-check"
+          label="Breach check"
+          title="HIBP k-anonymity"
+          detail="SHA-1 hash prefix only; plaintext stays in your browser"
+          icon={<MagnifyingGlass className="size-7" weight="duotone" />}
+        />
       </div>
     </section>
   )
