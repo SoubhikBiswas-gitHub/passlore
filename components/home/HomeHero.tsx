@@ -9,7 +9,7 @@ export function HomeHero() {
         <DotPattern
           width={5}
           height={5}
-          className="fill-muted-foreground/12 dark:fill-muted-foreground/18 md:fill-muted-foreground/15 md:dark:fill-muted-foreground/22"
+          className="fill-muted-foreground/16 md:fill-muted-foreground/18"
         />
 
         <div className="absolute -left-1.5 -top-1.5 size-3 bg-primary" aria-hidden />
@@ -49,17 +49,17 @@ export function HomeHero() {
           </p>
 
           <div className="mt-8 flex w-full flex-col gap-3 sm:mt-10 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-4">
-            <div className="flex w-full items-center gap-2.5 border border-border bg-card/60 px-4 py-3 sm:w-auto sm:min-w-48 sm:py-2.5 dark:bg-card/40">
+            <div className="flex w-full items-center gap-2.5 border border-border bg-card/50 px-4 py-3 sm:w-auto sm:min-w-48 sm:py-2.5">
               <ShieldCheck className="size-5 shrink-0 text-primary" weight="fill" aria-hidden />
               <span className="font-mono text-[11px] uppercase tracking-widest text-foreground/90">
                 Client-side generation
               </span>
             </div>
-            <div className="flex w-full items-center gap-2.5 border border-border bg-card/60 px-4 py-3 sm:w-auto sm:min-w-48 sm:py-2.5 dark:bg-card/40">
+            <div className="flex w-full items-center gap-2.5 border border-border bg-card/50 px-4 py-3 sm:w-auto sm:min-w-48 sm:py-2.5">
               <Lock className="size-5 shrink-0 text-primary" weight="fill" aria-hidden />
               <span className="font-mono text-[11px] uppercase tracking-widest text-foreground/90">No signup</span>
             </div>
-            <div className="flex w-full items-center gap-2.5 border border-border bg-card/60 px-4 py-3 sm:w-auto sm:min-w-48 sm:py-2.5 dark:bg-card/40">
+            <div className="flex w-full items-center gap-2.5 border border-border bg-card/50 px-4 py-3 sm:w-auto sm:min-w-48 sm:py-2.5">
               <Terminal className="size-5 shrink-0 text-primary" weight="bold" aria-hidden />
               <span className="font-mono text-[11px] uppercase tracking-widest text-foreground/90">HIBP optional</span>
             </div>

@@ -121,7 +121,7 @@ export function PasswordOutput({
         aria-busy={isGenerating && !password}
         className={cn(
           "w-full border border-border bg-card transition-colors",
-          isCopied && "border-primary bg-primary/4 dark:bg-primary/10"
+          isCopied && "border-primary bg-primary/8"
         )}
       >
         <div className="flex w-full min-w-0 flex-col">
@@ -136,7 +136,7 @@ export function PasswordOutput({
             <div
               className={cn(
                 "flex min-h-13 min-w-0 flex-1 items-center border-b border-border px-3 py-3 font-mono tracking-tight sm:min-h-12 sm:px-5 sm:py-4",
-                "bg-primary/8 dark:bg-primary/14",
+                "bg-primary/10",
                 password && "text-foreground",
                 !password && "text-muted-foreground"
               )}
@@ -208,7 +208,7 @@ export function PasswordOutput({
                 type="button"
                 onClick={handleSharePassword}
                 disabled={!password}
-                className={cn(iconBtn, "hover:bg-primary/15 active:bg-primary/25 dark:hover:bg-primary/20")}
+                className={cn(iconBtn, "hover:bg-primary/15 active:bg-primary/25")}
                 aria-label="Share password"
               >
                 <ShareNetwork size={22} weight="bold" aria-hidden />
@@ -465,7 +465,7 @@ export function PasswordOutput({
                 >
                   <div
                     role="alert"
-                    className="flex w-full max-w-md items-center gap-2.5 border border-destructive/55 bg-destructive/8 px-3 py-2 sm:max-w-lg dark:bg-destructive/15"
+                    className="flex w-full max-w-md items-center gap-2.5 border border-destructive/55 bg-destructive/12 px-3 py-2 sm:max-w-lg"
                   >
                     <WarningCircle className="size-4 shrink-0 text-destructive" weight="bold" aria-hidden />
                     <span className="min-w-0 text-left font-mono text-[10px] font-medium uppercase leading-snug tracking-[0.08em] text-balance text-destructive">

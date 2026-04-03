@@ -136,7 +136,7 @@ export function HibpDatabasePanel({
               role="alert"
               className={cn(
                 hibpStatusRow,
-                "min-h-12 border-destructive/55 bg-destructive/8 dark:border-destructive/60 dark:bg-destructive/15"
+                "min-h-12 border-destructive/55 bg-destructive/12"
               )}
             >
               <WarningCircle className={cn(hibpStatusIcon, "text-destructive")} weight="bold" aria-hidden />

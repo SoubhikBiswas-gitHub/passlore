@@ -33,7 +33,7 @@ export function DotPattern({
     <svg
       aria-hidden="true"
       className={cn(
-        "pointer-events-none absolute inset-0 h-full w-full fill-primary/20 dark:fill-primary/30 md:fill-primary/25 md:dark:fill-primary/35",
+        "pointer-events-none absolute inset-0 h-full w-full fill-primary/25 md:fill-primary/28",
         className,
       )}
       {...props}

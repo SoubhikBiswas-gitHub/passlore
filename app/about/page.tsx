@@ -100,7 +100,7 @@ export default function AboutPage() {
                   className="absolute inset-0 opacity-30"
                   style={{
                     backgroundImage:
-                      "repeating-linear-gradient(90deg, transparent, transparent 7px, rgba(255,255,255,0.04) 8px)",
+                      "repeating-linear-gradient(90deg, transparent, transparent 7px, hsl(var(--foreground) / 0.06) 8px)",
                   }}
                   aria-hidden
                 />
