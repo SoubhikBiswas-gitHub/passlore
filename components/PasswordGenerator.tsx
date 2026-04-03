@@ -128,25 +128,6 @@ function buildInitialState(layout: "stack" | "dashboard"): State {
   }
 }
 
-/** Upper bound for dashboard strength bar length scaling (matches slider ceilings). */
-function dashboardLengthScaleMax(mode: Mode, wordCount: number): number {
-  switch (mode) {
-    case "pin":
-      return 16
-    case "passphrase":
-      return Math.max(24, wordCount * 18)
-    case "pronounceable":
-      return 128
-    case "single":
-    case "bulk":
-      return 128
-    case "pattern":
-      return 128
-    default:
-      return 128
-  }
-}
-
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "SET_MODE":
@@ -564,13 +545,7 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
             </div>
             {state.password && state.mode !== "bulk" && (
               <div className="w-full min-w-0">
-                <StrengthMeter
-                  bits={entropy}
-                  strength={strengthLevel}
-                  variant="dashboard"
-                  passwordLength={state.password.length}
-                  lengthScaleMax={dashboardLengthScaleMax(state.mode, state.wordCount)}
-                />
+                <StrengthMeter bits={entropy} strength={strengthLevel} variant="dashboard" />
               </div>
             )}
           </div>

@@ -10,10 +10,6 @@ interface StrengthMeterProps {
   bits: number
   strength: number
   variant?: "default" | "dashboard"
-  /** Dashboard: map password character count to filled segments (uses `lengthScaleMax`). */
-  passwordLength?: number
-  /** Dashboard: upper bound for length bar (e.g. 128 for random, 16 for PIN). */
-  lengthScaleMax?: number
 }
 
 const strengthLabels = ["", "Very Weak", "Weak", "Fair", "Strong", "Very Strong"]
@@ -35,17 +31,13 @@ const STRENGTH_SEGMENT_KEYS = [
   "seg-l",
 ] as const
 
+/**
+ * Maps discrete strength (from entropy tiers) to filled segments.
+ * Aligns with headline + entropy/crack copy: a "very strong" password fills the bar.
+ */
 function blocksFilledForStrength(strength: number): number {
   const map = [0, 2, 4, 6, 9, 12]
   return map[strength] ?? 0
-}
-
-/** Maps password length to segment count; full bar when length >= scaleMax. */
-function blocksFilledForPasswordLength(passwordLength: number, scaleMax: number): number {
-  if (scaleMax <= 0 || passwordLength <= 0) return 0
-  const ratio = Math.min(1, passwordLength / scaleMax)
-  const rounded = Math.round(ratio * BLOCK_COUNT)
-  return Math.max(passwordLength > 0 ? 1 : 0, Math.min(BLOCK_COUNT, rounded))
 }
 
 function blockColorClass(strength: number): string {
@@ -70,19 +62,10 @@ function dashboardHeadline(strength: number): string {
   return "VERY WEAK"
 }
 
-export function StrengthMeter({
-  bits,
-  strength,
-  variant = "default",
-  passwordLength = 0,
-  lengthScaleMax,
-}: StrengthMeterProps) {
+export function StrengthMeter({ bits, strength, variant = "default" }: StrengthMeterProps) {
   const crackTime = estimateCrackTime(bits)
   const crackColor = getCrackTimeColor(bits)
-  const filled =
-    variant === "dashboard" && lengthScaleMax != null
-      ? blocksFilledForPasswordLength(passwordLength, lengthScaleMax)
-      : blocksFilledForStrength(strength)
+  const filled = blocksFilledForStrength(strength)
   const activeColor = blockColorClass(strength)
 
   const crackTimeTextColor = {
@@ -119,11 +102,8 @@ export function StrengthMeter({
           <div
             className="flex h-4 w-full gap-0.5 sm:h-5"
             role="img"
-            aria-label={
-              lengthScaleMax != null
-                ? `Password length ${passwordLength} of ${lengthScaleMax} scale, ${filled} of ${BLOCK_COUNT} segments; strength ${strengthLabels[strength]}`
-                : `Strength ${strengthLabels[strength]}, ${filled} of ${BLOCK_COUNT} vertical blocks`
-            }
+            title="Bar fill reflects estimated strength from entropy, not password length alone."
+            aria-label={`${strengthLabels[strength]}, ${filled} of ${BLOCK_COUNT} segments filled`}
           >
             {STRENGTH_SEGMENT_KEYS.map((segmentKey, blockIndex) => (
               <div
