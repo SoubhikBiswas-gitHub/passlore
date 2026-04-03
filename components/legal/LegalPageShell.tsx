@@ -76,7 +76,7 @@ export function LegalPageShell({
                 {lastUpdatedLabel}
               </p>
 
-              <div className="relative aspect-[21/9] w-full mb-12 border border-border overflow-hidden bg-muted">
+              <div className="relative aspect-[21/9] w-full mb-12 border border-border overflow-hidden bg-accent-2/35">
                 <Image
                   src={heroImageSrc}
                   alt={heroImageAlt}
@@ -113,7 +113,7 @@ export function LegalPageShell({
             </p>
             <Link
               href="mailto:privacy@securepass.pro"
-              className="inline-flex items-center justify-center px-6 py-3 bg-background text-foreground font-headline text-xs font-bold uppercase tracking-widest hover:bg-accent border border-foreground/15 transition-colors shrink-0"
+              className="inline-flex items-center justify-center px-6 py-3 bg-background text-foreground font-headline text-xs font-bold uppercase tracking-widest hover:bg-accent-2 active:bg-accent-3 border border-foreground/15 transition-colors duration-150 shrink-0"
             >
               Contact
             </Link>

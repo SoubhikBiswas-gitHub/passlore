@@ -47,7 +47,7 @@ export function ModeSelector({ mode, onModeChange, variant = "default" }: ModeSe
                 "px-4 py-2 flex items-center gap-2 font-mono text-xs uppercase tracking-wider transition-colors",
                 isActive
                   ? "bg-primary text-primary-foreground"
-                  : "bg-card text-muted-foreground hover:bg-accent"
+                  : "bg-card text-muted-foreground hover:bg-accent-2"
               )}
             >
               <Icon size={16} weight={isActive ? "fill" : "regular"} aria-hidden />
@@ -70,15 +70,16 @@ export function ModeSelector({ mode, onModeChange, variant = "default" }: ModeSe
                 <TooltipTrigger asChild>
                   <TabsTrigger
                     value={value}
+                    aria-label={label}
                     className={cn(
                       "flex items-center justify-center gap-1.5 py-2 px-3 text-sm font-medium rounded-none transition-colors",
                       "data-[state=active]:shadow-none",
                       isActive
                         ? "bg-card text-primary shadow-sm ring-1 ring-border"
-                        : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent-2"
                     )}
                   >
-                    <Icon size={18} weight={isActive ? "fill" : "regular"} />
+                    <Icon size={18} weight={isActive ? "fill" : "regular"} aria-hidden />
                     <span className="hidden sm:inline">{label}</span>
                   </TabsTrigger>
                 </TooltipTrigger>

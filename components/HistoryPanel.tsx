@@ -1,13 +1,13 @@
 "use client"
 
-import { useState, useCallback } from "react"
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ClockCounterClockwise, Trash, Copy, CheckSquare } from "@phosphor-icons/react"
-import type { HistoryItem } from "./PasswordGenerator"
+import { Button } from "@/components/ui/button"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/utils"
+import { CheckSquare, ClockCounterClockwise, Copy, Trash } from "@phosphor-icons/react"
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
+import { useCallback, useState } from "react"
+import type { HistoryItem } from "./PasswordGenerator"
 
 interface HistoryPanelProps {
   history: HistoryItem[]
@@ -69,7 +69,7 @@ function HistoryEntry({
             handleCopy()
           }
         }}
-        className="flex items-center justify-between group hover:bg-accent p-2 cursor-pointer transition-colors border-b border-border"
+        className="flex items-center justify-between group hover:bg-accent-2 active:bg-accent-3/60 p-2 cursor-pointer transition-colors duration-150 border-b border-border"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -86,9 +86,9 @@ function HistoryEntry({
           aria-label="Copy password from history"
         >
           {isCopied ? (
-            <CheckSquare size={16} weight="fill" className="text-green-400" />
+            <CheckSquare size={16} weight="fill" className="text-green-700 dark:text-green-300" aria-hidden />
           ) : (
-            <Copy size={16} weight="regular" />
+            <Copy size={16} weight="regular" aria-hidden />
           )}
         </button>
       </div>
@@ -102,7 +102,7 @@ function HistoryEntry({
       animate={prefersReduced ? undefined : { opacity: 1, height: "auto", y: 0 }}
       exit={prefersReduced ? undefined : { opacity: 0, height: 0 }}
       transition={{ duration: 0.22, ease: "easeOut" }}
-      className="group py-2 px-3 flex items-center justify-between gap-2 rounded-none hover:bg-accent mb-2"
+      className="group py-2 px-3 flex items-center justify-between gap-2 rounded-none hover:bg-accent-2 active:bg-accent-3/50 mb-2 transition-colors duration-150"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -153,8 +153,8 @@ export function HistoryPanel({ history, onClear, variant = "default" }: HistoryP
 
   if (variant === "dashboard") {
     return (
-      <div className="bg-card p-6 min-h-0 flex flex-col h-[400px]">
-        <div className="flex justify-between items-center mb-6 shrink-0">
+      <div className="flex max-h-[min(50vh,24rem)] min-h-48 flex-1 flex-col overflow-hidden bg-card p-6 lg:max-h-none">
+        <div className="mb-4 flex shrink-0 items-center justify-between">
           <h3 className="text-[0.6875rem] uppercase tracking-widest font-bold text-muted-foreground">Session history</h3>
           {history.length > 0 && (
             <button
@@ -167,9 +167,11 @@ export function HistoryPanel({ history, onClear, variant = "default" }: HistoryP
           )}
         </div>
         {history.length === 0 ? (
-          <p className="text-sm text-muted-foreground font-mono text-center py-8">No session entries</p>
+          <p className="flex flex-1 items-center justify-center py-6 text-center text-sm font-mono text-muted-foreground">
+            No session entries
+          </p>
         ) : (
-          <ScrollArea className="flex-1 min-h-0 pr-2">
+          <ScrollArea className="min-h-0 flex-1 pr-2">
             <div className="space-y-0">
               {history.map((item) => (
                 <HistoryEntry key={item.id} item={item} variant="dashboard" />
@@ -207,7 +209,12 @@ export function HistoryPanel({ history, onClear, variant = "default" }: HistoryP
           animate={prefersReduced ? undefined : { opacity: 1 }}
           className="py-8 text-center"
         >
-          <ClockCounterClockwise size={32} weight="regular" className="mx-auto text-muted-foreground/50 mb-2" />
+          <ClockCounterClockwise
+            size={32}
+            weight="regular"
+            className="mx-auto text-muted-foreground mb-2"
+            aria-hidden
+          />
           <p className="text-sm text-muted-foreground">No passwords generated yet</p>
         </motion.div>
       ) : (

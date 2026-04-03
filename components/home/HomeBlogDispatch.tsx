@@ -23,7 +23,7 @@ export function HomeBlogDispatch() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {posts.map((post) => (
           <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
-            <div className="aspect-video bg-muted mb-6 relative overflow-hidden border border-border">
+            <div className="aspect-video bg-accent-2/40 mb-6 relative overflow-hidden border border-border">
               {post.coverImage ? (
                 <Image
                   src={post.coverImage}

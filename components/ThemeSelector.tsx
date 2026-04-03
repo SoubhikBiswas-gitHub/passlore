@@ -33,9 +33,8 @@ export function ThemeSelector() {
 
   if (!mounted) {
     return (
-      <Button variant="ghost" size="icon" className="h-9 w-9">
-        <Sun className="h-4 w-4" />
-        <span className="sr-only">Toggle theme</span>
+      <Button variant="ghost" size="icon" className="h-9 w-9" aria-label="Select theme">
+        <Sun className="h-4 w-4" aria-hidden />
       </Button>
     )
   }
@@ -59,23 +58,25 @@ export function ThemeSelector() {
         {open && (
           <DropdownMenuContent
             align="end"
-            className="min-w-[160px]"
+            className="min-w-[188px] rounded-none border-border p-0 shadow-sm"
             asChild
             forceMount
           >
             <motion.div
-              initial={prefersReduced ? undefined : { opacity: 0, scale: 0.95, y: -4 }}
-              animate={prefersReduced ? undefined : { opacity: 1, scale: 1, y: 0 }}
-              exit={prefersReduced ? undefined : { opacity: 0, scale: 0.95, y: -4 }}
+              initial={prefersReduced ? undefined : { opacity: 0, y: -4 }}
+              animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
+              exit={prefersReduced ? undefined : { opacity: 0, y: -4 }}
               transition={{ duration: 0.15, ease: "easeOut" }}
+              className="rounded-none outline-none"
             >
               {themes.map(({ value, label, Icon, weight }) => (
                 <DropdownMenuItem
                   key={value}
                   onClick={() => setTheme(value)}
                   className={cn(
-                    "flex items-center justify-between gap-2 cursor-pointer",
-                    theme === value && "bg-accent"
+                    "flex items-center justify-between gap-2 rounded-none",
+                    theme === value &&
+                      "bg-accent-3 text-accent-3-foreground hover:bg-accent-3 hover:text-accent-3-foreground focus:bg-accent-3 focus:text-accent-3-foreground"
                   )}
                 >
                   <span className="flex items-center gap-2">

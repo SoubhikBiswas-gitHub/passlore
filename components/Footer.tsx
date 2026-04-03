@@ -42,7 +42,7 @@ export function Footer() {
           <p className="font-headline text-[0.6875rem] uppercase tracking-[0.25em] text-muted-foreground">
             &copy; {new Date().getFullYear()} SecurePass Pro. Precision brutalism.
           </p>
-          <p className="font-headline text-[0.55rem] uppercase tracking-[0.35em] text-muted-foreground/90 max-w-xl">
+          <p className="font-headline text-[0.625rem] sm:text-xs uppercase tracking-[0.32em] text-muted-foreground max-w-xl leading-relaxed">
             Passwords and passphrases generated locally in your browser. See About for NIST-oriented context—not a
             formal certification.
           </p>

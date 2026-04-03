@@ -69,14 +69,18 @@ export function StrengthMeter({ bits, strength, variant = "default" }: StrengthM
   const activeColor = blockColorClass(strength)
 
   const crackTimeTextColor = {
-    red: "text-red-600 dark:text-red-400",
-    amber: "text-amber-600 dark:text-amber-400",
-    green: "text-green-600 dark:text-green-400",
+    red: "text-red-800 dark:text-red-200",
+    amber: "text-amber-900 dark:text-amber-200",
+    green: "text-green-800 dark:text-green-200",
   }[crackColor]
 
   if (variant === "dashboard") {
     const headlineClass =
-      strength >= 4 ? "text-green-400" : strength === 3 ? "text-amber-400" : "text-red-400"
+      strength >= 4
+        ? "text-green-800 dark:text-green-200"
+        : strength === 3
+          ? "text-amber-900 dark:text-amber-200"
+          : "text-red-800 dark:text-red-200"
 
     return (
       <div

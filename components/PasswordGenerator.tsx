@@ -1,33 +1,33 @@
 "use client"
 
-import { useReducer, useCallback, useEffect, useRef } from "react"
-import { motion, useReducedMotion } from "framer-motion"
-import { ModeSelector } from "./ModeSelector"
-import { LengthControl } from "./LengthControl"
-import { CharsetToggles } from "./CharsetToggles"
-import { AdvancedPanel } from "./AdvancedPanel"
-import { PasswordOutput } from "./PasswordOutput"
-import { StrengthMeter } from "./StrengthMeter"
-import { HistoryPanel } from "./HistoryPanel"
-import { BulkOutput } from "./BulkOutput"
-import { HibpDatabasePanel } from "./HibpDatabasePanel"
-import { RealtimeMetricsPanel } from "./RealtimeMetricsPanel"
+import { calcEntropy } from "@/lib/entropy"
 import {
-  generatePassword,
-  generateBulk,
-  generatePronounceable,
-  generatePin,
-  generatePattern,
   buildCharset,
+  generateBulk,
+  generatePassword,
+  generatePattern,
+  generatePin,
+  generatePronounceable,
   type GeneratorOptions,
 } from "@/lib/generate"
 import { generatePassphrase, getPassphraseEntropy } from "@/lib/passphrase"
-import { calcEntropy } from "@/lib/entropy"
+import { motion, useReducedMotion } from "framer-motion"
+import { useCallback, useEffect, useReducer, useRef, useState } from "react"
+import { AdvancedPanel } from "./AdvancedPanel"
+import { BulkCountControl } from "./BulkCountControl"
+import { BulkOutput } from "./BulkOutput"
+import { CharsetToggles } from "./CharsetToggles"
+import { HibpDatabasePanel } from "./HibpDatabasePanel"
+import { HistoryPanel } from "./HistoryPanel"
+import { LengthControl } from "./LengthControl"
+import { ModeSelector } from "./ModeSelector"
+import { PasswordOutput } from "./PasswordOutput"
+import { RealtimeMetricsPanel } from "./RealtimeMetricsPanel"
+import { StrengthMeter } from "./StrengthMeter"
+import { NativeSelect } from "@/components/ui/native-select"
 
 export type Mode = "single" | "bulk" | "passphrase" | "pronounceable" | "pin" | "pattern"
 export type Separator = "-" | "." | "_" | " "
-export type BulkCount = 10 | 20 | 50 | 100
-
 export interface HistoryItem {
   id: string
   password: string
@@ -49,7 +49,7 @@ export interface State {
   includeChars: string
   prefix: string
   suffix: string
-  bulkCount: BulkCount
+  bulkCount: number
   separator: Separator
   wordCount: number
   patternString: string
@@ -77,7 +77,7 @@ type Action =
   | { type: "SET_INCLUDE_CHARS"; payload: string }
   | { type: "SET_PREFIX"; payload: string }
   | { type: "SET_SUFFIX"; payload: string }
-  | { type: "SET_BULK_COUNT"; payload: BulkCount }
+  | { type: "SET_BULK_COUNT"; payload: number }
   | { type: "SET_SEPARATOR"; payload: Separator }
   | { type: "SET_WORD_COUNT"; payload: number }
   | { type: "SET_PATTERN"; payload: string }
@@ -154,8 +154,11 @@ function reducer(state: State, action: Action): State {
       return { ...state, prefix: action.payload }
     case "SET_SUFFIX":
       return { ...state, suffix: action.payload }
-    case "SET_BULK_COUNT":
-      return { ...state, bulkCount: action.payload }
+    case "SET_BULK_COUNT": {
+      const n = Math.round(Number(action.payload))
+      const bulkCount = Number.isFinite(n) ? Math.min(500, Math.max(1, n)) : state.bulkCount
+      return { ...state, bulkCount }
+    }
     case "SET_SEPARATOR":
       return { ...state, separator: action.payload }
     case "SET_WORD_COUNT":
@@ -193,9 +196,12 @@ export interface PasswordGeneratorProps {
 
 export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) {
   const [state, dispatch] = useReducer(reducer, layout, buildInitialState)
-  const prefersReduced = useReducedMotion()
+  const reducedMotionQuery = useReducedMotion()
+  const [motionReady, setMotionReady] = useState(false)
+  useEffect(() => setMotionReady(true), [])
+  /** Avoid SSR vs client mismatch: server has no matchMedia; defer reduced-motion until after hydrate. */
+  const prefersReduced = motionReady ? reducedMotionQuery : false
   const isDashboard = layout === "dashboard"
-  const dashboardInitialGenerateRef = useRef(false)
 
   const getOptions = useCallback((): GeneratorOptions => {
     return {
@@ -243,7 +249,6 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
 
   const handleGenerate = useCallback(() => {
     dispatch({ type: "SET_GENERATING", payload: true })
-    dispatch({ type: "SET_REVEALED", payload: false })
 
     setTimeout(() => {
       let newPassword = ""
@@ -280,10 +285,10 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
       const bits = state.mode === "passphrase"
         ? getPassphraseEntropy(state.wordCount)
         : state.mode === "pin"
-        ? calcEntropy(10, newPassword.length)
-        : state.mode === "pronounceable"
-        ? calcEntropy(26, newPassword.length)
-        : calcEntropy(buildCharset(getOptions()).length, newPassword.length)
+          ? calcEntropy(10, newPassword.length)
+          : state.mode === "pronounceable"
+            ? calcEntropy(26, newPassword.length)
+            : calcEntropy(buildCharset(getOptions()).length, newPassword.length)
 
       const historyItem: HistoryItem = {
         id: crypto.randomUUID(),
@@ -294,6 +299,7 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
       }
       dispatch({ type: "ADD_HISTORY", payload: historyItem })
       dispatch({ type: "SET_GENERATING", payload: false })
+      dispatch({ type: "SET_REVEALED", payload: true })
     }, 100)
   }, [state.mode, state.bulkCount, state.wordCount, state.separator, state.length, state.patternString, getOptions, getStrengthLevel])
 
@@ -321,12 +327,39 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
     }
   }, [layout, state.mode])
 
+  /** First option sync runs immediately; later changes are debounced (typing in pattern/exclude, etc.). */
+  const optionsRegenFirstRunRef = useRef(true)
+
   useEffect(() => {
-    if (!isDashboard) return
-    if (dashboardInitialGenerateRef.current) return
-    dashboardInitialGenerateRef.current = true
-    handleGenerate()
-  }, [isDashboard, handleGenerate])
+    if (optionsRegenFirstRunRef.current) {
+      optionsRegenFirstRunRef.current = false
+      handleGenerate()
+      return
+    }
+    const ms = 300
+    const id = window.setTimeout(() => {
+      handleGenerate()
+    }, ms)
+    return () => window.clearTimeout(id)
+  }, [
+    handleGenerate,
+    state.mode,
+    state.length,
+    state.upper,
+    state.lower,
+    state.numbers,
+    state.symbols,
+    state.noSimilar,
+    state.noAmbiguous,
+    state.excludeChars,
+    state.includeChars,
+    state.prefix,
+    state.suffix,
+    state.bulkCount,
+    state.separator,
+    state.wordCount,
+    state.patternString,
+  ])
 
   const entropy = calculateEntropy()
   const strengthLevel = getStrengthLevel(entropy)
@@ -415,53 +448,98 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
     />
   )
 
+  const dashboardSparseModes =
+    state.mode === "passphrase" || state.mode === "pin" || state.mode === "pronounceable"
+
   const dashboardLeftControls = (
-    <div className="space-y-8">
+    <div className="flex h-full min-h-0 flex-col gap-6">
       {state.mode !== "pin" && state.mode !== "passphrase" && (
-        <LengthControl
-          length={state.length}
-          onLengthChange={(length) => dispatch({ type: "SET_LENGTH", payload: length })}
-          min={4}
-          max={128}
-          label="Password length"
-          unit="chars"
-          variant="dashboard"
-        />
+        <div className="shrink-0 border border-border bg-muted p-4 sm:p-5">
+          <LengthControl
+            length={state.length}
+            onLengthChange={(length) => dispatch({ type: "SET_LENGTH", payload: length })}
+            min={4}
+            max={128}
+            label="Password length"
+            unit="chars"
+            variant="dashboard"
+          />
+        </div>
       )}
       {state.mode === "passphrase" && (
-        <LengthControl
-          length={state.wordCount}
-          onLengthChange={(count) => dispatch({ type: "SET_WORD_COUNT", payload: count })}
-          min={3}
-          max={8}
-          label="Word count"
-          unit="words"
-          variant="dashboard"
-        />
+        <div className="flex min-h-0 flex-1 flex-col space-y-6 border border-border bg-muted p-4 sm:p-5">
+          <LengthControl
+            length={state.wordCount}
+            onLengthChange={(count) => dispatch({ type: "SET_WORD_COUNT", payload: count })}
+            min={3}
+            max={8}
+            label="Word count"
+            unit="words"
+            variant="dashboard"
+          />
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="dashboard-passphrase-separator"
+              className="text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-bold"
+            >
+              Separator
+            </label>
+            <NativeSelect
+              id="dashboard-passphrase-separator"
+              value={state.separator}
+              onChange={(e) => dispatch({ type: "SET_SEPARATOR", payload: e.target.value as Separator })}
+              className="bg-card"
+            >
+              <option value="-">Hyphen (-)</option>
+              <option value=".">Dot (.)</option>
+              <option value="_">Underscore (_)</option>
+              <option value=" ">Space ( )</option>
+            </NativeSelect>
+          </div>
+        </div>
       )}
       {state.mode === "pin" && (
-        <LengthControl
-          length={state.length}
-          onLengthChange={(length) => dispatch({ type: "SET_LENGTH", payload: length })}
-          min={4}
-          max={16}
-          label="PIN length"
-          unit="digits"
-          variant="dashboard"
-        />
+        <div className="shrink-0 border border-border bg-muted p-4 sm:p-5">
+          <LengthControl
+            length={state.length}
+            onLengthChange={(length) => dispatch({ type: "SET_LENGTH", payload: length })}
+            min={4}
+            max={16}
+            label="PIN length"
+            unit="digits"
+            variant="dashboard"
+          />
+        </div>
       )}
-      {(state.mode === "single" || state.mode === "bulk") && (
-        <CharsetToggles
-          upper={state.upper}
-          lower={state.lower}
-          numbers={state.numbers}
-          symbols={state.symbols}
-          onUpperChange={(v) => dispatch({ type: "SET_UPPER", payload: v })}
-          onLowerChange={(v) => dispatch({ type: "SET_LOWER", payload: v })}
-          onNumbersChange={(v) => dispatch({ type: "SET_NUMBERS", payload: v })}
-          onSymbolsChange={(v) => dispatch({ type: "SET_SYMBOLS", payload: v })}
-          variant="dashboard"
-        />
+      {state.mode === "single" && (
+        <div className="flex min-h-0 flex-1 flex-col border border-border bg-muted p-4 sm:p-5">
+          <CharsetToggles
+            upper={state.upper}
+            lower={state.lower}
+            numbers={state.numbers}
+            symbols={state.symbols}
+            onUpperChange={(v) => dispatch({ type: "SET_UPPER", payload: v })}
+            onLowerChange={(v) => dispatch({ type: "SET_LOWER", payload: v })}
+            onNumbersChange={(v) => dispatch({ type: "SET_NUMBERS", payload: v })}
+            onSymbolsChange={(v) => dispatch({ type: "SET_SYMBOLS", payload: v })}
+            variant="dashboard"
+          />
+        </div>
+      )}
+      {state.mode === "bulk" && (
+        <div className="flex min-h-0 flex-1 flex-col border border-border bg-muted p-4 sm:p-5">
+          <CharsetToggles
+            upper={state.upper}
+            lower={state.lower}
+            numbers={state.numbers}
+            symbols={state.symbols}
+            onUpperChange={(v) => dispatch({ type: "SET_UPPER", payload: v })}
+            onLowerChange={(v) => dispatch({ type: "SET_LOWER", payload: v })}
+            onNumbersChange={(v) => dispatch({ type: "SET_NUMBERS", payload: v })}
+            onSymbolsChange={(v) => dispatch({ type: "SET_SYMBOLS", payload: v })}
+            variant="dashboard"
+          />
+        </div>
       )}
       {state.mode === "pattern" && (
         <div className="space-y-2">
@@ -477,51 +555,44 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
           />
         </div>
       )}
-      {state.mode === "bulk" && (
-        <div className="flex flex-col gap-2">
-          <label className="text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-bold">Count</label>
-          <select
-            value={state.bulkCount}
-            onChange={(e) => dispatch({ type: "SET_BULK_COUNT", payload: Number(e.target.value) as BulkCount })}
-            className="w-full px-3 py-2 text-sm border border-border rounded-none bg-card text-foreground focus:outline-none focus:border-primary"
-          >
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={50}>50</option>
-            <option value={100}>100</option>
-          </select>
-        </div>
-      )}
-      {state.mode === "passphrase" && (
-        <div className="flex flex-col gap-2">
-          <label className="text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-bold">Separator</label>
-          <select
-            value={state.separator}
-            onChange={(e) => dispatch({ type: "SET_SEPARATOR", payload: e.target.value as Separator })}
-            className="w-full px-3 py-2 text-sm border border-border rounded-none bg-card text-foreground focus:outline-none focus:border-primary"
-          >
-            <option value="-">Hyphen (-)</option>
-            <option value=".">Dot (.)</option>
-            <option value="_">Underscore (_)</option>
-            <option value=" ">Space ( )</option>
-          </select>
-        </div>
-      )}
     </div>
   )
 
   const dashboardRightColumn =
     state.mode === "single" || state.mode === "bulk" ? (
-      <div className="space-y-8">
+      <div className="flex h-full min-h-0 w-full min-w-0 flex-col gap-6">
+        {state.mode === "bulk" ? (
+          <section aria-label="Bulk count" className="shrink-0 border border-border bg-card">
+            <div className="border-b border-border bg-accent-2/35 px-5 py-4 sm:px-6 sm:py-5">
+              <h3 className="ds-text-label-sm font-mono font-bold tracking-[0.18em] text-foreground">Bulk count</h3>
+              <p className="mt-2 max-w-prose text-xs leading-relaxed text-muted-foreground">
+                Set how many passwords to generate each time you press Generate (1–500).
+              </p>
+            </div>
+            <div className="p-5 sm:p-6">
+              <BulkCountControl
+                variant="dashboard"
+                embedded
+                count={state.bulkCount}
+                onCountChange={(n) => dispatch({ type: "SET_BULK_COUNT", payload: n })}
+              />
+            </div>
+          </section>
+        ) : null}
         <HibpDatabasePanel
           variant="dashboard"
+          panelClassName="min-h-0 flex-1"
           password={state.password}
           hibpStatus={state.hibpStatus}
           hibpCount={state.hibpCount}
           onHibpCheck={runHibpCheck}
         />
-        {advancedPanelEl}
       </div>
+    ) : null
+
+  const dashboardAdvancedFullWidth =
+    state.mode === "single" || state.mode === "bulk" ? (
+      <div className="w-full min-w-0">{advancedPanelEl}</div>
     ) : null
 
   if (isDashboard) {
@@ -530,9 +601,9 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
         initial={prefersReduced ? undefined : { opacity: 0, y: 16 }}
         animate={prefersReduced ? undefined : { opacity: 1, y: 0 }}
         transition={{ duration: 0.45, delay: 0.12, ease: "easeOut" }}
-        className="grid grid-cols-1 lg:grid-cols-12 gap-px bg-border p-1 border border-border"
+        className="grid grid-cols-1 items-stretch gap-px bg-border p-1 border border-border lg:grid-cols-12"
       >
-        <div className="lg:col-span-8 bg-background p-6 sm:p-8 space-y-8">
+        <div className="flex min-h-0 w-full min-w-0 flex-col bg-background p-6 sm:p-8 space-y-6 lg:col-span-8">
           <ModeSelector
             variant="dashboard"
             mode={state.mode}
@@ -543,30 +614,67 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
             <div className="min-w-0 w-full">
               <PasswordOutput {...passwordOutputProps} variant="dashboard" />
             </div>
-            {state.password && state.mode !== "bulk" && (
-              <div className="w-full min-w-0">
-                <StrengthMeter bits={entropy} strength={strengthLevel} variant="dashboard" />
+            {state.mode !== "bulk" && (
+              <div className="min-h-30 w-full min-w-0">
+                {state.password ? (
+                  <StrengthMeter bits={entropy} strength={strengthLevel} variant="dashboard" />
+                ) : (
+                  <div
+                    className="flex h-full min-h-30 flex-col justify-center border border-dashed border-border/70 bg-accent-2/20 px-4 py-3"
+                    aria-hidden
+                  >
+                    <p className="text-center text-[0.625rem] font-mono uppercase tracking-[0.16em] text-muted-foreground">
+                      Security score after generate
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div>{dashboardLeftControls}</div>
-            <div>
-              {dashboardRightColumn ?? (
-                <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
+          {dashboardSparseModes ? (
+            <div className="flex min-w-0 flex-col gap-6">
+              <div className="min-w-0">{dashboardLeftControls}</div>
+              <div
+                className="border border-border bg-accent-2/35 px-4 py-3"
+                role="note"
+                aria-label="Breach check availability"
+              >
+                <p className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
                   Breach check available in single and bulk modes.
                 </p>
+              </div>
+            </div>
+          ) : (
+            <div className="grid min-h-0 grid-cols-1 items-stretch gap-6 md:grid-cols-2 md:gap-8">
+              <div className="flex min-h-0 min-w-0 flex-col">{dashboardLeftControls}</div>
+              <div className="flex min-h-0 min-w-0 flex-col">{dashboardRightColumn}</div>
+            </div>
+          )}
+
+          {dashboardAdvancedFullWidth}
+
+          {state.mode === "bulk" && (
+            <div className="min-h-72 w-full min-w-0">
+              {state.bulkPasswords.length > 0 ? (
+                <BulkOutput passwords={state.bulkPasswords} />
+              ) : (
+                <div className="space-y-3">
+                  <div className="flex min-h-8 items-center justify-between">
+                    <span className="text-sm font-medium text-muted-foreground">Bulk results</span>
+                  </div>
+                  <div className="flex h-64 items-center justify-center border border-dashed border-border bg-card/50 px-4">
+                    <p className="text-center text-xs font-mono uppercase tracking-widest text-muted-foreground">
+                      Generate to list bulk passwords
+                    </p>
+                  </div>
+                </div>
               )}
             </div>
-          </div>
-
-          {state.mode === "bulk" && state.bulkPasswords.length > 0 && (
-            <BulkOutput passwords={state.bulkPasswords} />
           )}
         </div>
 
-        <div className="lg:col-span-4 flex flex-col gap-px bg-card min-h-0">
+        <div className="flex h-full min-h-0 w-full min-w-0 flex-col gap-px bg-card lg:col-span-4">
           <HistoryPanel
             variant="dashboard"
             history={state.history}
@@ -637,6 +745,15 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
             />
           )}
 
+          {state.mode === "bulk" && (
+            <div className="rounded-none border border-border bg-accent-2/35 p-4">
+              <BulkCountControl
+                count={state.bulkCount}
+                onCountChange={(n) => dispatch({ type: "SET_BULK_COUNT", payload: n })}
+              />
+            </div>
+          )}
+
           {state.mode === "pattern" && (
             <div className="space-y-2">
               <label className="text-sm font-medium text-foreground">
@@ -654,35 +771,23 @@ export function PasswordGenerator({ layout = "stack" }: PasswordGeneratorProps) 
 
           {(state.mode === "single" || state.mode === "bulk") && advancedPanelEl}
 
-          {state.mode === "bulk" && (
-            <div className="flex items-center gap-4">
-              <label className="text-sm font-medium text-foreground">Count:</label>
-              <select
-                value={state.bulkCount}
-                onChange={(e) => dispatch({ type: "SET_BULK_COUNT", payload: Number(e.target.value) as BulkCount })}
-                className="px-3 py-2 text-sm border border-border rounded-none bg-background text-foreground focus:outline-none focus:border-ring"
-              >
-                <option value={10}>10</option>
-                <option value={20}>20</option>
-                <option value={50}>50</option>
-                <option value={100}>100</option>
-              </select>
-            </div>
-          )}
-
           {state.mode === "passphrase" && (
             <div className="flex items-center gap-4">
-              <label className="text-sm font-medium text-foreground">Separator:</label>
-              <select
+              <label htmlFor="passphrase-separator" className="text-sm font-medium text-foreground">
+                Separator:
+              </label>
+              <NativeSelect
+                id="passphrase-separator"
                 value={state.separator}
                 onChange={(e) => dispatch({ type: "SET_SEPARATOR", payload: e.target.value as Separator })}
-                className="px-3 py-2 text-sm border border-border rounded-none bg-background text-foreground focus:outline-none focus:border-ring"
+                className="w-full bg-background"
+                wrapperClassName="inline-block min-w-48 max-w-full shrink-0"
               >
                 <option value="-">Hyphen (-)</option>
                 <option value=".">Dot (.)</option>
                 <option value="_">Underscore (_)</option>
                 <option value=" ">Space ( )</option>
-              </select>
+              </NativeSelect>
             </div>
           )}
 

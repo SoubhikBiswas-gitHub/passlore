@@ -20,18 +20,19 @@ export function HomeSecurityBrief() {
           <AccordionItem
             key={item.question}
             value={item.question}
-            className="border-0 bg-card data-[state=open]:bg-accent"
+            className="border-0 bg-card transition-colors data-[state=open]:bg-accent-3"
           >
             <AccordionTrigger
               className={cn(
-                "items-center px-6 py-4.5 sm:py-5 hover:no-underline text-left",
-                "text-sm font-bold text-foreground/90 uppercase tracking-wide",
+                "items-center px-6 py-4.5 sm:py-5 hover:no-underline text-left transition-colors",
+                "text-sm font-bold text-foreground uppercase tracking-wide",
+                "data-[state=closed]:hover:bg-accent-2/80 data-[state=open]:bg-transparent",
                 "[&>svg]:text-primary [&>svg]:size-5 [&>svg]:shrink-0 [&>svg]:translate-y-0"
               )}
             >
               <span className="flex-1 pr-4">{item.question}</span>
             </AccordionTrigger>
-            <AccordionContent className="px-6 pb-5 pt-0 text-sm text-muted-foreground leading-relaxed border-t border-border">
+            <AccordionContent className="px-6 pb-5 pt-0 text-sm text-foreground/90 leading-relaxed border-t border-border">
               {item.answer}
             </AccordionContent>
           </AccordionItem>

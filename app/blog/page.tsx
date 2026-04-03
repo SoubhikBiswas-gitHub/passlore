@@ -48,7 +48,7 @@ export default function BlogPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border border border-border">
             <Link
               href={`/blog/${featured.slug}`}
-              className="md:col-span-2 group flex flex-col bg-card hover:bg-accent transition-colors"
+              className="md:col-span-2 group flex flex-col bg-card hover:bg-accent-2 transition-colors duration-200 ease-out"
             >
               {featured.coverImage && (
                 <div className="relative aspect-[2/1] border-b border-border overflow-hidden shrink-0">
@@ -76,7 +76,9 @@ export default function BlogPage() {
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <User className="size-4" weight="regular" aria-hidden />
                     <span className="font-mono uppercase tracking-wider">{featured.author}</span>
-                    <span className="text-muted-foreground/70">·</span>
+                    <span className="text-muted-foreground" aria-hidden>
+                      ·
+                    </span>
                     <time dateTime={featured.datePublished}>{formatBlogDate(featured.datePublished)}</time>
                   </div>
                   <span className="inline-flex items-center gap-1 text-xs font-headline font-bold uppercase tracking-widest text-primary group-hover:gap-2 transition-all">
@@ -94,7 +96,7 @@ export default function BlogPage() {
                   <Link
                     key={post.slug}
                     href={`/blog/${post.slug}`}
-                    className="group flex-1 min-h-0 bg-card p-6 hover:bg-accent transition-colors flex flex-col border-b border-border last:border-b-0 md:border-b-0"
+                    className="group flex-1 min-h-0 bg-card p-6 hover:bg-accent-2 active:bg-accent-3/85 transition-colors duration-150 flex flex-col border-b border-border last:border-b-0 md:border-b-0"
                   >
                     <Icon className="size-5 text-primary mb-3" weight="bold" aria-hidden />
                     <h3 className="font-headline text-base font-bold text-foreground mb-2 group-hover:text-primary transition-colors leading-snug">

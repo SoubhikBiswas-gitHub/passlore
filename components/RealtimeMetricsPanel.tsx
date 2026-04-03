@@ -7,22 +7,28 @@ export function RealtimeMetricsPanel({ sessionCount }: RealtimeMetricsPanelProps
   const cpuPct = (22 + (sessionCount % 5) * 0.35 + (sessionCount % 3) * 0.12).toFixed(1)
 
   return (
-    <div className="bg-card p-6 border-t border-border">
-      <h3 className="text-[0.6875rem] uppercase tracking-widest font-bold text-muted-foreground mb-6">
+    <div className="shrink-0 border-t border-border bg-card p-4 sm:p-5">
+      <h3 className="mb-3 text-[0.6875rem] font-bold uppercase tracking-widest text-foreground/90">
         Real-time metrics
       </h3>
-      <div className="space-y-4">
-        <div className="flex justify-between items-center bg-muted/60 p-3 border border-border">
-          <span className="text-[10px] uppercase font-mono text-muted-foreground">Session ID</span>
-          <span className="text-xl font-mono text-primary">{sessionCount}</span>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-2">
+        <div className="flex flex-col justify-between gap-1 border border-border bg-muted p-2.5 sm:min-h-0">
+          <span className="text-[11px] font-mono uppercase text-foreground/90">Session ID</span>
+          <span className="min-w-[3ch] text-right text-lg font-mono tabular-nums text-foreground sm:text-left">
+            {sessionCount}
+          </span>
         </div>
-        <div className="flex justify-between items-center bg-muted/60 p-3 border border-border">
-          <span className="text-[10px] uppercase font-mono text-muted-foreground">Unique salt</span>
-          <span className="text-xl font-mono text-primary">{salts.toLocaleString()}</span>
+        <div className="flex flex-col justify-between gap-1 border border-border bg-muted p-2.5 sm:min-h-0">
+          <span className="text-[11px] font-mono uppercase text-foreground/90">Unique salt</span>
+          <span className="min-w-[4ch] text-right text-lg font-mono tabular-nums text-foreground sm:text-left">
+            {salts.toLocaleString()}
+          </span>
         </div>
-        <div className="flex justify-between items-center bg-muted/60 p-3 border border-border">
-          <span className="text-[10px] uppercase font-mono text-muted-foreground">CPU usage</span>
-          <span className="text-xl font-mono text-secure-fg">{cpuPct}%</span>
+        <div className="flex flex-col justify-between gap-1 border border-border bg-muted p-2.5 sm:min-h-0">
+          <span className="text-[11px] font-mono uppercase text-foreground/90">CPU usage</span>
+          <span className="min-w-[5ch] text-right text-lg font-mono tabular-nums text-foreground sm:text-left">
+            {cpuPct}%
+          </span>
         </div>
       </div>
     </div>

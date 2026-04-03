@@ -5,7 +5,7 @@ import { ShieldCheck } from "@phosphor-icons/react/dist/ssr"
 export default function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 text-center max-w-3xl mx-auto">
-      <div className="p-6 bg-muted rounded-none mb-6">
+      <div className="p-6 bg-accent-2/50 rounded-none mb-6 border border-border">
         <ShieldCheck className="h-12 w-12 text-primary" weight="fill" />
       </div>
       <h1 className="text-4xl font-headline font-bold text-primary mb-2 tracking-tight">404</h1>

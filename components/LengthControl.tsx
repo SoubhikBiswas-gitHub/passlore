@@ -64,12 +64,12 @@ export function LengthControl({
         <div className="flex justify-between items-baseline gap-4">
           <label
             htmlFor={`length-slider-${label.replace(/\s+/g, "-").toLowerCase()}`}
-            className="text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-bold leading-relaxed pt-0.5"
+            className="text-[0.6875rem] uppercase tracking-widest text-foreground/90 font-bold leading-relaxed pt-0.5"
           >
             {label}
           </label>
           <span
-            className="font-mono text-primary font-bold text-lg tabular-nums min-w-[2.5ch] text-right"
+            className="font-mono text-foreground font-bold text-lg tabular-nums min-w-[2.5ch] text-right"
             aria-live="polite"
             aria-atomic="true"
           >

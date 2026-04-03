@@ -215,11 +215,6 @@ export const faqSchema = {
   ],
 }
 
-export const homePageSchema = {
-  "@context": "https://schema.org",
-  "@graph": [webApplicationSchema, faqSchema],
-}
-
 function toIsoDateTime(calendarDate: string): string {
   if (calendarDate.includes("T")) return calendarDate
   return `${calendarDate}T12:00:00.000Z`

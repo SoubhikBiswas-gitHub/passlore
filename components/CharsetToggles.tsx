@@ -71,8 +71,14 @@ export function CharsetToggles({
     return (
       <TooltipProvider>
         <div className="space-y-4">
+          <div className="space-y-1">
+            <h3 className="text-label-sm font-bold uppercase tracking-widest text-muted-foreground">Character sets</h3>
+            <p className="text-[11px] leading-snug text-muted-foreground">
+              Choose which symbol classes appear in generated secrets. At least one must stay on.
+            </p>
+          </div>
           {isLastActive && (
-            <Badge variant="destructive" className="text-[10px] uppercase tracking-wider rounded-none flex w-fit items-center gap-1">
+            <Badge variant="destructive" className="flex w-fit items-center gap-1 rounded-none text-[10px] uppercase tracking-wider">
               <WarningCircle size={12} weight="bold" />
               At least one set required
             </Badge>
@@ -80,11 +86,19 @@ export function CharsetToggles({
           {charsets.map(({ id, label, hint, value, onChange, Icon }) => {
             const isDisabled = value && isLastActive
             return (
-              <div key={id} className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 min-w-0">
-                  <Icon size={20} weight="regular" className="text-muted-foreground shrink-0" />
-                  <span className="text-xs uppercase tracking-wider text-foreground truncate">
-                    {label} {hint}
+              <div
+                key={id}
+                className="flex items-center justify-between gap-3 border border-border bg-card/70 px-4 py-3.5 transition-colors hover:bg-accent-2/75 active:bg-accent-3/40"
+              >
+                <div className="flex min-w-0 items-center gap-3">
+                  <Icon
+                    size={20}
+                    weight="regular"
+                    className={cn("shrink-0", value ? "text-primary" : "text-muted-foreground")}
+                    aria-hidden
+                  />
+                  <span className="truncate text-xs font-medium uppercase tracking-wider text-foreground">
+                    {label} <span className="font-normal text-muted-foreground">{hint}</span>
                   </span>
                 </div>
                 {isDisabled ? (
@@ -107,6 +121,7 @@ export function CharsetToggles({
                     type="button"
                     role="switch"
                     aria-checked={value}
+                    aria-label={`${label} character set, ${value ? "on" : "off"}`}
                     disabled={isDisabled}
                     onClick={() => onChange(!value)}
                     className={cn(
@@ -144,7 +159,7 @@ export function CharsetToggles({
             return (
               <div
                 key={id}
-                className="flex items-center justify-between py-2 px-3 rounded-none bg-muted/60"
+                className="flex items-center justify-between py-2 px-3 rounded-none bg-accent-2/45"
               >
                 <div className="flex items-center gap-3">
                   <Icon size={20} weight="regular" className="text-muted-foreground" />

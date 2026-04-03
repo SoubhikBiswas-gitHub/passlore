@@ -13,14 +13,14 @@ export function BlogNewsletter() {
         <h2 className="font-headline text-xl sm:text-2xl font-bold text-white uppercase tracking-[0.15em] mb-4">
           Stay informed
         </h2>
-        <p className="text-sm text-blue-100 mb-4 leading-relaxed">
+        <p className="text-sm text-white/95 mb-4 leading-relaxed">
           <strong className="text-white">Demo only:</strong> there is no newsletter service connected yet. Submitting
           does not send your email anywhere or store it on a server—it only acknowledges in your browser for this
           session.
         </p>
-        <p className="text-xs text-blue-200/90 mb-8 leading-relaxed">
+        <p className="text-xs text-white/90 mb-8 leading-relaxed">
           For how we handle data when we add features, see the{" "}
-          <Link href="/privacy" className="text-white underline underline-offset-2 hover:text-blue-50">
+          <Link href="/privacy" className="text-white underline underline-offset-2 hover:text-white">
             privacy policy
           </Link>
           .
@@ -44,11 +44,11 @@ export function BlogNewsletter() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="email@domain.com"
-            className="flex-1 px-4 py-3 text-sm bg-blue-800/80 border border-blue-700 text-zinc-100 placeholder:text-blue-200/60 rounded-none focus:outline-none focus:ring-2 focus:ring-white/30"
+            className="flex-1 px-4 py-3 text-sm bg-blue-900/85 border border-blue-800 text-zinc-50 placeholder:text-white/75 rounded-none focus:outline-none focus:ring-2 focus:ring-white/35"
           />
           <button
             type="submit"
-            className="px-8 py-3 bg-background text-foreground font-headline text-xs font-bold uppercase tracking-widest rounded-none hover:bg-accent border border-foreground/15 transition-colors"
+            className="px-8 py-3 bg-background text-foreground font-headline text-xs font-bold uppercase tracking-widest rounded-none hover:bg-accent-2 active:bg-accent-3 border border-foreground/15 transition-colors duration-150"
           >
             {acknowledged ? "Acknowledged" : "Try demo"}
           </button>

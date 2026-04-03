@@ -47,8 +47,10 @@ export function Header() {
                 key={`${item.href}-${item.label}`}
                 href={item.href}
                 className={cn(
-                  "font-headline text-xs uppercase tracking-[0.12em] transition-colors whitespace-nowrap",
-                  isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                  "font-headline text-xs uppercase tracking-[0.12em] transition-colors whitespace-nowrap px-2 py-1.5 -my-1",
+                  isActive
+                    ? "bg-accent-3 text-accent-3-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent-2"
                 )}
               >
                 {item.label}
@@ -100,8 +102,8 @@ export function Header() {
                     className={cn(
                       "px-4 py-3 text-sm font-headline font-medium uppercase tracking-wide transition-colors rounded-none",
                       isActive
-                        ? "text-primary bg-accent"
-                        : "text-muted-foreground hover:text-foreground hover:bg-accent/80"
+                        ? "bg-accent-3 text-accent-3-foreground ring-1 ring-border"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent-2"
                     )}
                   >
                     {item.label}

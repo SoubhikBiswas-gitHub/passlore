@@ -188,7 +188,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 </p>
 
                 {post.coverImage && (
-                  <div className="relative aspect-[21/9] w-full border border-border overflow-hidden bg-muted">
+                  <div className="relative aspect-[21/9] w-full border border-border overflow-hidden bg-accent-2/35">
                     <Image
                       src={post.coverImage}
                       alt={`Illustration for ${post.title}`}
@@ -218,7 +218,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                     {post.keywords.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2.5 py-1.5 bg-card border border-border text-muted-foreground text-[0.6875rem] uppercase tracking-widest font-mono"
+                        className="px-2.5 py-1.5 bg-card border border-border text-muted-foreground text-[0.6875rem] uppercase tracking-widest font-mono transition-colors hover:border-primary/25 hover:bg-accent-2"
                       >
                         {tag}
                       </span>
@@ -234,7 +234,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 {prevPost ? (
                   <Link
                     href={`/blog/${prevPost.slug}`}
-                    className="group p-6 bg-card hover:bg-accent transition-colors flex flex-col min-h-[7rem]"
+                    className="group p-6 bg-card hover:bg-accent-2 active:bg-accent-3/70 transition-colors duration-150 flex flex-col min-h-[7rem]"
                   >
                     <span className="text-[0.625rem] uppercase tracking-wider text-muted-foreground font-mono flex items-center gap-1 mb-2">
                       <ArrowLeft className="size-3.5" weight="bold" aria-hidden />
@@ -250,7 +250,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 {nextPost ? (
                   <Link
                     href={`/blog/${nextPost.slug}`}
-                    className="group p-6 bg-card hover:bg-accent transition-colors flex flex-col min-h-[7rem] sm:text-right"
+                    className="group p-6 bg-card hover:bg-accent-2 active:bg-accent-3/70 transition-colors duration-150 flex flex-col min-h-[7rem] sm:text-right"
                   >
                     <span className="text-[0.625rem] uppercase tracking-wider text-muted-foreground font-mono flex items-center gap-1 mb-2 sm:justify-end">
                       Next
@@ -275,7 +275,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             </p>
             <Link
               href="/blog"
-              className="inline-flex items-center justify-center px-8 py-4 bg-background text-foreground font-headline text-xs font-bold uppercase tracking-widest hover:bg-accent border border-foreground/15 transition-colors shrink-0"
+              className="inline-flex items-center justify-center px-8 py-4 bg-background text-foreground font-headline text-xs font-bold uppercase tracking-widest hover:bg-accent-2 active:bg-accent-3 border border-foreground/15 transition-colors duration-150 shrink-0"
             >
               View all posts
             </Link>

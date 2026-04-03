@@ -191,7 +191,7 @@ const ch = charset[uniformIndex];`}</pre>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-2 font-mono">
                   E = log₂(R^L)
                 </p>
-                <p className="text-muted-foreground/90 text-sm leading-relaxed mb-6">
+                <p className="text-muted-foreground text-sm leading-relaxed mb-6">
                   R is the size of the character set; L is length. Each extra bit doubles the work for an idealized
                   brute-force attacker.
                 </p>
@@ -255,7 +255,7 @@ const ch = charset[uniformIndex];`}</pre>
                       key={card.n}
                       className="flex gap-6 p-6 bg-card border border-border hover:border-muted-foreground/30 transition-colors"
                     >
-                      <span className="font-headline text-3xl font-bold text-primary/80 shrink-0">{card.n}</span>
+                      <span className="font-headline text-3xl font-bold text-primary shrink-0">{card.n}</span>
                       <div>
                         <h3 className="font-headline text-sm font-bold uppercase tracking-wide text-foreground mb-2">
                           {card.t}
@@ -277,7 +277,7 @@ const ch = charset[uniformIndex];`}</pre>
             </p>
             <Link
               href="/"
-              className="inline-flex items-center justify-center px-8 py-4 bg-background text-foreground font-headline text-xs font-bold uppercase tracking-widest hover:bg-accent border border-foreground/15 transition-colors shrink-0"
+              className="inline-flex items-center justify-center px-8 py-4 bg-background text-foreground font-headline text-xs font-bold uppercase tracking-widest hover:bg-accent-2 active:bg-accent-3 border border-foreground/15 transition-colors duration-150 shrink-0"
             >
               Get started now
             </Link>
