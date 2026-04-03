@@ -106,11 +106,11 @@ export function PasswordOutput({
 
   if (isDashboard) {
     const iconBtn =
-      "flex h-12 sm:h-14 w-full sm:w-14 md:w-16 shrink-0 items-center justify-center " +
+      "flex h-12 sm:h-14 min-w-0 flex-1 basis-0 items-center justify-center " +
       "text-foreground transition-colors " +
       "hover:bg-muted/90 active:bg-muted " +
       "disabled:pointer-events-none disabled:opacity-40 " +
-      "focus-visible:outline-none focus-visible:z-[1] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+      "focus-visible:outline-none focus-visible:z-1 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
 
     const showDashboardGenerate = showGenerateButton !== false
     const passwordFontClass = dashboardPasswordFontClass(password.length)
@@ -125,9 +125,9 @@ export function PasswordOutput({
         )}
       >
         <div className="flex w-full min-w-0 flex-col">
-          <div className="flex w-full min-h-16 md:min-h-18 min-w-0 items-stretch">
+          <div className="flex min-h-16 min-w-0 w-full items-stretch md:min-h-18">
             <div
-              className="flex items-center justify-center px-3 sm:px-4 shrink-0 border-b sm:border-b-0 sm:border-r border-border bg-muted/25"
+              className="flex w-14 max-sm:shrink-0 items-center justify-center border-b border-r border-border bg-muted/25 px-2 sm:px-3"
               aria-hidden
             >
               <Lock className="size-5 sm:size-6 text-primary" weight="fill" />
@@ -135,8 +135,7 @@ export function PasswordOutput({
 
             <div
               className={cn(
-                "flex flex-1 min-w-0 items-center px-3 py-3 sm:px-5 sm:py-4 font-mono tracking-tight",
-                "border-b border-border",
+                "flex min-w-0 flex-1 items-center border-b border-border px-3 py-3 font-mono tracking-tight sm:px-5 sm:py-4",
                 "bg-primary/8 dark:bg-primary/14",
                 password && !isRevealed && "text-primary",
                 password && isRevealed && "text-foreground"
@@ -175,11 +174,11 @@ export function PasswordOutput({
           </div>
 
           <div
-            className="flex w-full min-w-0 flex-col sm:flex-row sm:items-stretch border-border sm:divide-x sm:divide-border"
+            className="flex w-full min-w-0 flex-col sm:flex-row sm:items-stretch"
             role="toolbar"
             aria-label="Password actions"
           >
-            <div className="grid min-h-12 grid-cols-3 divide-x divide-border border-b border-border sm:flex sm:min-h-14 sm:flex-1 sm:border-b-0 sm:divide-x">
+            <div className="flex min-h-12 min-w-0 w-full flex-1 divide-x divide-border border-b border-border sm:min-h-14 sm:border-b-0 sm:border-r">
               <button
                 type="button"
                 onClick={onRevealToggle}
@@ -219,10 +218,9 @@ export function PasswordOutput({
                 onClick={onGenerate}
                 disabled={isGenerating}
                 className={cn(
-                  "flex min-h-12 sm:min-h-14 w-full shrink-0 items-center justify-center gap-2",
+                  "flex min-h-12 w-full min-w-0 items-center justify-center gap-2 sm:min-h-14 sm:min-w-60 sm:flex-[1.45]",
                   "bg-primary px-4 text-primary-foreground hover:bg-primary/90",
                   "text-xs sm:text-sm font-medium uppercase tracking-wider font-mono transition-colors disabled:opacity-50",
-                  "sm:min-w-[min(100%,14rem)] md:min-w-[16rem] sm:flex-1 md:flex-[1.25]",
                   "focus-visible:outline-none focus-visible:z-1 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
                 )}
               >
