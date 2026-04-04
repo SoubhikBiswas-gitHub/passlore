@@ -1,6 +1,5 @@
 'use client'
 
-import * as React from 'react'
 import ReactSlider from 'react-slider'
 
 import { cn } from '@/lib/utils'

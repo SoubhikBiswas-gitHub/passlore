@@ -159,7 +159,17 @@
   --radius: 0;
 }
 
+/* BorderBeam / Magic UI-style offset-path chase (used by `animate-border-beam`). */
+@keyframes border-beam {
+  to {
+    offset-distance: 100%;
+  }
+}
+
 @theme inline {
+  --animate-border-beam: border-beam calc(var(--duration, 15) * 1s) infinite
+    linear;
+
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
   --font-headline:

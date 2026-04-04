@@ -1,8 +1,8 @@
 "use client"
 
-import type { CSSProperties, ReactNode } from "react"
+import type { ReactNode } from "react"
 import { useReducedMotion } from "framer-motion"
-import { motion } from "motion/react"
+import { BorderBeam } from "@/components/ui/border-beam"
 import { cn } from "@/lib/utils"
 
 export interface PasswordFieldBeamProps {
@@ -12,24 +12,16 @@ export interface PasswordFieldBeamProps {
   active: boolean
 }
 
-/** Masked border band: only the stroke is visible; gradient “dot” runs the full perimeter. */
-const borderMaskClass =
-  "pointer-events-none absolute -inset-px z-1 rounded-[inherit] border-2 border-transparent " +
-  "[mask-clip:padding-box,border-box] [mask-composite:intersect] [mask-image:linear-gradient(transparent,transparent),linear-gradient(#000,#000)]"
+/** Magenta → cyan rim; small `size` keeps a traveling highlight (large sizes read as a static bar). */
+const NEON_MAGENTA = "#ff2ec7"
+const NEON_MINT = "#7dff9a"
+const NEON_CYAN = "#2cfbff"
 
 /**
- * Animated beam on **all four sides** of the password field (offset-path around the box).
- * Token gradient (primary → secure); respects reduced motion.
+ * Thin traveling neon rim for the password field via {@link BorderBeam}.
  */
 export function PasswordFieldBeam({ children, className, active }: PasswordFieldBeamProps) {
   const reduceMotion = useReducedMotion()
-
-  /** Long streak along the border path (still clipped to the 2px mask band). */
-  const beamStyle = {
-    width: 96,
-    height: 22,
-    offsetPath: "rect(0 auto auto 0 round 0px)",
-  } as CSSProperties
 
   return (
     <div className={cn("relative rounded-none", className)}>
@@ -38,21 +30,23 @@ export function PasswordFieldBeam({ children, className, active }: PasswordField
         (reduceMotion ? (
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 z-1 rounded-[inherit] ring-2 ring-primary/45 ring-inset"
+            className={cn(
+              "pointer-events-none absolute inset-0 z-1 rounded-[inherit]",
+              "ring-2 ring-inset ring-fuchsia-400/50",
+              "shadow-[inset_0_0_14px_rgba(255,46,199,0.18),inset_0_0_18px_rgba(125,255,154,0.12),inset_0_0_20px_rgba(44,251,255,0.1)]",
+            )}
           />
         ) : (
-          <div aria-hidden className={borderMaskClass}>
-            <motion.div
-              className="absolute left-0 top-0 bg-gradient-to-r from-transparent from-[8%] via-primary via-[45%] to-secure-fg to-[92%]"
-              animate={{ offsetDistance: ["0%", "100%"] }}
-              style={beamStyle}
-              transition={{
-                repeat: Number.POSITIVE_INFINITY,
-                duration: 12,
-                ease: "linear",
-              }}
-            />
-          </div>
+          <BorderBeam
+            className="z-1"
+            size={108}
+            duration={13}
+            borderWidth={1.5}
+            anchor={90}
+            delay={0}
+            colorFrom={NEON_MAGENTA}
+            colorTo={NEON_CYAN}
+          />
         ))}
     </div>
   )
