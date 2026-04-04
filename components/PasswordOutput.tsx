@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import { PasswordFieldBeam } from "@/components/ui/password-field-beam"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
   Lock,
@@ -125,42 +126,46 @@ export function PasswordOutput({
         )}
       >
         <div className="flex w-full min-w-0 flex-col">
-          <div className="flex min-h-16 min-w-0 w-full items-stretch md:min-h-18">
-            <div
-              className="flex w-14 max-sm:shrink-0 items-center justify-center border-b border-r border-border bg-accent-2/40 px-2 sm:px-3"
-              aria-hidden
-            >
-              <Lock className="size-5 sm:size-6 text-foreground" weight="fill" />
-            </div>
+          <PasswordFieldBeam
+            active={Boolean(password || isGenerating) && !isCopied}
+            className="min-w-0 w-full"
+          >
+            <div className="flex min-h-16 min-w-0 w-full items-stretch md:min-h-18">
+              <div
+                className="flex w-14 max-sm:shrink-0 items-center justify-center border-b border-r border-border bg-accent-2/40 px-2 sm:px-3"
+                aria-hidden
+              >
+                <Lock className="size-5 sm:size-6 text-foreground" weight="fill" />
+              </div>
 
-            <div
-              className={cn(
-                "flex min-h-13 min-w-0 flex-1 items-center border-b border-border px-3 py-3 font-mono tracking-tight sm:min-h-12 sm:px-5 sm:py-4",
-                "bg-primary/10",
-                password && "text-foreground",
-                !password && "text-muted-foreground"
-              )}
-              aria-label={
-                !password
-                  ? isGenerating
-                    ? "Generating password"
-                    : "Password output"
-                  : isRevealed
-                    ? password
-                    : `Concealed password, ${password.length} characters`
-              }
-            >
-              {password ? (
-                <span
-                  className={cn(
-                    "block w-full min-w-0 select-text wrap-break-word break-all",
-                    passwordFontClass,
-                    isRevealed && "text-foreground"
-                  )}
-                >
-                  {isRevealed ? password : displayPassword}
-                </span>
-              ) : isGenerating ? (
+              <div
+                className={cn(
+                  "flex min-h-13 min-w-0 flex-1 items-center border-b border-border px-3 py-3 font-mono tracking-tight sm:min-h-12 sm:px-5 sm:py-4",
+                  "bg-primary/10",
+                  password && "text-foreground",
+                  !password && "text-muted-foreground"
+                )}
+                aria-label={
+                  !password
+                    ? isGenerating
+                      ? "Generating password"
+                      : "Password output"
+                    : isRevealed
+                      ? password
+                      : `Concealed password, ${password.length} characters`
+                }
+              >
+                {password ? (
+                  <span
+                    className={cn(
+                      "block w-full min-w-0 select-text wrap-break-word break-all font-semibold sm:font-bold",
+                      passwordFontClass,
+                      isRevealed && "text-foreground"
+                    )}
+                  >
+                    {isRevealed ? password : displayPassword}
+                  </span>
+                ) : isGenerating ? (
                 <div
                   className="flex min-h-12 w-full min-w-0 flex-col justify-center gap-2 sm:flex-row sm:items-center"
                   aria-hidden
@@ -173,8 +178,9 @@ export function PasswordOutput({
                   Generate to preview output
                 </span>
               )}
+              </div>
             </div>
-          </div>
+          </PasswordFieldBeam>
 
           <div
             className="flex w-full min-w-0 flex-col sm:flex-row sm:items-stretch"
@@ -244,13 +250,14 @@ export function PasswordOutput({
 
   return (
     <div className="space-y-4">
-      <div
-        className={cn(
-          "group/password p-4 rounded-none border border-border transition-colors duration-150 bg-card text-foreground",
-          "focus-within:border-ring focus-within:bg-accent-2/35",
-          password && isCopied && "bg-primary text-primary-foreground border-primary"
-        )}
-      >
+      <PasswordFieldBeam active={Boolean(password || isGenerating) && !isCopied}>
+        <div
+          className={cn(
+            "group/password p-4 rounded-none border border-border transition-colors duration-150 bg-card text-foreground",
+            "focus-within:border-ring focus-within:bg-accent-2/35",
+            password && isCopied && "bg-primary text-primary-foreground border-primary"
+          )}
+        >
         <div className="flex items-start gap-3">
           <div className="mt-1">
             {isRevealed ? (
@@ -279,7 +286,7 @@ export function PasswordOutput({
                 <motion.div
                   key={password}
                   className={cn(
-                    "font-mono ds-text-display-lg break-all select-all cursor-text text-foreground",
+                    "font-mono ds-text-display-lg break-all select-all cursor-text font-semibold text-foreground sm:font-bold",
                     "group-focus-within/password:text-foreground",
                     isCopied && "text-primary-foreground group-focus-within/password:text-primary-foreground"
                   )}
@@ -495,7 +502,8 @@ export function PasswordOutput({
             </AnimatePresence>
           </div>
         )}
-      </div>
+        </div>
+      </PasswordFieldBeam>
 
       {showGen && (
         <button
