@@ -36,14 +36,9 @@ export function siteIconsForOrigin(origin: string): NonNullable<Metadata["icons"
         type: "image/x-icon",
         sizes: "any",
       },
-      {
-        url: `${base}/icon-light-32x32.png?v=${v}`,
-        type: "image/png",
-        sizes: "32x32",
-      },
       { url: `${base}/icon.svg?v=${v}`, type: "image/svg+xml" },
     ],
-    apple: `${base}/apple-icon.png?v=${v}`,
+    apple: `${base}/icon.svg?v=${v}`,
   }
 }
 

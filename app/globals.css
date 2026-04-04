@@ -5,7 +5,7 @@
 
 /*
  * Design system: Precision Brutalism — High-Performance Security
- * - Surfaces: tonal layering (no borders for sectioning; ghost border only at 20% zinc-800)
+ * - Surfaces: tonal layering (no borders for sectioning; ghost border at ~20% neutral)
  * - Typography: Geist Sans (UI) + Geist Mono (data); scale per spec §3
  * - Primary: burnt vermillion / rust (CTAs, links, focus) — uncommon vs “blue security” cliché
  * - Accents: accent = neutral; accent-2 = rust-tinted panels; accent-3 = periwinkle blue (complement to rust, selected/open)
