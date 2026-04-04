@@ -3,12 +3,51 @@ import type { Metadata } from "next"
 export const SITE_URL = "https://passlore.com"
 export const SITE_NAME = "Passlore"
 
+/** Bust cached third-party / preview favicons after icon updates. */
+export const FAVICON_VERSION = "pl3"
+
+/**
+ * Same-origin icon URLs so previews (v0, *.vercel.app) load assets from the current host,
+ * not metadataBase production-only URLs.
+ */
+export function resolveRequestOrigin(headerList: Headers): string {
+  const hostRaw = headerList.get("x-forwarded-host") ?? headerList.get("host")
+  if (!hostRaw) return SITE_URL
+  const host = hostRaw.split(",")[0]?.trim() ?? hostRaw
+  const protoRaw =
+    headerList.get("x-forwarded-proto")?.split(",")[0]?.trim() ?? ""
+  const proto =
+    protoRaw ||
+    (host.startsWith("localhost") || host.startsWith("127.") ? "http" : "https")
+  return `${proto}://${host}`
+}
+
+export function siteIconsForOrigin(origin: string): NonNullable<Metadata["icons"]> {
+  const base = origin.replace(/\/$/, "")
+  const v = FAVICON_VERSION
+  return {
+    icon: [
+      {
+        url: `${base}/favicon.ico?v=${v}`,
+        type: "image/x-icon",
+        sizes: "any",
+      },
+      {
+        url: `${base}/icon-light-32x32.png?v=${v}`,
+        type: "image/png",
+        sizes: "32x32",
+      },
+      { url: `${base}/icon.svg?v=${v}`, type: "image/svg+xml" },
+    ],
+    apple: `${base}/apple-icon.png?v=${v}`,
+  }
+}
+
 /** Defensible site summary for meta tags and JSON-LD (no user counts or ratings). */
 export const SITE_DESCRIPTION =
   "Generate random passwords and passphrases in your browser using crypto.getRandomValues. No account required. Passwords are not sent to our servers. Optional Have I Been Pwned check uses k-anonymity (only a SHA-1 hash prefix leaves your browser). Free to use."
 
 export const defaultMetadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
   title: `Free Strong Password Generator — ${SITE_NAME}`,
   description: SITE_DESCRIPTION,
   keywords: [

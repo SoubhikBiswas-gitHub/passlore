@@ -74,6 +74,9 @@ export default function PrivacyPage() {
         <p>
           We may use privacy-preserving analytics (e.g. Vercel Analytics) for aggregated traffic insight — page views; device class; coarse region. We do not use it to build individual profiles or sell data.
         </p>
+        <p>
+          If configured, Google Analytics (gtag.js) loads only after you accept optional cookies on the banner, using a measurement ID supplied via site configuration — not for selling your data.
+        </p>
       </LegalSection>
 
       <LegalSection id="cookies" title="Cookies">

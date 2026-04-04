@@ -1,10 +1,16 @@
 import { Footer } from "@/components/Footer"
+import { GoogleAnalytics } from "@/components/GoogleAnalytics"
 import { GdprBanner } from "@/components/GdprBanner"
 import { Header } from "@/components/Header"
 import { ThemeColorMeta } from "@/components/ThemeColorMeta"
 import { ThemeProvider } from "@/components/ThemeProvider"
-import { defaultMetadata } from "@/lib/seo"
+import {
+  defaultMetadata,
+  resolveRequestOrigin,
+  siteIconsForOrigin,
+} from "@/lib/seo"
 import type { Metadata, Viewport } from "next"
+import { headers } from "next/headers"
 import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google"
 import "./globals.css"
 
@@ -30,7 +36,15 @@ const spaceGrotesk = Space_Grotesk({
   adjustFontFallback: true,
 })
 
-export const metadata: Metadata = defaultMetadata
+export async function generateMetadata(): Promise<Metadata> {
+  const headerList = await headers()
+  const origin = resolveRequestOrigin(headerList)
+  return {
+    ...defaultMetadata,
+    metadataBase: new URL(origin),
+    icons: siteIconsForOrigin(origin),
+  }
+}
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -38,7 +52,7 @@ export const viewport: Viewport = {
   maximumScale: 5,
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
@@ -46,7 +60,6 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body
@@ -65,6 +78,7 @@ export default function RootLayout({
           <main className="flex-1 pt-16">{children}</main>
           <Footer />
           <GdprBanner />
+          <GoogleAnalytics />
         </ThemeProvider>
       </body>
     </html>
