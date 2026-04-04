@@ -1,6 +1,11 @@
 import { PasswordGenerator } from "@/components/PasswordGenerator"
 import { HomeHero } from "@/components/home/HomeHero"
-import { faqSchema, webApplicationSchema } from "@/lib/seo"
+import { getFaqPageJsonLd } from "@/lib/faq-data"
+import {
+  organizationSchema,
+  webApplicationSchema,
+  webSiteSchema,
+} from "@/lib/seo"
 import dynamic from "next/dynamic"
 
 /** Static import avoids Turbopack/dev SSR–client skew for `next/dynamic` (hydration class mismatches). */
@@ -33,11 +38,19 @@ export default function Home() {
     <>
       <script
         type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
+      />
+      <script
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webApplicationSchema) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(getFaqPageJsonLd()) }}
       />
 
       <div className="bg-background text-foreground min-h-full">

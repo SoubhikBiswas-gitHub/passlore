@@ -1,4 +1,4 @@
-// FAQ copy for the home accordion — keep aligned with lib/seo.ts faqSchema where topics overlap.
+/** FAQ copy for the home accordion; JSON-LD is derived from the same list via `getFaqPageJsonLd`. */
 export interface FaqItem {
   question: string
   answer: string
@@ -56,3 +56,26 @@ export const FAQ_ITEMS: FaqItem[] = [
       "A larger alphabet (uppercase, lowercase, digits, symbols) increases entropy per character when characters are chosen uniformly. Length usually dominates: a long random password from a smaller alphabet can beat a short one from a larger alphabet. Use the longest secret the service allows, generated randomly.",
   },
 ] as const
+
+export function getFaqPageJsonLd(): {
+  "@context": "https://schema.org"
+  "@type": "FAQPage"
+  mainEntity: {
+    "@type": "Question"
+    name: string
+    acceptedAnswer: { "@type": "Answer"; text: string }
+  }[]
+} {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQ_ITEMS.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  }
+}

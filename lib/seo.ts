@@ -6,6 +6,10 @@ export const SITE_NAME = "Passlore"
 /** Bust cached third-party / preview favicons after icon updates. */
 export const FAVICON_VERSION = "pl3"
 
+/** Stable @id for JSON-LD graph (Organization); referenced by WebSite and WebApplication. */
+export const ORGANIZATION_SCHEMA_ID = `${SITE_URL}/#organization`
+export const WEBSITE_SCHEMA_ID = `${SITE_URL}/#website`
+
 /**
  * Same-origin icon URLs so previews (v0, *.vercel.app) load assets from the current host,
  * not metadataBase production-only URLs.
@@ -79,11 +83,20 @@ export const defaultMetadata: Metadata = {
     siteName: SITE_NAME,
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Passlore — Free strong password generator in your browser",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `Free Strong Password Generator — ${SITE_NAME}`,
     description: SITE_DESCRIPTION,
+    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: SITE_URL,
@@ -101,6 +114,21 @@ export const aboutMetadata: Metadata = {
     url: `${SITE_URL}/about`,
     siteName: SITE_NAME,
     type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Passlore — Free strong password generator in your browser",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `About ${SITE_NAME}`,
+    description:
+      "Client-side password and passphrase generation, optional Have I Been Pwned k-anonymity checks, and how we handle data.",
+    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: `${SITE_URL}/about`,
@@ -122,6 +150,21 @@ export const privacyMetadata: Metadata = {
     url: `${SITE_URL}/privacy`,
     siteName: SITE_NAME,
     type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Passlore — Free strong password generator in your browser",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Privacy Policy — ${SITE_NAME}`,
+    description:
+      `How ${SITE_NAME} handles your data: client-side generation, k-anonymity breach checks, cookies, and analytics.`,
+    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: `${SITE_URL}/privacy`,
@@ -142,6 +185,20 @@ export const termsMetadata: Metadata = {
     url: `${SITE_URL}/terms`,
     siteName: SITE_NAME,
     type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Passlore — Free strong password generator in your browser",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Terms of Service — ${SITE_NAME}`,
+    description: `Terms of service for ${SITE_NAME} — acceptable use, disclaimers, and liability.`,
+    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: `${SITE_URL}/terms`,
@@ -159,9 +216,47 @@ export const blogMetadata: Metadata = {
     url: `${SITE_URL}/blog`,
     siteName: SITE_NAME,
     type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Passlore — Free strong password generator in your browser",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Password Security Blog — ${SITE_NAME}`,
+    description:
+      "Articles on password security, passphrases, entropy, and practical guidance aligned with current standards.",
+    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: `${SITE_URL}/blog`,
+  },
+}
+
+export const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": ORGANIZATION_SCHEMA_ID,
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: {
+    "@type": "ImageObject",
+    url: `${SITE_URL}/apple-icon.png?v=${FAVICON_VERSION}`,
+  },
+}
+
+export const webSiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": WEBSITE_SCHEMA_ID,
+  name: SITE_NAME,
+  url: SITE_URL,
+  publisher: {
+    "@id": ORGANIZATION_SCHEMA_ID,
   },
 }
 
@@ -179,80 +274,11 @@ export const webApplicationSchema = {
     priceCurrency: "USD",
   },
   author: {
-    "@type": "Organization",
-    name: SITE_NAME,
+    "@id": ORGANIZATION_SCHEMA_ID,
   },
-}
-
-export const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "What makes a strong password?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "A strong password has high entropy: it is difficult to guess or crack. Key factors include length (often 16+ characters for general use), character variety when using random strings, and randomness (avoid predictable words and personal information). Higher entropy (for example 80+ bits) generally means a much larger search space for an attacker.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How long should a password be?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "For most accounts, at least 16 characters is a common recommendation; use more for high-value accounts (email, password manager). Longer secrets increase the search space; exact risk depends on how the secret is stored and attacked (online guessing vs offline hash cracking).",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Is this password generator safe to use?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: `Passwords and passphrases are built in your browser using crypto.getRandomValues (a cryptographically strong source). They are not sent to ${SITE_NAME} servers for generation. Optional breach checks contact Have I Been Pwned using only a k-anonymity hash prefix, not your plaintext password.`,
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What is password entropy?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Entropy measures unpredictability, often expressed in bits. Each extra bit doubles the number of equally likely possibilities under idealized assumptions. Real-world risk also depends on storage, hashing, and attacker capabilities—not bits alone.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Passphrase vs password — which is more secure?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Either can be strong if it is long and random enough. Passphrases built from randomly chosen words (for example from a large word list) can be memorable and high-entropy. Random character passwords are often used with a password manager. Avoid famous example phrases or quotes.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How often should I change my password?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "NIST SP 800-63B and similar guidance de-emphasize routine rotation without cause. Change a password when you know or suspect compromise, reuse on a breached service, or your provider requires it— not on a fixed calendar alone.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What does 'Have I Been Pwned' check mean?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Have I Been Pwned (HIBP) publishes known breached password hashes. This app hashes your password with SHA-1 locally, then sends only the first five hexadecimal characters of that hash to HIBP's range API (k-anonymity). The full hash suffix is matched locally. Your plaintext password is not sent. Requests use HIBP's recommended padding header to reduce observer inference.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Should I use a password manager?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Yes, for most people a reputable password manager helps you use unique, strong secrets per site. This generator can create a secret in the browser; you then store it in your manager.",
-      },
-    },
-  ],
+  publisher: {
+    "@id": ORGANIZATION_SCHEMA_ID,
+  },
 }
 
 function toIsoDateTime(calendarDate: string): string {
@@ -268,14 +294,18 @@ export function getBlogPostSchema(post: {
   datePublished: string
   dateModified?: string
   keywords?: string[]
+  coverImage?: string
 }) {
   const published = toIsoDateTime(post.datePublished)
   const modified = toIsoDateTime(post.dateModified ?? post.datePublished)
+  const articleUrl = `${SITE_URL}/blog/${post.slug}`
+  const imageUrl = post.coverImage ? `${SITE_URL}${post.coverImage}` : undefined
   return {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
     description: post.description,
+    ...(imageUrl && { image: imageUrl }),
     author: {
       "@type": "Organization",
       name: post.author,
@@ -290,7 +320,7 @@ export function getBlogPostSchema(post: {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${SITE_URL}/blog/${post.slug}`,
+      "@id": articleUrl,
     },
   }
 }

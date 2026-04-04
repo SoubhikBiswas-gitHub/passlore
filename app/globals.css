@@ -7,8 +7,8 @@
  * Design system: Precision Brutalism — High-Performance Security
  * - Surfaces: tonal layering (no borders for sectioning; ghost border only at 20% zinc-800)
  * - Typography: Geist Sans (UI) + Geist Mono (data); scale per spec §3
- * - Primary actions: indigo-600 → indigo-500 hover; secondary: zinc-800 / zinc-50 text
- * - Accents: accent = neutral surface; accent-2 = primary-tinted hover; accent-3 = teal-tinted selected/open (distinct hues)
+ * - Primary: burnt vermillion / rust (CTAs, links, focus) — uncommon vs “blue security” cliché
+ * - Accents: accent = neutral; accent-2 = rust-tinted panels; accent-3 = periwinkle blue (complement to rust, selected/open)
  */
 
 /* --- Semantic surfaces (Level 0 / 1 / 2) --- */
@@ -25,7 +25,7 @@
   --card-foreground: 240 6% 10%;
   --popover: var(--surface-0);
   --popover-foreground: 240 6% 10%;
-  --primary: 239 84% 53%;
+  --primary: 16 88% 42%;
   --primary-foreground: 0 0% 100%;
   --secondary: 240 4% 16%;
   --secondary-foreground: 250 20% 98%;
@@ -34,23 +34,23 @@
   --muted-foreground: 240 6% 27%;
   --accent: var(--surface-2);
   --accent-foreground: 240 6% 10%;
-  --accent-2: 238 52% 96%;
-  --accent-2-foreground: 240 35% 16%;
-  --accent-3: 158 38% 90%;
-  --accent-3-foreground: 160 40% 14%;
+  --accent-2: 18 52% 94%;
+  --accent-2-foreground: 16 55% 18%;
+  --accent-3: 226 52% 92%;
+  --accent-3-foreground: 230 48% 18%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
   --border: var(--ghost-border);
   --input: 240 6% 90%;
-  --ring: 239 84% 53%;
+  --ring: 16 88% 42%;
   --radius: 0;
 
-  --secure: 142 76% 36%;
-  --secure-fg: 142 69% 58%;
+  --secure: 155 72% 30%;
+  --secure-fg: 155 65% 36%;
   --vulnerable: 0 84% 60%;
   --vulnerable-fg: 0 91% 71%;
-  --warning: 45 93% 47%;
-  --warning-fg: 45 93% 58%;
+  --warning: 45 93% 42%;
+  --warning-fg: 45 95% 48%;
 }
 
 .dark,
@@ -66,8 +66,8 @@
   --card-foreground: 250 20% 98%;
   --popover: var(--surface-1);
   --popover-foreground: 250 20% 98%;
-  /* Saturated indigo + white: meets WCAG AA for small caps UI (tabs, Generate) */
-  --primary: 239 84% 56%;
+  /* Rust + white: slightly cooled L for AA on glowing orange */
+  --primary: 16 82% 48%;
   --primary-foreground: 0 0% 100%;
   --secondary: var(--surface-2);
   --secondary-foreground: 250 20% 98%;
@@ -75,22 +75,22 @@
   --muted-foreground: 250 12% 78%;
   --accent: var(--surface-2);
   --accent-foreground: 250 20% 98%;
-  --accent-2: 238 42% 19%;
-  --accent-2-foreground: 235 100% 96%;
-  --accent-3: 165 32% 15%;
-  --accent-3-foreground: 152 55% 92%;
+  --accent-2: 16 38% 22%;
+  --accent-2-foreground: 24 95% 96%;
+  --accent-3: 226 36% 22%;
+  --accent-3-foreground: 225 85% 94%;
   --destructive: 0 62% 30%;
   --destructive-foreground: 0 86% 97%;
   --border: var(--ghost-border);
   --input: var(--surface-2);
-  --ring: 239 84% 62%;
+  --ring: 16 85% 55%;
 
-  --secure: 142 76% 36%;
-  --secure-fg: 142 69% 58%;
+  --secure: 155 60% 42%;
+  --secure-fg: 155 55% 58%;
   --vulnerable: 0 84% 60%;
   --vulnerable-fg: 0 91% 71%;
-  --warning: 45 93% 47%;
-  --warning-fg: 45 93% 58%;
+  --warning: 42 88% 52%;
+  --warning-fg: 45 92% 60%;
 }
 
 [data-theme="sepia"],
@@ -106,7 +106,7 @@
   --card-foreground: 25 25% 18%;
   --popover: var(--surface-1);
   --popover-foreground: 25 25% 18%;
-  --primary: 28 45% 35%;
+  --primary: 18 42% 36%;
   --primary-foreground: 42 38% 96%;
   --secondary: 42 22% 80%;
   --secondary-foreground: 25 25% 18%;
@@ -114,15 +114,15 @@
   --muted-foreground: 25 28% 28%;
   --accent: var(--surface-2);
   --accent-foreground: 25 25% 25%;
-  --accent-2: 32 36% 88%;
-  --accent-2-foreground: 28 40% 18%;
-  --accent-3: 200 22% 86%;
-  --accent-3-foreground: 205 35% 16%;
+  --accent-2: 22 28% 86%;
+  --accent-2-foreground: 18 45% 22%;
+  --accent-3: 224 28% 84%;
+  --accent-3-foreground: 228 40% 20%;
   --destructive: 0 65% 45%;
   --destructive-foreground: 0 0% 100%;
   --border: var(--ghost-border);
   --input: 42 20% 88%;
-  --ring: 28 45% 35%;
+  --ring: 18 42% 36%;
   --radius: 0;
 }
 
@@ -139,7 +139,7 @@
   --card-foreground: 0 0% 0%;
   --popover: var(--surface-0);
   --popover-foreground: 0 0% 0%;
-  --primary: 240 100% 30%;
+  --primary: 16 100% 34%;
   --primary-foreground: 0 0% 100%;
   --secondary: 0 0% 20%;
   --secondary-foreground: 0 0% 100%;
@@ -147,15 +147,15 @@
   --muted-foreground: 0 0% 16%;
   --accent: var(--surface-2);
   --accent-foreground: 0 0% 0%;
-  --accent-2: 240 100% 90%;
+  --accent-2: 16 62% 86%;
   --accent-2-foreground: 0 0% 0%;
-  --accent-3: 48 90% 86%;
+  --accent-3: 226 85% 82%;
   --accent-3-foreground: 0 0% 0%;
   --destructive: 0 100% 40%;
   --destructive-foreground: 0 0% 100%;
   --border: var(--ghost-border);
   --input: 0 0% 85%;
-  --ring: 240 100% 30%;
+  --ring: 16 100% 34%;
   --radius: 0;
 }
 

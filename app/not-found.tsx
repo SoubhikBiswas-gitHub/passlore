@@ -1,6 +1,13 @@
 import Link from "next/link"
+import type { Metadata } from "next"
 import { Button } from "@/components/ui/button"
 import { ShieldCheck } from "@phosphor-icons/react/dist/ssr"
+import { SITE_NAME } from "@/lib/seo"
+
+export const metadata: Metadata = {
+  title: `Page not found — ${SITE_NAME}`,
+  robots: { index: false, follow: true },
+}
 
 export default function NotFound() {
   return (
