@@ -2,6 +2,7 @@
 
 import { ShareNetwork } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
+import { SITE_NAME } from "@/lib/seo"
 import { useState } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 
@@ -11,8 +12,8 @@ export function ShareButton() {
 
   const handleShare = async () => {
     const shareData = {
-      title: "SecurePass Pro",
-      text: "Generate secure passwords instantly with SecurePass Pro",
+      title: SITE_NAME,
+      text: `Generate secure passwords instantly with ${SITE_NAME}`,
       url: window.location.href,
     }
 

@@ -112,7 +112,7 @@ export function LegalPageShell({
               Questions about this document? We respond to security and privacy inquiries as a priority.
             </p>
             <Link
-              href="mailto:privacy@securepass.pro"
+              href="mailto:privacy@passlore.com"
               className="inline-flex items-center justify-center px-6 py-3 bg-background text-foreground font-headline text-xs font-bold uppercase tracking-widest hover:bg-accent-2 active:bg-accent-3 border border-foreground/15 transition-colors duration-150 shrink-0"
             >
               Contact

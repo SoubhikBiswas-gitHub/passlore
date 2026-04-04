@@ -1,14 +1,15 @@
 import type { Metadata } from "next"
 
-const SITE_URL = "https://securepass.pro"
-const SITE_NAME = "SecurePass Pro"
+export const SITE_URL = "https://passlore.com"
+export const SITE_NAME = "Passlore"
 
 /** Defensible site summary for meta tags and JSON-LD (no user counts or ratings). */
 export const SITE_DESCRIPTION =
   "Generate random passwords and passphrases in your browser using crypto.getRandomValues. No account required. Passwords are not sent to our servers. Optional Have I Been Pwned check uses k-anonymity (only a SHA-1 hash prefix leaves your browser). Free to use."
 
 export const defaultMetadata: Metadata = {
-  title: "Free Strong Password Generator — SecurePass Pro",
+  metadataBase: new URL(SITE_URL),
+  title: `Free Strong Password Generator — ${SITE_NAME}`,
   description: SITE_DESCRIPTION,
   keywords: [
     "password generator",
@@ -33,7 +34,7 @@ export const defaultMetadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Free Strong Password Generator — SecurePass Pro",
+    title: `Free Strong Password Generator — ${SITE_NAME}`,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     siteName: SITE_NAME,
@@ -42,7 +43,7 @@ export const defaultMetadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Free Strong Password Generator — SecurePass Pro",
+    title: `Free Strong Password Generator — ${SITE_NAME}`,
     description: SITE_DESCRIPTION,
   },
   alternates: {
@@ -51,11 +52,11 @@ export const defaultMetadata: Metadata = {
 }
 
 export const aboutMetadata: Metadata = {
-  title: "About SecurePass Pro",
+  title: `About ${SITE_NAME}`,
   description:
-    "How SecurePass Pro works: client-side generation with the Web Crypto API, optional breach checks, and privacy-minded defaults.",
+    `How ${SITE_NAME} works: client-side generation with the Web Crypto API, optional breach checks, and privacy-minded defaults.`,
   openGraph: {
-    title: "About SecurePass Pro",
+    title: `About ${SITE_NAME}`,
     description:
       "Client-side password and passphrase generation, optional Have I Been Pwned k-anonymity checks, and how we handle data.",
     url: `${SITE_URL}/about`,
@@ -68,17 +69,17 @@ export const aboutMetadata: Metadata = {
 }
 
 export const privacyMetadata: Metadata = {
-  title: "Privacy Policy — SecurePass Pro",
+  title: `Privacy Policy — ${SITE_NAME}`,
   description:
-    "SecurePass Pro privacy policy. Passwords are generated in your browser. We collect minimal data and explain cookies, analytics, and third parties.",
+    `${SITE_NAME} privacy policy. Passwords are generated in your browser. We collect minimal data and explain cookies, analytics, and third parties.`,
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
-    title: "Privacy Policy — SecurePass Pro",
+    title: `Privacy Policy — ${SITE_NAME}`,
     description:
-      "How SecurePass Pro handles your data: client-side generation, k-anonymity breach checks, cookies, and analytics.",
+      `How ${SITE_NAME} handles your data: client-side generation, k-anonymity breach checks, cookies, and analytics.`,
     url: `${SITE_URL}/privacy`,
     siteName: SITE_NAME,
     type: "website",
@@ -89,16 +90,16 @@ export const privacyMetadata: Metadata = {
 }
 
 export const termsMetadata: Metadata = {
-  title: "Terms of Service — SecurePass Pro",
+  title: `Terms of Service — ${SITE_NAME}`,
   description:
-    "Terms and conditions for using SecurePass Pro, the free client-side password generator and security tools.",
+    `Terms and conditions for using ${SITE_NAME}, the free client-side password generator and security tools.`,
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
-    title: "Terms of Service — SecurePass Pro",
-    description: "Terms of service for SecurePass Pro — acceptable use, disclaimers, and liability.",
+    title: `Terms of Service — ${SITE_NAME}`,
+    description: `Terms of service for ${SITE_NAME} — acceptable use, disclaimers, and liability.`,
     url: `${SITE_URL}/terms`,
     siteName: SITE_NAME,
     type: "website",
@@ -109,11 +110,11 @@ export const termsMetadata: Metadata = {
 }
 
 export const blogMetadata: Metadata = {
-  title: "Password Security Blog — SecurePass Pro",
+  title: `Password Security Blog — ${SITE_NAME}`,
   description:
     "Articles on password security, passphrases, entropy, and practical guidance aligned with current standards.",
   openGraph: {
-    title: "Password Security Blog — SecurePass Pro",
+    title: `Password Security Blog — ${SITE_NAME}`,
     description:
       "Articles on password security, passphrases, entropy, and practical guidance aligned with current standards.",
     url: `${SITE_URL}/blog`,
@@ -128,7 +129,7 @@ export const blogMetadata: Metadata = {
 export const webApplicationSchema = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "SecurePass Pro",
+  name: SITE_NAME,
   url: SITE_URL,
   description: SITE_DESCRIPTION,
   applicationCategory: "SecurityApplication",
@@ -140,7 +141,7 @@ export const webApplicationSchema = {
   },
   author: {
     "@type": "Organization",
-    name: "SecurePass Pro",
+    name: SITE_NAME,
   },
 }
 
@@ -169,7 +170,7 @@ export const faqSchema = {
       name: "Is this password generator safe to use?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Passwords and passphrases are built in your browser using crypto.getRandomValues (a cryptographically strong source). They are not sent to SecurePass Pro servers for generation. Optional breach checks contact Have I Been Pwned using only a k-anonymity hash prefix, not your plaintext password.",
+        text: `Passwords and passphrases are built in your browser using crypto.getRandomValues (a cryptographically strong source). They are not sent to ${SITE_NAME} servers for generation. Optional breach checks contact Have I Been Pwned using only a k-anonymity hash prefix, not your plaintext password.`,
       },
     },
     {

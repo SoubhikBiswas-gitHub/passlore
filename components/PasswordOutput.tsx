@@ -20,6 +20,7 @@ import {
   Info,
   CircleNotch,
 } from "@phosphor-icons/react"
+import { SITE_NAME } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 import { useCallback } from "react"
 
@@ -71,7 +72,7 @@ export function PasswordOutput({
     try {
       if (typeof navigator !== "undefined" && navigator.share) {
         await navigator.share({
-          title: "SecurePass Pro",
+          title: SITE_NAME,
           text: password,
         })
       } else if (typeof navigator !== "undefined" && navigator.clipboard) {

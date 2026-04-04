@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { LegalPageShell, LegalSection } from "@/components/legal/LegalPageShell"
-import { termsMetadata, getBreadcrumbSchema } from "@/lib/seo"
+import { termsMetadata, getBreadcrumbSchema, SITE_URL } from "@/lib/seo"
 import { LEGAL_HERO_TERMS } from "@/lib/legalHeroImages"
 
 export const metadata: Metadata = termsMetadata
@@ -27,8 +27,8 @@ const lastUpdated = new Date().toLocaleDateString("en-US", {
 
 export default function TermsPage() {
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: "https://securepass.pro" },
-    { name: "Terms", url: "https://securepass.pro/terms" },
+    { name: "Home", url: SITE_URL },
+    { name: "Terms", url: `${SITE_URL}/terms` },
   ])
 
   return (
@@ -41,20 +41,20 @@ export default function TermsPage() {
       heroImageSrc={LEGAL_HERO_TERMS}
       heroImageAlt="Abstract brutalist illustration suggesting legal structure, grids, and policy layers"
       toc={toc}
-      statusLines={["Classification: public", "Transport: HTTPS (TLS negotiated)", "Scope: securepass.pro"]}
+      statusLines={["Classification: public", "Transport: HTTPS (TLS negotiated)", "Scope: passlore.com"]}
       crossLinkHref="/privacy"
       crossLinkText="Read privacy policy"
     >
       <LegalSection id="acceptance" title="1. Acceptance of terms" isFirst>
         <p>
-          By using SecurePass Pro (&quot;the Service&quot;), you agree to these Terms of Service. If you do not agree,
+          By using Passlore (&quot;the Service&quot;), you agree to these Terms of Service. If you do not agree,
           do not use the Service.
         </p>
       </LegalSection>
 
       <LegalSection id="description" title="2. Description of service">
         <p>
-          SecurePass Pro is a free, web-based password and passphrase generator. Core generation runs in your browser;
+          Passlore is a free, web-based password and passphrase generator. Core generation runs in your browser;
           optional features (such as breach lookup) only send the minimum data described in our privacy policy.
         </p>
       </LegalSection>
@@ -83,7 +83,7 @@ export default function TermsPage() {
 
       <LegalSection id="liability" title="5. Limitation of liability">
         <p>
-          To the maximum extent permitted by law, SecurePass Pro and its contributors are not liable for indirect,
+          To the maximum extent permitted by law, Passlore and its contributors are not liable for indirect,
           incidental, special, consequential, or punitive damages, or for loss of data, profits, or goodwill, arising
           from your use of the Service.
         </p>
@@ -127,7 +127,7 @@ export default function TermsPage() {
 
       <LegalSection id="governing-law" title="10. Governing law">
         <p>
-          These terms are governed by the laws applicable to the jurisdiction in which SecurePass Pro operates,
+          These terms are governed by the laws applicable to the jurisdiction in which Passlore operates,
           without regard to conflict-of-law rules, except where mandatory consumer protections in your country apply.
         </p>
       </LegalSection>
@@ -135,7 +135,7 @@ export default function TermsPage() {
       <LegalSection id="contact" title="11. Contact">
         <p>
           For questions about these terms:{" "}
-          <a href="mailto:legal@securepass.pro">legal@securepass.pro</a>
+          <a href="mailto:legal@passlore.com">legal@passlore.com</a>
         </p>
       </LegalSection>
     </LegalPageShell>

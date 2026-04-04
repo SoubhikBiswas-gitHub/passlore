@@ -29,7 +29,7 @@ export function Header() {
         <Link href="/" className="flex items-center gap-2 shrink-0 z-10">
           <Shield className="h-[22px] w-[22px] text-primary" weight="fill" aria-hidden />
           <span className="font-headline font-bold text-sm sm:text-lg text-foreground uppercase tracking-[0.08em]">
-            SecurePass Pro
+            Passlore
           </span>
         </Link>
 

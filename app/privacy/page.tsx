@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { LegalPageShell, LegalSection } from "@/components/legal/LegalPageShell"
-import { privacyMetadata, getBreadcrumbSchema } from "@/lib/seo"
+import { privacyMetadata, getBreadcrumbSchema, SITE_URL } from "@/lib/seo"
 import { LEGAL_HERO_PRIVACY } from "@/lib/legalHeroImages"
 
 export const metadata: Metadata = privacyMetadata
@@ -24,8 +24,8 @@ const lastUpdated = new Date().toLocaleDateString("en-US", {
 
 export default function PrivacyPage() {
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: "https://securepass.pro" },
-    { name: "Privacy", url: "https://securepass.pro/privacy" },
+    { name: "Home", url: SITE_URL },
+    { name: "Privacy", url: `${SITE_URL}/privacy` },
   ])
 
   return (
@@ -38,13 +38,13 @@ export default function PrivacyPage() {
       heroImageSrc={LEGAL_HERO_PRIVACY}
       heroImageAlt="Abstract brutalist illustration suggesting data boundaries, shield geometry, and privacy"
       toc={toc}
-      statusLines={["Classification: public", "Transport: HTTPS (TLS negotiated)", "Scope: securepass.pro"]}
+      statusLines={["Classification: public", "Transport: HTTPS (TLS negotiated)", "Scope: passlore.com"]}
       crossLinkHref="/terms"
       crossLinkText="Read terms of service"
     >
       <LegalSection id="overview" title="Overview" isFirst>
         <p>
-          SecurePass Pro is built with privacy as a core principle. Password tools should protect your data — not
+          Passlore is built with privacy as a core principle. Password tools should protect your data — not
           harvest it.
         </p>
       </LegalSection>
@@ -119,7 +119,7 @@ export default function PrivacyPage() {
       <LegalSection id="contact" title="Contact">
         <p>
           Questions about this policy:{" "}
-          <a href="mailto:privacy@securepass.pro">privacy@securepass.pro</a>
+          <a href="mailto:privacy@passlore.com">privacy@passlore.com</a>
         </p>
       </LegalSection>
     </LegalPageShell>

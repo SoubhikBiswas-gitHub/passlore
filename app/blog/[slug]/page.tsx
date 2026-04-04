@@ -13,7 +13,7 @@ import {
   User,
 } from "@phosphor-icons/react/dist/ssr"
 import { TocScrollNav } from "@/components/TocScrollNav"
-import { getBlogPostSchema, getBreadcrumbSchema } from "@/lib/seo"
+import { getBlogPostSchema, getBreadcrumbSchema, SITE_NAME, SITE_URL } from "@/lib/seo"
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -31,17 +31,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!post) {
     return {
-      title: "Post Not Found — SecurePass Pro",
+      title: `Post Not Found — ${SITE_NAME}`,
     }
   }
 
-  const site = "https://securepass.pro"
-  const ogImage = post.coverImage ? [{ url: `${site}${post.coverImage}`, alt: post.title }] : undefined
+  const ogImage = post.coverImage
+    ? [{ url: `${SITE_URL}${post.coverImage}`, alt: post.title }]
+    : undefined
   const publishedTime = `${post.datePublished}T12:00:00.000Z`
   const modifiedTime = `${(post.dateModified ?? post.datePublished)}T12:00:00.000Z`
 
   return {
-    title: `${post.title} — SecurePass Pro`,
+    title: `${post.title} — ${SITE_NAME}`,
     description: post.description,
     openGraph: {
       title: post.title,
@@ -50,17 +51,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       publishedTime,
       modifiedTime,
       authors: [post.author],
-      url: `${site}/blog/${post.slug}`,
+      url: `${SITE_URL}/blog/${post.slug}`,
       ...(ogImage && { images: ogImage }),
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.description,
-      ...(post.coverImage && { images: [`https://securepass.pro${post.coverImage}`] }),
+      ...(post.coverImage && { images: [`${SITE_URL}${post.coverImage}`] }),
     },
     alternates: {
-      canonical: `https://securepass.pro/blog/${post.slug}`,
+      canonical: `${SITE_URL}/blog/${post.slug}`,
     },
   }
 }
@@ -99,9 +100,9 @@ export default async function BlogPostPage({ params }: PageProps) {
   })
 
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: "https://securepass.pro" },
-    { name: "Blog", url: "https://securepass.pro/blog" },
-    { name: post.title, url: `https://securepass.pro/blog/${post.slug}` },
+    { name: "Home", url: SITE_URL },
+    { name: "Blog", url: `${SITE_URL}/blog` },
+    { name: post.title, url: `${SITE_URL}/blog/${post.slug}` },
   ])
 
   return (

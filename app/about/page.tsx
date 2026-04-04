@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { Key } from "@phosphor-icons/react/dist/ssr"
 import { TocScrollNav } from "@/components/TocScrollNav"
-import { aboutMetadata, getBreadcrumbSchema } from "@/lib/seo"
+import { aboutMetadata, getBreadcrumbSchema, SITE_URL } from "@/lib/seo"
 
 export const metadata: Metadata = aboutMetadata
 
@@ -36,8 +36,8 @@ const entropySegments = [
 
 export default function AboutPage() {
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: "https://securepass.pro" },
-    { name: "About", url: "https://securepass.pro/about" },
+    { name: "Home", url: SITE_URL },
+    { name: "About", url: `${SITE_URL}/about` },
   ])
 
   return (
@@ -69,7 +69,7 @@ export default function AboutPage() {
 
             <article className="lg:col-span-9">
               <h1 className="font-headline text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mb-6">
-                <span className="text-foreground">About SecurePass Pro &amp; </span>
+                <span className="text-foreground">About Passlore &amp; </span>
                 <span className="text-primary">password security</span>
               </h1>
               <div className="flex flex-wrap items-center gap-3 text-[0.6875rem] uppercase tracking-widest text-muted-foreground font-mono mb-10">
@@ -104,7 +104,7 @@ export default function AboutPage() {
                   Our mission
                 </h2>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                  Security is a fundamental right, not a product tier. SecurePass Pro exists to put strong, random
+                  Security is a fundamental right, not a product tier. Passlore exists to put strong, random
                   password generation in your browser — with no account required and generation performed locally.
                   See our{" "}
                   <Link href="/privacy" className="text-primary hover:underline underline-offset-2">

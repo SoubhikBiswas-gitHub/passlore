@@ -1,6 +1,6 @@
 {
-  "name": "SecurePass Pro",
-  "short_name": "SecurePass",
+  "name": "Passlore",
+  "short_name": "Passlore",
   "description": "Generate strong, secure passwords instantly. Free password generator with entropy analysis and breach detection.",
   "start_url": "/",
   "display": "standalone",

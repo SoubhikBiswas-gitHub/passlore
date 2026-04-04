@@ -12,7 +12,7 @@ import {
   ArrowRight,
   User,
 } from "@phosphor-icons/react/dist/ssr"
-import { blogMetadata, getBreadcrumbSchema } from "@/lib/seo"
+import { blogMetadata, getBreadcrumbSchema, SITE_URL } from "@/lib/seo"
 
 export const metadata: Metadata = blogMetadata
 
@@ -20,8 +20,8 @@ const secondaryIcons = [ChartBar, ArrowsLeftRight, Code, ListBullets] as const
 
 export default function BlogPage() {
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: "https://securepass.pro" },
-    { name: "Blog", url: "https://securepass.pro/blog" },
+    { name: "Home", url: SITE_URL },
+    { name: "Blog", url: `${SITE_URL}/blog` },
   ])
 
   const [featured, ...rest] = blogPosts
