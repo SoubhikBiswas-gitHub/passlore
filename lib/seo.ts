@@ -4,7 +4,7 @@ export const SITE_URL = "https://passlore.com"
 export const SITE_NAME = "Passlore"
 
 /** Bust cached third-party / preview favicons after icon updates. */
-export const FAVICON_VERSION = "pl3"
+export const FAVICON_VERSION = "pl4"
 
 /** Stable @id for JSON-LD graph (Organization); referenced by WebSite and WebApplication. */
 export const ORGANIZATION_SCHEMA_ID = `${SITE_URL}/#organization`

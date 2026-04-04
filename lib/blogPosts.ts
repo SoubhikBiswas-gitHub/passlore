@@ -207,7 +207,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: "paragraph",
-        text: "Passphrases excel at memorability. The human brain remembers word sequences well. 'purple-elephant-dancing-moonlight' is far easier to recall than 'xK9#mN2$pL' despite similar entropy.",
+        text: "Passphrases excel at memorability. The human brain remembers word sequences well. 'ember-harbor-steel-raven' is far easier to recall than 'xK9#mN2$pL' despite similar entropy.",
       },
       {
         type: "paragraph",

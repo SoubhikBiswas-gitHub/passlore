@@ -1,3 +1,4 @@
+import { OG_IMAGE_THEME } from "@/lib/og-image-theme"
 import { ImageResponse } from "next/og"
 
 export const alt = "Passlore — Free strong password generator in your browser"
@@ -17,7 +18,7 @@ export default function TwitterImage() {
           flexDirection: "column",
           alignItems: "flex-start",
           justifyContent: "center",
-          background: "linear-gradient(135deg, #1e1b4b 0%, #0f172a 45%, #0c0a09 100%)",
+          background: OG_IMAGE_THEME.backgroundGradient,
           padding: 72,
         }}
       >
@@ -25,7 +26,7 @@ export default function TwitterImage() {
           style={{
             fontSize: 76,
             fontWeight: 800,
-            color: "#818cf8",
+            color: OG_IMAGE_THEME.brand,
             letterSpacing: "-0.03em",
             lineHeight: 1,
           }}
@@ -37,7 +38,7 @@ export default function TwitterImage() {
             marginTop: 28,
             fontSize: 46,
             fontWeight: 600,
-            color: "#fafafa",
+            color: OG_IMAGE_THEME.headline,
             maxWidth: 920,
             lineHeight: 1.12,
             letterSpacing: "-0.02em",
@@ -49,7 +50,7 @@ export default function TwitterImage() {
           style={{
             marginTop: 28,
             fontSize: 26,
-            color: "#a1a1aa",
+            color: OG_IMAGE_THEME.subline,
             maxWidth: 780,
             lineHeight: 1.35,
           }}
