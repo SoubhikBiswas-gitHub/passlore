@@ -11,6 +11,8 @@
     "deploy": "npm run build:cloudflare && opennextjs-cloudflare deploy",
     "build:play": "NEXT_PUBLIC_DEPLOYMENT_ENV=play NEXT_PUBLIC_SITE_URL=https://play.passlore.com opennextjs-cloudflare build",
     "deploy:play": "npm run build:play && opennextjs-cloudflare deploy --env play",
+    "test": "playwright test --project=unit",
+    "test:browser": "RUN_BROWSER_CHECKS=1 playwright test --project=chromium",
     "preview": "npm run build:cloudflare && opennextjs-cloudflare preview"
   },
   "dependencies": {
@@ -39,6 +41,7 @@
     "zod": "3.24.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4.2.0",
     "@types/node": "^22",
     "@types/react": "^19",
