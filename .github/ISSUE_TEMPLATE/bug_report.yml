@@ -1,0 +1,66 @@
+name: Bug report
+description: Help reproduce and fix a problem in Passlore.
+title: "[Bug]: "
+labels:
+  - bug
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value:
+        Please search existing issues first. Use examples and remove passwords, tokens and personal data. Only
+        the repository owner can approve work.
+  - type: input
+    id: page
+    attributes:
+      label: Page or component
+      description: "Include the URL, branch or component. Production: https://passlore.com; testing: https://play.passlore.com."
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What went wrong?
+      description: Describe the observed result and the expected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How can we reproduce it?
+      description: Give numbered steps and a minimal example.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser, device and operating system
+    validations:
+      required: true
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact
+      options:
+        - Blocks a core task
+        - Affects some users or a workaround exists
+        - Visual or minor issue
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Screenshots, redacted logs or a short recording.
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and removed sensitive information.
+          required: true
+    validations:
+      required: false

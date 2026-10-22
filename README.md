@@ -256,7 +256,7 @@ Use `play`, keep changes grouped into meaningful commits, run the required check
 
 **Implemented:** the web generator modes, local session history, optional breach lookup, informational pages, themed UI and separate production/testing Workers.
 
-**Operational follow-up:** automated deployment stays conditional on environment credentials; there is no maintained public roadmap or release promise. There are no `CONTRIBUTING.md` or `SECURITY.md` files at present. Do not infer a published package, approved extension or paid release from future ideas.
+**Operational follow-up:** automated deployment stays conditional on environment credentials; there is no maintained public roadmap or release promise. Contribution and security guidance live in [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md). Do not infer a published package, approved extension or paid release from future ideas.
 
 ## Documentation
 
@@ -274,6 +274,6 @@ Use `play`, keep changes grouped into meaningful commits, run the required check
 
 Passlore is open source. Use [repository issues](https://github.com/SoubhikBiswas-gitHub/passlore/issues) for ordinary bugs and questions, and submit contributions through a pull request against `play`.
 
-No dedicated security-disclosure policy or security contact is defined in this repository. Do not post live passwords, licence keys, tokens or personal data in an issue. The hosted [privacy policy](https://passlore.com/privacy) lists a contact for privacy matters.
+Report vulnerabilities privately using [SECURITY.md](SECURITY.md). Do not post live passwords, licence keys, tokens or personal data in an issue. The hosted [privacy policy](https://passlore.com/privacy) covers privacy matters.
 
 Passlore is available under the [MIT License](LICENSE). You may use, modify and redistribute the code under that licence. Third-party dependencies retain their own licences. The hosted [terms](https://passlore.com/terms) describe use of the service and are separate from source-code licensing.

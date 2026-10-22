@@ -19,3 +19,6 @@ tsconfig.tsbuildinfo
 .wrangler/
 playwright-report/
 test-results/
+
+# Python workflow caches
+__pycache__/

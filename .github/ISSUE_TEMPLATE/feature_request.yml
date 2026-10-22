@@ -1,0 +1,49 @@
+name: Feature request
+description: Suggest a focused improvement to Passlore.
+title: "[Feature]: "
+labels:
+  - enhancement
+  - needs-triage
+body:
+  - type: markdown
+    attributes:
+      value:
+        Please search existing issues first. Use examples and remove passwords, tokens and personal data. Only
+        the repository owner can approve work.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem should this solve?
+      description: Describe the situation and who is affected.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: What would a good result look like?
+      description: Include observable acceptance criteria.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Proposed approach
+      description: Share an idea without prescribing an implementation.
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives and scope
+      description: What do you use today? What should remain outside this request?
+    validations:
+      required: false
+  - type: checkboxes
+    id: help
+    attributes:
+      label: How would you like to help?
+      options:
+        - label: I can contribute implementation.
+        - label: I can test or provide examples.
+    validations:
+      required: false
