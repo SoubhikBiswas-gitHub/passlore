@@ -15,3 +15,7 @@ node_modules
 .next/
 .DS_Store
 tsconfig.tsbuildinfo
+.open-next/
+.wrangler/
+playwright-report/
+test-results/

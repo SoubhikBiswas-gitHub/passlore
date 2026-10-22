@@ -1,0 +1,32 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "passlore",
+  "account_id": "9b85e8c5722b929ab06cad21cc0e7f3b",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-22",
+  "compatibility_flags": ["nodejs_compat"],
+  "keep_names": false,
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "passlore.com/*", "zone_name": "passlore.com" },
+    { "pattern": "www.passlore.com/*", "zone_name": "passlore.com" }
+  ],
+  "observability": { "enabled": true },
+  "env": {
+    "play": {
+      "name": "passlore-play",
+      "workers_dev": true,
+      "routes": [
+        { "pattern": "play.passlore.com/*", "zone_name": "passlore.com" }
+      ],
+      "assets": {
+        "directory": ".open-next/assets",
+        "binding": "ASSETS"
+      }
+    }
+  }
+}

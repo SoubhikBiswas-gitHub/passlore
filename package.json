@@ -6,10 +6,16 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "build:cloudflare": "opennextjs-cloudflare build",
+    "deploy": "npm run build:cloudflare && opennextjs-cloudflare deploy",
+    "build:play": "NEXT_PUBLIC_DEPLOYMENT_ENV=play NEXT_PUBLIC_SITE_URL=https://play.passlore.com opennextjs-cloudflare build",
+    "deploy:play": "npm run build:play && opennextjs-cloudflare deploy --env play",
+    "preview": "npm run build:cloudflare && opennextjs-cloudflare preview"
   },
   "dependencies": {
     "@babel/runtime": "^7.29.2",
+    "@opennextjs/cloudflare": "^1.20.13",
     "@phosphor-icons/react": "2.1.7",
     "@radix-ui/react-accordion": "1.2.12",
     "@radix-ui/react-collapsible": "1.1.12",
@@ -24,7 +30,7 @@
     "clsx": "2.1.1",
     "framer-motion": "11.15.0",
     "motion": "^12.38.0",
-    "next": "16.2.0",
+    "next": "16.4.1",
     "next-themes": "0.4.6",
     "react": "^19",
     "react-dom": "^19",
@@ -42,6 +48,7 @@
     "postcss": "^8.5",
     "tailwindcss": "^4.2.0",
     "tw-animate-css": "1.3.3",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "wrangler": "^4.151.3"
   }
 }
