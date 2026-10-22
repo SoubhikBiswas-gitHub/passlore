@@ -5,7 +5,7 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://passlore.co
 export const SITE_NAME = "Passlore"
 
 /** Bust cached third-party / preview favicons after icon updates. */
-export const FAVICON_VERSION = "pl4"
+export const FAVICON_VERSION = "pl5"
 
 /** Stable @id for JSON-LD graph (Organization); referenced by WebSite and WebApplication. */
 export const ORGANIZATION_SCHEMA_ID = `${SITE_URL}/#organization`
@@ -32,14 +32,14 @@ export function siteIconsForOrigin(origin: string): NonNullable<Metadata["icons"
   const v = FAVICON_VERSION
   return {
     icon: [
+      { url: `${base}/icon.svg?v=${v}`, type: "image/svg+xml", sizes: "any" },
       {
         url: `${base}/favicon.ico?v=${v}`,
         type: "image/x-icon",
-        sizes: "any",
+        sizes: "16x16 32x32 48x48 64x64",
       },
-      { url: `${base}/icon.svg?v=${v}`, type: "image/svg+xml" },
     ],
-    apple: `${base}/icon.svg?v=${v}`,
+    apple: `${base}/apple-icon.png?v=${v}`,
   }
 }
 

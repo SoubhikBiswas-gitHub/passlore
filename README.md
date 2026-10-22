@@ -4,6 +4,8 @@
 
 Install dependencies with `yarn install`, then run `yarn dev`.
 Run `yarn lint` and `yarn test` to check types and generator behavior.
+The shield in `public/icon.svg` is the favicon source. Run `yarn icons` after
+editing it to rebuild the multi-size browser icon and mobile PNG icons.
 
 ## Hosting
 
