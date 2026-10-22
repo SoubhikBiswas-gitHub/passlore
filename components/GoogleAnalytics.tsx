@@ -6,7 +6,9 @@ import { useEffect, useState } from "react"
 /** Must match `GDPR_KEY` in `GdprBanner.tsx`. */
 const GDPR_KEY = "gdpr-consent"
 
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() ?? ""
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_DEPLOYMENT_ENV === "play"
+  ? ""
+  : process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() ?? ""
 
 export function GoogleAnalytics() {
   const [consented, setConsented] = useState(false)
