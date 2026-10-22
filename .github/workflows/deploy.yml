@@ -1,0 +1,70 @@
+name: Passlore checks and deployment
+
+on:
+  push:
+    branches: [play, main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: passlore-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  NEXT_PUBLIC_DEPLOYMENT_ENV: ${{ github.ref_name == 'main' && github.event_name != 'pull_request' && 'production' || 'play' }}
+  NEXT_PUBLIC_SITE_URL: ${{ github.ref_name == 'main' && github.event_name != 'pull_request' && 'https://passlore.com' || 'https://play.passlore.com' }}
+
+jobs:
+  validate:
+    name: Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+      - name: Require promotion from play
+        if: github.event_name == 'pull_request' && github.head_ref != 'play'
+        run: echo 'Production changes must be promoted from play.' && exit 1
+      - run: yarn install --frozen-lockfile
+      - name: Lint
+        run: yarn lint
+      - name: Automated tests
+        run: yarn test
+      - name: Build
+        run: yarn build:cloudflare
+      - run: yarn playwright install --with-deps chromium
+      - name: Browser checks
+        run: yarn test:browser
+
+  deploy:
+    name: Deploy
+    needs: validate
+    if: github.event_name != 'pull_request' && vars.CLOUDFLARE_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref_name == 'main' && 'production' || 'play' }}
+      url: ${{ github.ref_name == 'main' && 'https://passlore.com' || 'https://play.passlore.com' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn build:cloudflare
+      - name: Deploy branch
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 9b85e8c5722b929ab06cad21cc0e7f3b
+        run: |
+          if [ "$GITHUB_REF_NAME" = "main" ]; then
+            yarn opennextjs-cloudflare deploy
+          else
+            yarn opennextjs-cloudflare deploy --env play
+          fi

@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 
-export const SITE_URL = "https://passlore.com"
+export const IS_TESTING = process.env.NEXT_PUBLIC_DEPLOYMENT_ENV === "play"
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://passlore.com"
 export const SITE_NAME = "Passlore"
 
 /** Bust cached third-party / preview favicons after icon updates. */
@@ -62,11 +63,11 @@ export const defaultMetadata: Metadata = {
   creator: SITE_NAME,
   publisher: SITE_NAME,
   robots: {
-    index: true,
-    follow: true,
+    index: !IS_TESTING,
+    follow: !IS_TESTING,
     googleBot: {
-      index: true,
-      follow: true,
+      index: !IS_TESTING,
+      follow: !IS_TESTING,
       "max-snippet": -1,
       "max-image-preview": "large",
     },
@@ -135,8 +136,8 @@ export const privacyMetadata: Metadata = {
   description:
     `${SITE_NAME} privacy policy. Passwords are generated in your browser. We collect minimal data and explain cookies, analytics, and third parties.`,
   robots: {
-    index: true,
-    follow: true,
+    index: !IS_TESTING,
+    follow: !IS_TESTING,
   },
   openGraph: {
     title: `Privacy Policy — ${SITE_NAME}`,
@@ -171,8 +172,8 @@ export const termsMetadata: Metadata = {
   description:
     `Terms and conditions for using ${SITE_NAME}, the free client-side password generator and security tools.`,
   robots: {
-    index: true,
-    follow: true,
+    index: !IS_TESTING,
+    follow: !IS_TESTING,
   },
   openGraph: {
     title: `Terms of Service — ${SITE_NAME}`,

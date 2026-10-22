@@ -1,7 +1,10 @@
 import { MetadataRoute } from "next"
-import { SITE_URL } from "@/lib/seo"
+import { IS_TESTING, SITE_URL } from "@/lib/seo"
 
 export default function robots(): MetadataRoute.Robots {
+  if (IS_TESTING) {
+    return { rules: { userAgent: "*", disallow: "/" } }
+  }
   return {
     rules: {
       userAgent: "*",
