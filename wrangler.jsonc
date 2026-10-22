@@ -10,7 +10,8 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
-  "workers_dev": true,
+  "workers_dev": false,
+  "preview_urls": false,
   "routes": [
     { "pattern": "passlore.com/*", "zone_name": "passlore.com" },
     { "pattern": "www.passlore.com/*", "zone_name": "passlore.com" }

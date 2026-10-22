@@ -14,7 +14,8 @@ The site runs on Cloudflare Workers in the `soubhik481@gmail.com` account.
 - Build: `yarn build:cloudflare`
 - Preview in the Workers runtime: `yarn preview`
 - Build and publish: `yarn deploy`
-- Deployment URL: https://passlore.soubhik481.workers.dev
+- Production URL: https://passlore.com
+- The production Worker disables its default workers.dev URL and version preview URLs.
 
 `wrangler.jsonc` configures the Worker and static assets. The OpenNext adapter
 preserves the existing Next.js routes and server rendering.
