@@ -2,11 +2,12 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { Bug, MagnifyingGlass, Repeat, Tray } from "@phosphor-icons/react/dist/ssr"
 import { Lore } from "@/components/Lore"
+import { cn } from "@/lib/utils"
 import { getBreadcrumbSchema, SITE_NAME, SITE_URL } from "@/lib/seo"
 import { ISSUES_URL, REPO_URL } from "./links"
 import { LiveDraw } from "./LiveDraw"
 import { RecipeDeck } from "./RecipeDeck"
-import { TocMobile, TocSide } from "./Toc"
+import { TocSide } from "./Toc"
 import { btn, card, eyebrow, prose, stageBtn, wrap } from "./styles"
 
 const TITLE = `How ${SITE_NAME} works`
@@ -60,7 +61,7 @@ function N({ n }: { n: number }) {
   return (
     <span
       aria-hidden
-      className="mr-3 inline-flex size-10 items-center justify-center rounded-md bg-primary-soft align-[4px] text-xl text-on-primary-soft"
+      className="mr-3 inline-flex size-10 items-center justify-center align-[4px] text-xl text-primary"
     >
       {n}
     </span>
@@ -100,7 +101,7 @@ export function HowItWorksPage() {
             >
               Randomness you can watch.
             </h1>
-            <p className="m-0 max-w-[600px] text-lg leading-[1.55] text-ink-2 md:text-xl">
+            <p className="m-0 max-w-[600px] text-xl leading-[1.55] text-ink-2">
               Every Passlore password is cut on your device, one character at a time. This page doesn’t ask you to trust
               that — it runs the same code in front of you. Press the button and watch a character get made.
             </p>
@@ -108,7 +109,7 @@ export function HowItWorksPage() {
               <Link href="/" className={btn.primaryLg}>
                 Open the generator
               </Link>
-              <a href="#limits" className={`${stageBtn} min-h-14 rounded-md px-5 text-base`}>
+              <a href="#limits" className={cn(stageBtn, "min-h-14 rounded-md px-5 text-base")}>
                 What it can’t promise
               </a>
             </div>
@@ -116,8 +117,6 @@ export function HowItWorksPage() {
           <LiveDraw />
         </div>
       </section>
-
-      <TocMobile items={toc} />
 
       <div className={`${wrap} grid grid-cols-1 gap-14 pt-6 lg:grid-cols-[240px_minmax(0,1fr)]`}>
         <TocSide items={toc} className="pt-16" />
@@ -192,7 +191,7 @@ crypto.getRandomValues(buf);   // 0 … 4,294,967,295, unpredictable`}</pre>
           <Figure>
             <Lore mood="worried" scene="cloud" size={150} animate={false} />
           </Figure>
-          <div className="clear-both mb-4 grid grid-cols-1 gap-3 text-base leading-normal md:grid-cols-2">
+          <div className="mb-4 grid grid-cols-1 gap-3 text-base leading-normal md:grid-cols-2">
             {limits.map(({ Icon, h, p }) => (
               <div key={h} className={`${card} flex items-start gap-3 px-[18px] py-4`}>
                 <Icon className="mt-0.5 size-6 shrink-0 text-primary" aria-hidden />
@@ -218,17 +217,16 @@ crypto.getRandomValues(buf);   // 0 … 4,294,967,295, unpredictable`}</pre>
 
       <section aria-labelledby="ab-cta" className="mt-[88px] bg-bg text-ink">
         <div className={`${wrap} flex flex-col gap-[22px] py-14`}>
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <span className="-mb-3 -ml-3.5 -mr-2 -mt-[30px] hidden md:block" aria-hidden>
-              <Lore mood="proud" scene="confetti" size={130} />
-            </span>
-            <h2
-              id="ab-cta"
-              className="m-0 min-w-[280px] flex-1 font-display text-[28px] font-bold leading-[1.1] tracking-[-0.025em] md:text-[34px]"
-            >
-              Where is your next password going?
-            </h2>
-            <p className="m-0 max-w-[380px] text-ink-2">Pick one — the generator opens already set up for it.</p>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-4">
+              <span className="-my-6 -ml-3.5 -mr-2 hidden md:block" aria-hidden>
+                <Lore mood="proud" scene="confetti" size={130} />
+              </span>
+              <h2 id="ab-cta" className="m-0 font-sans text-2xl font-bold leading-[1.2]">
+                Where is your next password going?
+              </h2>
+            </div>
+            <p className="m-0 text-ink-2 md:self-end md:text-right">Pick one — the generator opens already set up for it.</p>
           </div>
           <RecipeDeck />
         </div>

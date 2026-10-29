@@ -1,22 +1,31 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import { Info, X } from "@phosphor-icons/react"
+import { Check, Info, Warning, X } from "@phosphor-icons/react"
+
+export type ToastKind = "ok" | "error" | "info"
+
+const ICONS = { ok: Check, error: Warning, info: Info } as const
+const DURATION = 6000
 
 export function useToast() {
-  const [text, setText] = useState("")
+  const [toast, setToast] = useState<{ text: string; kind: ToastKind }>({ text: "", kind: "info" })
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
-  const show = useCallback((t: string) => {
-    setText(t)
+  const show = useCallback((text: string, kind: ToastKind = "info") => {
+    setToast({ text, kind })
     clearTimeout(timer.current)
-    timer.current = setTimeout(() => setText(""), 5000)
+    timer.current = setTimeout(() => setToast((t) => ({ ...t, text: "" })), DURATION)
   }, [])
-  const dismiss = useCallback(() => setText(""), [])
+  const dismiss = useCallback(() => {
+    clearTimeout(timer.current)
+    setToast((t) => ({ ...t, text: "" }))
+  }, [])
   useEffect(() => () => clearTimeout(timer.current), [])
-  return { text, show, dismiss }
+  return { text: toast.text, kind: toast.kind, show, dismiss }
 }
 
-export function Toast({ text, onDismiss }: { text: string; onDismiss: () => void }) {
+export function Toast({ text, kind = "info", onDismiss }: { text: string; kind?: ToastKind; onDismiss: () => void }) {
+  const Icon = ICONS[kind]
   return (
     <div
       className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center p-4"
@@ -25,7 +34,7 @@ export function Toast({ text, onDismiss }: { text: string; onDismiss: () => void
     >
       {text ? (
         <div className="pointer-events-auto flex max-w-[520px] items-center gap-2.5 rounded-md bg-ink py-2.5 pl-4 pr-2 text-bg shadow-e3 animate-in fade-in slide-in-from-bottom-1 duration-300 ease-out">
-          <Info className="size-5 shrink-0" aria-hidden />
+          <Icon className="size-5 shrink-0" aria-hidden />
           <span className="flex-1 text-[15px]">{text}</span>
           <button
             type="button"

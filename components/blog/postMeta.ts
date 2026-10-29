@@ -56,7 +56,7 @@ const META: Record<string, PostMeta> = {
       { tag: "Password manager", value: "qT7#vL2m!Rw9xK4p", note: "16 characters · it types it" },
     ],
     featured: true,
-    compareBefore: "The Memorability Advantage",
+    compareBefore: "When a passphrase wins",
   },
   "password-manager-vs-generator-comparison": {
     category: "Comparisons",

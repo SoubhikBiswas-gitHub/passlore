@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Lore } from "@/components/Lore"
-import { TocMobile, TocSide, type TocItem } from "@/components/content/Toc"
+import { TocSide, type TocItem } from "@/components/content/Toc"
 import { h1Hero, lede, pill, prose, wrap } from "@/components/content/styles"
 import { getBreadcrumbSchema, SITE_URL } from "@/lib/seo"
 
@@ -56,8 +56,6 @@ export function LegalShell({
           </p>
         </div>
       </section>
-
-      <TocMobile items={toc} />
 
       <div className={`${wrap} grid grid-cols-1 gap-14 pb-24 pt-6 lg:grid-cols-[240px_minmax(0,1fr)]`}>
         <TocSide items={toc} className="pt-10" />

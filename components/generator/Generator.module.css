@@ -137,7 +137,7 @@
   color: var(--text);
   box-shadow: var(--e1);
   position: relative;
-  transition: transform var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease), border-color var(--t-glide) var(--ease);
+  transition: transform var(--t-base) var(--ease-spring), box-shadow var(--t-base) var(--ease), border-color var(--t-glide) var(--ease);
 }
 
 .rc:hover {
@@ -573,7 +573,6 @@
   top: 0;
   bottom: 0;
   border-radius: 999px;
-  transition: width var(--t-arrive) var(--ease-expo), background-color var(--t-base) var(--ease);
 }
 
 .rNeedle {
@@ -584,45 +583,6 @@
   border-radius: 2px;
   background: var(--on-stage);
   transform: translateX(-2px);
-  transition: left var(--t-arrive) var(--ease-expo);
-}
-
-.rMarks {
-  position: relative;
-  height: 40px;
-  margin: -4px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.rMark {
-  position: absolute;
-  top: 0;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  font-size: 12px;
-  color: var(--on-stage-2);
-  white-space: nowrap;
-}
-
-.rMark:first-child {
-  transform: none;
-  align-items: flex-start;
-}
-
-.rMark:last-child {
-  transform: translateX(-100%);
-  align-items: flex-end;
-}
-
-.rMark i {
-  display: block;
-  width: 1px;
-  height: 6px;
-  background: var(--on-stage-2);
 }
 
 
@@ -651,7 +611,7 @@
   background: var(--stage-2);
   border: 1px solid var(--stage-line);
   font-size: 15px;
-  animation: arrive var(--t-panel) var(--ease-expo);
+  animation: arrive var(--t-base) var(--ease);
 }
 
 .detail h3 {
@@ -827,6 +787,32 @@ textarea.field {
   width: 76px;
   text-align: center;
   font-family: var(--f-mono);
+}
+
+.numWrap {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.numFull,
+.numFull .num {
+  width: 100%;
+}
+
+.field[aria-invalid="true"] {
+  border: 2px solid var(--danger);
+}
+
+.fieldErr {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  font-size: 13px;
+  color: var(--danger);
+}
+
+.fieldErr:not(:empty) {
+  margin-top: 4px;
 }
 
 .range {
@@ -1018,7 +1004,13 @@ textarea.field {
   min-height: 44px;
   padding: 0 4px;
   color: var(--link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
   text-underline-offset: 3px;
+}
+
+.howLink:hover {
+  text-decoration-thickness: 2px;
 }
 
 .dock {
@@ -1056,7 +1048,7 @@ textarea.field {
   background: var(--text);
   color: var(--bg);
   box-shadow: var(--e3);
-  animation: arrive var(--t-panel) var(--ease-expo);
+  animation: pop var(--t-panel) var(--ease-spring);
 }
 
 .toastBtn {
@@ -1075,6 +1067,7 @@ textarea.field {
 
 .faq {
   padding-top: 96px;
+  padding-bottom: 96px;
 }
 
 .faqList {
@@ -1127,10 +1120,9 @@ textarea.field {
 .sheet {
   position: fixed;
   z-index: 61;
-  left: 50%;
+  left: 0;
+  right: 0;
   bottom: 0;
-  width: min(640px, 100%);
-  transform: translateX(-50%);
   max-height: 80vh;
   display: flex;
   flex-direction: column;
@@ -1138,7 +1130,7 @@ textarea.field {
   color: var(--text);
   border-radius: 28px 28px 0 0;
   box-shadow: var(--e3);
-  animation: rise var(--t-panel) var(--ease-expo);
+  animation: rise var(--t-panel) var(--ease-spring);
 }
 
 :global([data-theme="hc"]) .sheet {
@@ -1268,6 +1260,144 @@ textarea.field {
   overflow-wrap: anywhere;
 }
 
+.scw {
+  container-type: inline-size;
+  width: 100%;
+}
+
+.shareCard {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1200 / 630;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #c8ff2e;
+  color: #0b0d17;
+  border: 3px solid #0b0d17;
+  box-shadow: 8px 8px 0 #2447f5;
+}
+
+.scIn {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  align-items: center;
+  padding: 5cqw 5cqw 4cqw;
+}
+
+.scEyebrow {
+  margin: 0;
+  font-size: 2.3cqw;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.scBig {
+  margin: 0.6cqw 0 0;
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 5.6cqw;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.scTime {
+  display: inline;
+  background: #2447f5;
+  color: #ffffff;
+  padding: 0 0.18em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  border-radius: 0.15em;
+}
+
+.scSub {
+  margin: 2cqw 0 0;
+  font-size: 2.1cqw;
+  font-weight: 600;
+}
+
+.scLore {
+  display: flex;
+  justify-content: center;
+}
+
+.scLore :global(.lo) {
+  width: 100% !important;
+  height: auto !important;
+  max-width: 240px;
+}
+
+.scLore :global(.lo) svg {
+  height: auto;
+}
+
+.scFoot {
+  position: absolute;
+  left: 5cqw;
+  right: 5cqw;
+  bottom: 3.4cqw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.9cqw;
+  font-weight: 700;
+}
+
+.scMark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6cqw;
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: 2.6cqw;
+}
+
+@container (max-width: 560px) {
+  .shareCard {
+    aspect-ratio: auto;
+  }
+
+  .scIn {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr) 104px;
+    gap: 6px;
+    padding: 18px 16px 10px;
+  }
+
+  .scEyebrow {
+    font-size: 12px;
+  }
+
+  .scBig {
+    font-size: 27px;
+    margin-top: 6px;
+  }
+
+  .scSub {
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  .scFoot {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    padding: 4px 16px 14px;
+    font-size: 12px;
+    flex-wrap: wrap;
+    gap: 2px 10px;
+  }
+
+  .scMark {
+    font-size: 15px;
+    gap: 6px;
+  }
+}
+
 @keyframes arrive {
   from {
     transform: translateY(12px);
@@ -1281,12 +1411,23 @@ textarea.field {
 
 @keyframes rise {
   from {
-    transform: translate(-50%, 40px);
+    transform: translateY(40px);
     opacity: 0;
   }
   to {
-    transform: translateX(-50%);
+    transform: none;
     opacity: 1;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -1424,16 +1565,13 @@ textarea.field {
     font-size: 16px;
   }
 
-  .rMarks {
-    display: none;
-  }
-
   .cols2 {
     grid-template-columns: minmax(0, 1fr);
   }
 
   .faq {
     padding-top: 64px;
+    padding-bottom: 64px;
   }
 }
 

@@ -24,6 +24,9 @@ type Props = {
   setCfg: SetCfg
   revealed: boolean
   onCopyValue: (value: string) => Promise<boolean>
+  bulkSel: number
+  onBulkSelect: (index: number) => void
+  onDownload: (fileName: string) => void
 }
 
 type LenCfg = { label: string; min: number; max: number; value: number; key: string }
@@ -201,9 +204,23 @@ export function RecipePanel(p: Props) {
                 {n}
               </button>
             ))}
-            <NumberField value={cfg.bulk.count} min={1} max={500} label="How many passwords" onCommit={(v) => v != null && setCfg("bulk", { count: v }, "")} />
+            <NumberField
+              value={cfg.bulk.count}
+              min={1}
+              max={500}
+              label="How many passwords"
+              overMax="Up to 500 at a time."
+              onCommit={(v) => v != null && setCfg("bulk", { count: v }, "")}
+            />
           </div>
-          <BulkList items={p.bulk} length={cfg.bulk.length} revealed={p.revealed} onCopy={p.onCopyValue} />
+          <BulkList
+            items={p.bulk}
+            revealed={p.revealed}
+            selected={p.bulkSel}
+            onSelect={p.onBulkSelect}
+            onCopy={p.onCopyValue}
+            onDownload={p.onDownload}
+          />
         </div>
       )}
 

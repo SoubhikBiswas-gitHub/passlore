@@ -142,7 +142,7 @@ export function ArticleCompare() {
           </p>
         </div>
       </div>
-      <div className="flex flex-col gap-2.5 rounded-2xl bg-surface-2 px-5 pb-2 pt-[38px]">
+      <div className="flex flex-col gap-2.5 rounded-2xl bg-bg px-5 pb-2 pt-[38px]">
         <div className="relative h-3 rounded-full bg-track" role="img" aria-label={v.aria}>
           <div className={needle} style={{ left: v.wPos }} />
           <span className={`${lab} bottom-[22px]`} style={{ left: v.wPos }}>

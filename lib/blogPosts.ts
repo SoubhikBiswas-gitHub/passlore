@@ -1,7 +1,13 @@
+// Paragraph, list, callout and answer text may use **bold** and `code`.
 export interface ContentSection {
-  type: "heading" | "paragraph" | "list" | "code" | "quote"
+  type: "heading" | "paragraph" | "list" | "code" | "quote" | "callout" | "questions"
   text?: string
   items?: string[]
+  id?: string
+  toc?: string
+  tone?: "info" | "warning"
+  title?: string
+  questions?: { q: string; a: string }[]
 }
 
 // Format YYYY-MM-DD for display (UTC calendar date).
@@ -35,6 +41,8 @@ export interface BlogPost {
   slug: string
   title: string
   description: string
+  // Lead paragraph under the title; falls back to the description.
+  intro?: string
   content: ContentSection[]
   author: string
   // ISO 8601 date YYYY-MM-DD (schema.org, sitemap, Open Graph)
@@ -49,9 +57,8 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   {
     slug: "how-to-create-a-strong-password-in-2025",
-    title: "How to Create a Strong Password in 2025: Complete Guide",
-    description:
-      "Practical techniques for creating strong passwords in 2025: length, complexity, and practices aligned with current guidance.",
+    title: "How to make a strong password (and why length wins)",
+    description: "Why a long random password beats a clever short one, and how many characters is enough.",
     content: [
       {
         type: "paragraph",
@@ -116,9 +123,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "what-is-password-entropy-explained",
-    title: "Password Entropy Explained: Why Bits Matter for Security",
-    description:
-      "Understand password entropy and why it is the true measure of password strength. Learn how bits of entropy translate to real-world security.",
+    title: "Entropy, explained without the headache",
+    description: "What “bits” means, where the number comes from, and why patterns cost more than they look.",
     content: [
       {
         type: "paragraph",
@@ -185,71 +191,85 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "passphrase-vs-password-which-is-more-secure",
-    title: "Passphrase vs Password: Which Is More Secure?",
+    title: "Passphrase vs password: which should you use?",
     description:
-      "Compare passphrases and traditional passwords to determine which offers better security. Learn when to use each approach.",
+      "When to reach for memorable words, when a random string wins, and how the strength really compares — with a live side-by-side.",
+    intro: "Both can be strong. The right one depends on who has to type it — you, or your password manager.",
     content: [
       {
+        type: "callout",
+        tone: "info",
+        title: "The short answer.",
+        text: "Use a random password wherever a password manager fills it in for you. Use a passphrase when you’ll type it by hand — a TV, a games console, the master password for the manager itself.",
+      },
+      { type: "heading", id: "what", text: "What each one is" },
+      {
         type: "paragraph",
-        text: "The debate between passphrases and traditional passwords continues as standards bodies and practitioners refine recommendations. Both approaches have merits — understanding the nuances helps you make the best choice.",
-      },
-      {
-        type: "heading",
-        text: "Defining the Terms",
-      },
-      {
-        type: "paragraph",
-        text: "A traditional password is typically 8-16 characters combining letters, numbers, and symbols. A passphrase uses multiple random words, often 4-8 words, sometimes with symbols between them.",
-      },
-      {
-        type: "heading",
-        text: "The Mathematics of Security",
+        text: "A **random password** is a string of characters picked one at a time from a pool — letters, digits, symbols: `qT7#vL2m!Rw9xK4p`. A **passphrase** is a few words picked at random from a long list: `orbit lamp cedar velvet quarry pilot`.",
       },
       {
         type: "paragraph",
-        text: "Both can achieve equivalent security. A random 12-character password has about 78 bits of entropy. A six-word passphrase using the EFF wordlist reaches 77 bits — nearly identical security through different means.",
+        text: "The word “random” matters in both. Words you choose yourself, or a line from a song, are far easier to guess than they feel.",
       },
-      {
-        type: "heading",
-        text: "The Memorability Advantage",
-      },
+      { type: "heading", id: "strength", toc: "How strong each is", text: "How strong each one is" },
       {
         type: "paragraph",
-        text: "Passphrases excel at memorability. The human brain remembers word sequences well. 'ember-harbor-steel-raven' is far easier to recall than 'xK9#mN2$pL' despite similar entropy.",
+        text: "For random characters strength is `log₂(pool) × length`; for words it’s `log₂(list size) × words`. Rather than a table, move the sliders and compare them on the same scale:",
       },
-      {
-        type: "paragraph",
-        text: "This has real security implications — users who can't remember complex passwords often reuse them or choose weaker alternatives.",
-      },
-      {
-        type: "heading",
-        text: "When to Use Each",
-      },
+      { type: "heading", id: "phrase", text: "When a passphrase wins" },
       {
         type: "list",
         items: [
-          "Passphrases: Password manager master passwords, full-disk encryption, memorable high-security credentials",
-          "Passwords: Length-limited systems, high-frequency authentication, autofill scenarios",
-          "Hybrid: Combine both approaches for exceptional security with memorability",
+          "The master password for your password manager — the one thing you must remember.",
+          "Anything typed on a TV remote, console controller or someone else’s device.",
+          "Wi-Fi passwords you read out to guests.",
+          "Device or disk encryption you unlock by hand.",
+        ],
+      },
+      { type: "heading", id: "random", text: "When a random password wins" },
+      {
+        type: "list",
+        items: [
+          "Every account your password manager fills in — you never type it, so length is free.",
+          "Sites with a short maximum length, where every character must carry as much as possible.",
         ],
       },
       {
-        type: "quote",
-        text: "A memorable passphrase that users actually use consistently provides better real-world security than a complex password that gets compromised through poor practices.",
+        type: "callout",
+        tone: "warning",
+        title: "Mistakes to avoid.",
+        text: "Picking the words yourself, using quotes or lyrics, settling for three or four words, or reusing a passphrase anywhere else.",
+      },
+      { type: "heading", id: "faq", text: "Questions" },
+      {
+        type: "questions",
+        questions: [
+          {
+            q: "Should I add a number or symbol to a passphrase?",
+            a: "Only if a site insists. One forced symbol adds very little; an extra word adds much more.",
+          },
+          {
+            q: "Does the separator matter?",
+            a: "Not for strength — assume an attacker knows it. Pick whatever is easiest to type.",
+          },
+          {
+            q: "How many words are enough?",
+            a: "Six from a large list is a good default; seven for the password that guards all the others.",
+          },
+        ],
       },
     ],
     author: "Passlore Team",
     datePublished: "2025-01-05",
-    dateModified: "2025-01-12",
-    readingTime: "10 min read",
+    dateModified: "2026-10-30",
+    readingTime: "4 min read",
     keywords: ["passphrase vs password", "passphrase security", "EFF wordlist"],
     dispatchTag: "Opinion",
   },
   {
     slug: "password-manager-vs-generator-comparison",
-    title: "Password Manager vs Generator: What's the Difference?",
-    description:
-      "Understand the differences between password managers and generators. Learn how these tools complement each other for comprehensive security.",
+    title: "Password manager vs generator: what each one does",
+    description: "A generator makes the password; a manager keeps it. You almost certainly want both.",
     content: [
       {
         type: "paragraph",
@@ -301,9 +321,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "nist-password-guidelines-2025",
-    title: "NIST Password Guidelines 2025: What Changed?",
-    description:
-      "Review the latest NIST password guidelines and what they mean for your security practices. Modern recommendations may surprise you.",
+    title: "What NIST’s password guidelines actually say",
+    description: "Length over composition rules, no forced resets, check against breached lists — in plain words.",
     content: [
       {
         type: "paragraph",

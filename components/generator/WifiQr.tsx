@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { ArrowsOut, Printer, WifiHigh } from '@phosphor-icons/react'
+import { DownloadSimple } from '@phosphor-icons/react'
 
 import { Lore } from '@/components/Lore'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
@@ -9,11 +9,9 @@ import { qrMatrix, wifiPayload } from '@/lib/generator'
 import { cn } from '@/lib/utils'
 
 const btn =
-  'inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-sm border px-[18px] text-[15px] font-semibold transition-[background-color,border-color,transform] duration-75 ease-calm active:translate-y-px disabled:cursor-not-allowed disabled:opacity-55'
-const btnSecondary = cn(btn, 'border-line-strong bg-surface text-ink hover:bg-surface-2')
+  'inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-sm border px-[18px] text-[15px] font-semibold transition-[background-color,border-color,transform] duration-[80ms] ease-calm active:translate-y-px disabled:cursor-not-allowed disabled:opacity-55'
+const btnSecondary = cn(btn, 'border-line-strong bg-surface text-ink hover:bg-surface-2 [[data-theme=hc]_&]:border-2')
 const btnPrimary = cn(btn, 'border-transparent bg-primary text-on-primary hover:bg-primary-hover')
-
-const sepNames: Record<string, string> = { '-': 'a hyphen', ' ': 'a space', '.': 'a dot', _: 'an underscore' }
 
 const printCss = `@media print {
   @page { size: A5; margin: 0; }
@@ -47,19 +45,7 @@ function QrSvg({ matrix, size, label }: { matrix: boolean[][]; size: number; lab
   )
 }
 
-function splitForReading(password: string) {
-  const sep = password.match(/[ \-._]/)?.[0]
-  if (sep && /^[A-Za-z0-9]+(?:[ \-._][A-Za-z0-9]+)+$/.test(password)) {
-    return {
-      parts: password.split(/[ \-._]/),
-      hint: `One word per line, in order. Type ${sepNames[sep] ?? 'the separator'} between words.`,
-    }
-  }
-  return { parts: password.match(/.{1,4}/g) ?? [], hint: 'Groups of four, in order. Type them without spaces.' }
-}
-
 export function WifiQr({ ssid, password }: { ssid: string; password: string }) {
-  const [bigOpen, setBigOpen] = useState(false)
   const [posterOpen, setPosterOpen] = useState(false)
 
   const matrix = useMemo(() => {
@@ -73,7 +59,6 @@ export function WifiQr({ ssid, password }: { ssid: string; password: string }) {
 
   const name = ssid.trim()
   const qrLabel = name ? `QR code to join ${name}` : 'QR code to join this Wi-Fi network. Add the network name first.'
-  const reading = useMemo(() => splitForReading(password), [password])
 
   return (
     <figure className="m-0 flex w-full flex-col items-center gap-2 rounded-[16px] border border-line bg-white p-3.5 text-[#0B0D17]">
@@ -81,72 +66,22 @@ export function WifiQr({ ssid, password }: { ssid: string; password: string }) {
         <QrSvg matrix={matrix} size={200} label={qrLabel} />
       ) : (
         <div className="flex size-[200px] items-center justify-center rounded-md border-2 border-dashed border-[#737A8C] p-4 text-center text-sm text-[#383D4D]">
-          Cut a password to draw the QR code
+          {name ? 'Cut a password to draw the QR code' : 'Add the network name to draw a QR code guests can scan'}
         </div>
       )}
       <figcaption className="text-center text-[13px] text-[#383D4D]">
-        {name ? (
-          <>Scan to join {name}</>
-        ) : (
-          <span className="font-semibold text-[#8A5A00]">
-            Add the network name so phones know which network to join
-          </span>
-        )}
+        {matrix ? <>Scan to join {name}</> : 'Drawn on this device'}
       </figcaption>
 
-      <div className="flex w-full flex-col gap-2">
-        <button
-          type="button"
-          onClick={() => setBigOpen(true)}
-          disabled={!password}
-          className={cn(btn, 'w-full border-[#737A8C] bg-white px-3 text-sm text-[#0B0D17] hover:bg-[#F3F4F8]')}
-        >
-          <ArrowsOut size={20} aria-hidden="true" />
-          Show big
-        </button>
-        <button
-          type="button"
-          onClick={() => setPosterOpen(true)}
-          disabled={!matrix}
-          className={cn(btn, 'w-full border-[#737A8C] bg-white px-3 text-sm text-[#0B0D17] hover:bg-[#F3F4F8]')}
-        >
-          <Printer size={20} aria-hidden="true" />
-          Guest poster
-        </button>
-      </div>
-
-      <Dialog open={bigOpen} onOpenChange={setBigOpen}>
-        <DialogContent
-          variant="full"
-          showClose={false}
-          className="flex flex-col bg-[var(--stage)] p-6 text-[var(--on-stage)]"
-          aria-describedby={undefined}
-        >
-          <DialogTitle className="sr-only">Password, shown big</DialogTitle>
-          <div className="flex items-center justify-between gap-3">
-            <span className="inline-flex min-h-8 items-center gap-1.5 rounded-full bg-primary-soft px-3 text-sm font-bold text-on-primary-soft">
-              <WifiHigh size={16} weight="bold" aria-hidden="true" />
-              For · Wi-Fi{name ? ` · ${name}` : ''}
-            </span>
-            <DialogClose className="min-h-[52px] rounded-md bg-accent px-[22px] text-base font-bold text-on-accent">
-              Done
-            </DialogClose>
-          </div>
-          <ol className="mx-0 my-auto flex list-none flex-col items-start gap-1.5 px-0 py-8">
-            {reading.parts.map((part, i) => (
-              <li key={i} className="flex items-baseline gap-[18px]">
-                <span aria-hidden="true" className="w-7 text-right font-mono text-xl text-[var(--on-stage-2)]">
-                  {i + 1}
-                </span>
-                <span className="font-mono text-[clamp(40px,9vw,96px)] font-semibold leading-[1.05] tracking-[0.02em] [overflow-wrap:anywhere]">
-                  {part}
-                </span>
-              </li>
-            ))}
-          </ol>
-          <p className="m-0 text-base text-[var(--on-stage-2)]">{reading.hint}</p>
-        </DialogContent>
-      </Dialog>
+      <button
+        type="button"
+        onClick={() => setPosterOpen(true)}
+        disabled={!matrix}
+        className={cn(btnSecondary, 'w-full px-3 text-sm')}
+      >
+        <DownloadSimple size={20} aria-hidden="true" />
+        Guest poster
+      </button>
 
       <Dialog open={posterOpen} onOpenChange={setPosterOpen}>
         <DialogContent
@@ -196,7 +131,7 @@ export function WifiQr({ ssid, password }: { ssid: string; password: string }) {
               onClick={() => window.print()}
               className={cn(btnPrimary, 'min-h-14 rounded-md px-6 text-[17px]')}
             >
-              <Printer size={20} aria-hidden="true" />
+              <DownloadSimple size={20} aria-hidden="true" />
               Print
             </button>
             <DialogClose className={cn(btnSecondary, 'min-h-14 rounded-md px-6 text-[17px]')}>Close</DialogClose>

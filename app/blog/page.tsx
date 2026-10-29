@@ -4,6 +4,7 @@ import { BlogIndex, type BlogCard } from "@/components/blog/BlogIndex"
 import { postMeta } from "@/components/blog/postMeta"
 import { eyebrow, h1Hero, lede, wrap } from "@/components/content/styles"
 import { blogPosts, formatReadableDate } from "@/lib/blogPosts"
+import { cn } from "@/lib/utils"
 import { blogMetadata, getBreadcrumbSchema, SITE_URL } from "@/lib/seo"
 
 export const metadata: Metadata = blogMetadata
@@ -33,21 +34,25 @@ export default function BlogPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
-      <div className={`${wrap} relative pb-24`}>
-        <section aria-labelledby="bl-h" className="relative flex flex-col gap-4 pt-8 md:pt-16">
-          <div className="absolute bottom-0 right-0 hidden leading-none lg:block" aria-hidden>
-            <Lore mood="wink" scene="sparkles" size={230} />
-          </div>
-          <p className={eyebrow}>Blog</p>
-          <h1 id="bl-h" className={h1Hero}>
-            Notes on passwords
-          </h1>
-          <p className={lede}>
-            Plain explanations of strength, passphrases, managers and the standards behind them. Every article ends with
-            a recipe you can use straight away.
-          </p>
-        </section>
-        <BlogIndex posts={posts} />
+      <div className={`${wrap} pb-24`}>
+        <BlogIndex
+          posts={posts}
+          hero={
+            <>
+              <div className="absolute bottom-5 right-0 hidden leading-none lg:block" aria-hidden>
+                <Lore mood="wink" scene="sparkles" size={230} />
+              </div>
+              <p className={eyebrow}>Blog</p>
+              <h1 id="bl-h" className={cn(h1Hero, "md:text-[72px]")}>
+                Notes on passwords
+              </h1>
+              <p className={lede}>
+                Plain explanations of strength, passphrases, managers and the standards behind them. Every article ends
+                with a recipe you can use straight away.
+              </p>
+            </>
+          }
+        />
       </div>
     </>
   )

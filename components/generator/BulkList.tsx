@@ -14,7 +14,7 @@ const formats: { id: Format; name: string; mime: string }[] = [
 ]
 
 const btn =
-  'inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-sm border px-[18px] text-[15px] font-semibold transition-[background-color,border-color,transform] duration-75 ease-calm active:translate-y-px disabled:cursor-not-allowed disabled:opacity-55'
+  'inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-sm border px-[18px] text-[15px] font-semibold transition-[background-color,border-color,transform] duration-[80ms] ease-calm active:translate-y-px disabled:cursor-not-allowed disabled:opacity-55'
 const pick =
   'min-h-11 min-w-[52px] rounded-sm border border-line-strong bg-surface px-3 text-sm font-semibold text-ink aria-pressed:border-[3px] aria-pressed:border-primary aria-pressed:bg-primary-soft aria-pressed:text-on-primary-soft'
 
@@ -26,18 +26,21 @@ function serialise(list: string[], fmt: Format) {
 
 export function BulkList({
   items,
-  length,
   revealed = true,
+  selected,
+  onSelect,
   onCopy,
+  onDownload,
 }: {
   items: string[]
-  length: number
   revealed?: boolean
+  selected: number
+  onSelect: (index: number) => void
   onCopy: (value: string) => Promise<boolean>
+  onDownload: (fileName: string) => void
 }) {
   const [fmt, setFmt] = useState<Format>('txt')
   const [copied, setCopied] = useState<number | 'all' | null>(null)
-  const [status, setStatus] = useState('')
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   useEffect(() => () => clearTimeout(timer.current), [])
@@ -59,7 +62,7 @@ export function BulkList({
     a.click()
     a.remove()
     setTimeout(() => URL.revokeObjectURL(url), 2000)
-    setStatus(`Saving ${name} — a plain, unencrypted file. Delete it once everyone has theirs.`)
+    onDownload(name)
   }
 
   return (
@@ -75,10 +78,6 @@ export function BulkList({
         ))}
       </div>
 
-      <p className="m-0 text-[13px] text-ink-3">
-        {items.length} {items.length === 1 ? 'password' : 'passwords'}, {length} characters each
-      </p>
-
       <ol
         aria-label="Generated passwords"
         className="m-0 max-h-80 list-none overflow-y-auto rounded-md border border-line p-0"
@@ -86,14 +85,23 @@ export function BulkList({
         {items.map((value, i) => (
           <li
             key={i}
-            className="grid min-h-11 grid-cols-[52px_minmax(0,1fr)_auto] items-center gap-2 border-b border-line py-0 pl-3 pr-1.5 [contain-intrinsic-size:auto_45px] [content-visibility:auto] last:border-b-0"
+            className={cn(
+              'grid min-h-11 grid-cols-[52px_minmax(0,1fr)_auto] items-center gap-2 border-b border-line py-0 pl-3 pr-1.5 [contain-intrinsic-size:auto_45px] [content-visibility:auto] last:border-b-0',
+              selected === i && 'bg-primary-soft',
+            )}
           >
             <span aria-hidden="true" className="font-mono text-[13px] text-ink-3">
               {i + 1}
             </span>
-            <span className="py-2.5 font-mono text-[15px] text-ink [overflow-wrap:anywhere]">
+            <button
+              type="button"
+              aria-pressed={selected === i}
+              aria-label={`Select password ${i + 1} for the leak check`}
+              onClick={() => onSelect(i)}
+              className="min-h-11 cursor-pointer border-0 bg-transparent p-0 py-2.5 text-left font-mono text-[15px] text-ink [overflow-wrap:anywhere]"
+            >
               {revealed ? value : '•'.repeat(value.length)}
-            </span>
+            </button>
             <button
               type="button"
               aria-label={`Copy password ${i + 1}`}
@@ -111,11 +119,6 @@ export function BulkList({
           </li>
         ))}
       </ol>
-
-      <p className="m-0 flex gap-1.5 text-[13px] text-ink-3">
-        <Warning size={16} weight="bold" aria-hidden="true" className="mt-0.5 shrink-0 text-warning" />
-        Files are plain and unencrypted. Hand the passwords over, then delete the file.
-      </p>
 
       <div className="flex flex-wrap gap-2">
         <button
@@ -140,8 +143,9 @@ export function BulkList({
         </button>
       </div>
 
-      <p role="status" aria-live="polite" className={cn('m-0 text-sm font-semibold text-ink-2', !status && 'sr-only')}>
-        {status}
+      <p className="m-0 flex gap-1.5 text-[13px] text-ink-3">
+        <Warning size={16} weight="bold" aria-hidden="true" className="mt-0.5 shrink-0 text-warning" />
+        Files are plain and unencrypted. Hand the passwords over, then delete the file.
       </p>
     </div>
   )

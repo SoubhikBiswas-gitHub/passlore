@@ -5,8 +5,8 @@ import { ArrowsClockwise, Check, Copy, Lightning } from "@phosphor-icons/react"
 import { pickN } from "@/lib/generator/random"
 import { tier } from "@/lib/generator/strength"
 import { POOL } from "./LiveDraw"
-import { PasswordText } from "./PasswordText"
 import { Toast, copyText, useToast } from "./Toast"
+import { cn } from "@/lib/utils"
 import { btn, forTag } from "./styles"
 
 const LENGTH = 16
@@ -34,7 +34,7 @@ export function FreshTicket() {
       setAnnounce("Password copied.")
       clearTimeout(timer.current)
       timer.current = setTimeout(() => setCopied(false), 2400)
-    } else toast.show("Couldn’t reach the clipboard. Select the password and copy it.")
+    } else toast.show("Couldn’t reach the clipboard. Select the password and copy it.", "error")
   }
 
   const fresh = () => {
@@ -59,7 +59,7 @@ export function FreshTicket() {
               className="m-0 min-h-[1.22em] font-mono text-[26px] leading-[1.22] tracking-[0.02em] [overflow-wrap:anywhere] md:text-4xl"
               aria-label={pw ? `Password: ${pw.split("").join(" ")}` : "Cutting a password"}
             >
-              {pw ? <PasswordText value={pw} /> : "················"}
+              {pw || "················"}
             </p>
             <span className="text-[13px] text-ink-3">
               {LENGTH} characters · from all {POOL.length} · ≈ {BITS.toFixed(1)} bits · {tier(BITS).name}
@@ -69,7 +69,7 @@ export function FreshTicket() {
             <button
               type="button"
               onClick={copy}
-              className={`${copied ? btn.copied : btn.primaryLg} flex-1`}
+              className={cn(copied ? btn.copied : btn.primaryLg, "flex-1")}
               disabled={!pw}
             >
               {copied ? (
@@ -79,7 +79,7 @@ export function FreshTicket() {
               )}
               {copied ? "Copied" : "Copy"}
             </button>
-            <button type="button" onClick={fresh} className={`${btn.secondary} flex-1`}>
+            <button type="button" onClick={fresh} className={cn(btn.secondary, "flex-1")}>
               <ArrowsClockwise className="size-5" weight="bold" aria-hidden />
               Cut a new one
             </button>
@@ -89,7 +89,7 @@ export function FreshTicket() {
           {announce}
         </p>
       </div>
-      <Toast text={toast.text} onDismiss={toast.dismiss} />
+      <Toast text={toast.text} kind={toast.kind} onDismiss={toast.dismiss} />
     </>
   )
 }

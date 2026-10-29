@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useId, useState } from "react"
 import type { ReactNode } from "react"
+import { Warning } from "@phosphor-icons/react"
 import s from "./Generator.module.css"
 
 export function SwitchRow({ id, name, sample, on, onToggle, mono }: { id: string; name: string; sample: ReactNode; on: boolean; onToggle: () => void; mono?: boolean }) {
@@ -27,10 +28,16 @@ type NumberFieldProps = {
   className?: string
   allowEmpty?: boolean
   id?: string
+  full?: boolean
+  overMax?: string
+  underMin?: string
 }
 
-export function NumberField({ value, min, max, onCommit, label, className, allowEmpty, id }: NumberFieldProps) {
+export function NumberField({ value, min, max, onCommit, label, className, allowEmpty, id, full, overMax, underMin }: NumberFieldProps) {
   const [draft, setDraft] = useState<string | null>(null)
+  const errId = useId()
+  const n = draft === null ? NaN : parseInt(draft, 10)
+  const error = isNaN(n) ? "" : n > max ? overMax ?? "Up to " + max + "." : n < min ? underMin ?? "At least " + min + "." : ""
   const commit = () => {
     if (draft === null) return
     const n = parseInt(draft, 10)
@@ -42,21 +49,33 @@ export function NumberField({ value, min, max, onCommit, label, className, allow
     onCommit(Math.max(min, Math.min(max, n)))
   }
   return (
-    <input
-      id={id}
-      className={`${s.field} ${s.num} ${className ?? ""}`}
-      type="number"
-      inputMode="numeric"
-      min={min}
-      max={max}
-      aria-label={label}
-      value={draft ?? (value == null ? "" : String(value))}
-      onChange={(e) => setDraft(e.target.value)}
-      onBlur={commit}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") commit()
-      }}
-    />
+    <span className={`${s.numWrap} ${full ? s.numFull : ""} ${className ?? ""}`}>
+      <input
+        id={id}
+        className={`${s.field} ${s.num}`}
+        type="number"
+        inputMode="numeric"
+        min={min}
+        max={max}
+        aria-label={label}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={errId}
+        value={draft ?? (value == null ? "" : String(value))}
+        onChange={(e) => setDraft(e.target.value)}
+        onBlur={commit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") commit()
+        }}
+      />
+      <span id={errId} className={s.fieldErr} aria-live="polite">
+        {error ? (
+          <>
+            <Warning size={16} aria-hidden="true" className="flex-none" />
+            {error}
+          </>
+        ) : null}
+      </span>
+    </span>
   )
 }
 

@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Notebook } from "@phosphor-icons/react"
+import { cn } from "@/lib/utils"
 import { btn, card, forTag, pill, tinyTicket } from "@/components/content/styles"
 import { CATEGORIES, type HeroTicket } from "./postMeta"
 
@@ -21,7 +22,7 @@ export type BlogCard = {
 
 const catLabel = "text-[13px] font-bold text-link"
 
-export function BlogIndex({ posts }: { posts: BlogCard[] }) {
+export function BlogIndex({ posts, hero }: { posts: BlogCard[]; hero: React.ReactNode }) {
   const [cat, setCat] = useState<string>("All")
   const featured = posts.find((p) => p.featured)
   const showFeatured = featured && (cat === "All" || cat === featured.category)
@@ -29,13 +30,16 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
 
   return (
     <>
-      <div role="group" aria-label="Filter by topic" className="mt-2 flex flex-wrap gap-2">
-        {CATEGORIES.map((c) => (
-          <button key={c} type="button" className={pill} aria-pressed={c === cat} onClick={() => setCat(c)}>
-            {c}
-          </button>
-        ))}
-      </div>
+      <section aria-labelledby="bl-h" className="relative flex flex-col gap-4 pb-8 pt-8 md:pb-12 md:pt-16">
+        {hero}
+        <div role="group" aria-label="Filter by topic" className="mt-2 flex flex-wrap gap-2">
+          {CATEGORIES.map((c) => (
+            <button key={c} type="button" className={pill} aria-pressed={c === cat} onClick={() => setCat(c)}>
+              {c}
+            </button>
+          ))}
+        </div>
+      </section>
       <p className="sr-only" role="status" aria-live="polite">
         {cat === "All" ? "Showing all articles" : `Showing ${cat}`}
       </p>
@@ -44,13 +48,13 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
         {showFeatured && featured ? (
           <Link
             href={`/blog/${featured.slug}`}
-            className={`${card} grid grid-cols-1 overflow-hidden text-ink no-underline transition-shadow duration-200 ease-calm hover:shadow-e2 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]`}
+            className={cn(card, "grid grid-cols-1 overflow-hidden text-ink no-underline transition-shadow duration-200 ease-calm hover:shadow-e2 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]")}
           >
-            <span aria-hidden className="flex min-h-[300px] flex-col justify-center gap-3.5 bg-surface-2 p-9">
+            <span aria-hidden className="flex min-h-[300px] flex-col justify-center gap-3.5 bg-bg p-9">
               {featured.tickets.map((t, i) => (
                 <span
                   key={t.tag}
-                  className={`${tinyTicket} max-w-[420px] ${i % 2 ? "rotate-[1.5deg] self-end" : "-rotate-2"}`}
+                  className={cn(tinyTicket, "max-w-[420px]", i % 2 ? "rotate-[1.5deg] self-end" : "-rotate-2")}
                 >
                   <span className={forTag}>{t.tag}</span>
                   <span className="font-mono text-[22px] leading-[1.3] [overflow-wrap:anywhere]">{t.value}</span>
@@ -58,7 +62,7 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
               ))}
             </span>
             <span className="flex flex-col justify-center gap-3 p-8">
-              <span className={`${catLabel} text-sm`}>{featured.category} · Featured</span>
+              <span className={cn(catLabel, "text-sm")}>{featured.category} · Featured</span>
               <span className="font-display text-[28px] font-extrabold leading-[1.05] tracking-[-0.03em] md:text-4xl">
                 {featured.title}
               </span>
@@ -76,7 +80,7 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
               <Link
                 key={p.slug}
                 href={`/blog/${p.slug}`}
-                className={`${card} group flex flex-col overflow-hidden text-ink no-underline transition-shadow duration-200 ease-calm hover:shadow-e2`}
+                className={cn(card, "group flex flex-col overflow-hidden text-ink no-underline transition-shadow duration-200 ease-calm hover:shadow-e2")}
               >
                 <span
                   aria-hidden
@@ -109,7 +113,7 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
         ) : null}
 
         {!shown.length && !showFeatured ? (
-          <div className={`${card} flex flex-col items-center gap-2.5 px-6 py-10 text-center`}>
+          <div className={cn(card, "flex flex-col items-center gap-2.5 px-6 py-10 text-center")}>
             <Notebook className="size-8 text-ink-3" aria-hidden />
             <p className="m-0 text-[19px] font-semibold">Nothing in {cat} yet.</p>
             <p className="m-0 max-w-[440px] text-ink-2">

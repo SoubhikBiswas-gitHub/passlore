@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import type { ReactNode } from "react"
-import { ArrowsLeftRight, CaretDown, CaretUp, Info, Question, ShieldCheck, ShieldWarning, Warning, XCircle } from "@phosphor-icons/react"
-import { STRENGTH_MARKS, crack, rulerPct, tier } from "@/lib/generator"
+import { CaretDown, CaretUp, Info, Question, ShieldCheck, ShieldWarning, Warning, XCircle } from "@phosphor-icons/react"
+import { crack, rulerPct, tier } from "@/lib/generator"
 import type { Metrics } from "@/lib/generator"
 import s from "./Generator.module.css"
 
@@ -40,19 +40,11 @@ export function StrengthRuler({ metrics, hasError, note, share }: Props) {
         <span className={s.rFill} style={{ width: pct + "%", background: tone }} />
         <span className={s.rNeedle} style={{ left: pct + "%" }} />
       </div>
-      <ol className={s.rMarks} aria-hidden="true">
-        {STRENGTH_MARKS.map(([label, lg], i) => (
-          <li key={label} className={s.rMark} style={{ left: rulerPct(lg) + "%", top: i % 2 ? 18 : 0 }}>
-            <i />
-            {label}
-          </li>
-        ))}
-      </ol>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="m-0 text-[13px]" style={{ color: "var(--on-stage-2)" }}>
-          An estimate: the average time at 100 billion guesses a second
+          Estimate at 100 billion guesses a second
         </p>
-        <span className="flex-1" />
+        <span className={`${s.onlyWide} flex-1`} />
         {!hasError && metrics.bits > 0 && share}
         <button type="button" className={s.linkBtn} aria-expanded={detail} aria-controls="strength-detail" onClick={() => setDetail(!detail)}>
           {detail ? "Hide the maths" : "How is this worked out?"}
@@ -78,17 +70,13 @@ export function StrengthRuler({ metrics, hasError, note, share }: Props) {
       {!hasError &&
         metrics.notes.map((n) => (
           <p key={n.text} className={s.noteLine}>
-            {n.tone === "warning" ? (
-              <Warning size={16} aria-hidden="true" className="mt-[3px] flex-none" style={{ color: "var(--st-warning)" }} />
-            ) : (
-              <Info size={16} aria-hidden="true" className="mt-[3px] flex-none" style={{ color: "var(--st-link)" }} />
-            )}
+            <Warning size={16} aria-hidden="true" className="mt-[3px] flex-none" style={{ color: "var(--st-warning)" }} />
             <span>{n.text}</span>
           </p>
         ))}
       {note && (
         <p className={s.noteLine} style={{ color: "var(--on-stage)" }}>
-          <ArrowsLeftRight size={16} aria-hidden="true" className="mt-[3px] flex-none" style={{ color: "var(--st-link)" }} />
+          <Info size={16} aria-hidden="true" className="mt-[3px] flex-none" style={{ color: "var(--st-warning)" }} />
           <span>{note}</span>
         </p>
       )}

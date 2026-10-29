@@ -86,7 +86,7 @@ export function SiteRulesPanel({ form, password, onForm }: Props) {
                     {c.on ? <X size={16} weight="bold" aria-hidden="true" /> : <Plus size={16} weight="bold" aria-hidden="true" />}
                   </button>
                 ) : (
-                  <Check size={16} weight="bold" aria-hidden="true" style={{ color: "var(--success)" }} />
+                  <Check size={16} weight="bold" aria-hidden="true" style={{ color: "var(--text)" }} />
                 )}
               </li>
             ))}
@@ -98,11 +98,11 @@ export function SiteRulesPanel({ form, password, onForm }: Props) {
         <div className="flex items-end gap-2.5">
           <label className={`${s.fieldLabel} flex-1`}>
             <span className={s.lbl}>Shortest</span>
-            <NumberField className="w-full" value={r.min} min={1} max={128} allowEmpty onCommit={(v) => setOv({ min: v })} />
+            <NumberField full value={r.min} min={1} max={128} allowEmpty onCommit={(v) => setOv({ min: v })} />
           </label>
           <label className={`${s.fieldLabel} flex-1`}>
             <span className={s.lbl}>Longest</span>
-            <NumberField className="w-full" value={r.max} min={1} max={128} allowEmpty onCommit={(v) => setOv({ max: v })} />
+            <NumberField full value={r.max} min={1} max={128} allowEmpty onCommit={(v) => setOv({ max: v })} />
           </label>
         </div>
         <label className={s.fieldLabel}>

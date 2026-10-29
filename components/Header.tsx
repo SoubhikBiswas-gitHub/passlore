@@ -4,8 +4,10 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
-import { GithubLogo, Lightning, List, X } from "@phosphor-icons/react"
-import { PassloreMark, REPO_URL } from "@/components/Footer"
+import { Lightning, List, X } from "@phosphor-icons/react"
+import { REPO_URL } from "@/components/Footer"
+import { InstallApp } from "@/components/InstallApp"
+import { PassloreMark } from "@/components/PassloreMark"
 import { ThemeRadioGroup, ThemeSelector } from "@/components/ThemeSelector"
 import { cn } from "@/lib/utils"
 
@@ -21,7 +23,7 @@ function isCurrent(pathname: string, href: string) {
 }
 
 const stageButton =
-  "inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-[var(--stage-line)] bg-transparent text-sm font-semibold text-[var(--on-stage)] transition-colors duration-150 ease-calm hover:bg-[var(--stage-2)]"
+  "inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-[var(--stage-line)] bg-transparent text-sm font-semibold text-[var(--on-stage)] transition-colors duration-(--t-glide) ease-calm hover:bg-[var(--stage-2)] [[data-theme=hc]_&]:border-2"
 
 export function Header() {
   const pathname = usePathname() ?? "/"
@@ -60,12 +62,14 @@ export function Header() {
 
   return (
     <>
-      <a
-        href="#main"
-        className="sr-only rounded-[10px] bg-primary px-4 py-3 font-semibold text-on-primary shadow-e2 focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100]"
-      >
-        Skip to content
-      </a>
+      {!onGenerator && (
+        <a
+          href="#main"
+          className="sr-only rounded-[10px] bg-primary px-4 py-3 font-semibold text-on-primary shadow-e2 focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100]"
+        >
+          Skip to content
+        </a>
+      )}
       <header className="relative z-[35] border-b border-[var(--stage-line)] bg-[var(--stage)] text-[var(--on-stage)]">
         <div className="mx-auto flex min-h-[68px] w-full max-w-[1240px] items-center justify-between gap-4 px-4 min-[720px]:px-8">
           <Link
@@ -73,7 +77,7 @@ export function Header() {
             aria-label="Passlore home"
             className="flex min-h-11 items-center gap-2.5 rounded-[10px] text-[var(--on-stage)] no-underline"
           >
-            <PassloreMark size={30} className="text-[var(--accent-on-band)]" />
+            <PassloreMark size={30} arrive tick className="text-[var(--accent-on-band)]" />
             <span className="font-display text-2xl font-[650] tracking-[-0.025em]" aria-hidden>
               passlore
             </span>
@@ -88,7 +92,7 @@ export function Header() {
                   href={item.href}
                   aria-current={current ? "page" : undefined}
                   className={cn(
-                    "inline-flex min-h-11 items-center rounded-[10px] px-2.5 text-[15px] transition-colors duration-150",
+                    "inline-flex min-h-11 items-center rounded-[10px] px-2.5 text-[15px] transition-colors duration-(--t-glide) ease-calm",
                     current
                       ? "font-semibold text-[var(--on-stage)] underline decoration-[var(--accent-on-band)] decoration-2 underline-offset-8"
                       : "font-[550] text-[var(--on-stage-2)] no-underline hover:bg-[var(--stage-2)] hover:text-[var(--on-stage)]"
@@ -102,11 +106,11 @@ export function Header() {
 
           <div className="flex items-center gap-2">
             <ThemeSelector />
-            <div id="header-actions" className="contents" />
+            <div id="header-actions" className="contents [[data-theme=hc]_&>button]:border-2" />
             {!onGenerator && (
               <Link
                 href="/"
-                className="hidden min-h-11 items-center gap-2 rounded-[10px] bg-[var(--accent-on-band)] px-3 text-sm font-semibold whitespace-nowrap text-[var(--on-accent-on-band)] no-underline transition-[filter] duration-150 hover:brightness-110 min-[720px]:inline-flex"
+                className="hidden min-h-11 items-center gap-2 rounded-[10px] bg-[var(--accent-on-band)] px-3 text-sm font-semibold whitespace-nowrap text-[var(--on-accent-on-band)] no-underline transition-[filter] duration-(--t-glide) ease-calm hover:brightness-110 min-[720px]:inline-flex"
               >
                 <Lightning className="size-5" weight="fill" aria-hidden />
                 Cut a password
@@ -147,7 +151,7 @@ export function Header() {
                       onClick={() => setOpen(false)}
                       className={cn(
                         "flex min-h-[52px] items-center border-b border-line text-lg text-ink no-underline",
-                        current && "font-[650] underline decoration-primary decoration-2 underline-offset-8"
+                        current && "font-[650]"
                       )}
                     >
                       {item.label}
@@ -156,14 +160,14 @@ export function Header() {
                 })}
                 <a
                   href={REPO_URL}
-                  className="flex min-h-[52px] items-center gap-2 border-b border-line text-lg text-ink no-underline"
+                  className="flex min-h-[52px] items-center border-b border-line text-lg text-ink no-underline"
                 >
-                  <GithubLogo className="size-5" aria-hidden />
                   Source code
                 </a>
               </nav>
               <p className="mt-3.5 mb-1 text-sm font-semibold text-ink-2">Theme</p>
               <ThemeRadioGroup />
+              <InstallApp variant="menu" />
             </motion.div>
           )}
         </AnimatePresence>

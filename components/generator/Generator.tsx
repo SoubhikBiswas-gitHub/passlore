@@ -4,8 +4,9 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import type { ReactNode } from "react"
 import { createPortal } from "react-dom"
 import Link from "next/link"
-import { ArrowRight, ArrowsClockwise, Check, Info, Tray, Warning, WifiSlash, X } from "@phosphor-icons/react"
+import { ArrowRight, ArrowsClockwise, Check, DownloadSimple, Info, Tray, Warning, WifiSlash, X } from "@phosphor-icons/react"
 import { Lore, LoreSpeech } from "@/components/Lore"
+import { NEW_PASSWORD_EVENT } from "@/components/PassloreMark"
 import type { LoreMood, LoreScene } from "@/components/Lore"
 import {
   FALLBACK_WORDS,
@@ -37,7 +38,7 @@ import { BUILD_ANNOUNCE, DECK, NEXT_STEPS, deckOf, isWordsRecipe, recipeDef, stu
 import type { BuildKind } from "./recipes"
 import s from "./Generator.module.css"
 
-type Toast = { kind: "ok" | "error" | "info"; text: string }
+type Toast = { kind: "ok" | "error" | "info" | "download"; text: string }
 
 type St = {
   recipe: RecipeId
@@ -61,6 +62,8 @@ type St = {
   announce: string
   offline: boolean
   roll: number | null
+  leakOpen: boolean
+  bulkSel: number
 }
 
 const EMPTY: GenResult = { password: "", err: "", bulk: [] }
@@ -87,6 +90,8 @@ const INITIAL: St = {
   announce: "",
   offline: false,
   roll: null,
+  leakOpen: false,
+  bulkSel: 0,
 }
 
 const SCRAMBLE_CHARS = SETS.U + SETS.L + SETS.D + SETS.S
@@ -183,7 +188,7 @@ export function Generator({ children }: { children?: ReactNode }) {
       }
     }
     touched.current = true
-    update({ recipe: r, cfg: c, result: g, resultWords: cur.words, note, copied: false, ...extra })
+    update({ recipe: r, cfg: c, result: g, resultWords: cur.words, note, copied: false, bulkSel: 0, ...extra })
     startRoll(g.password)
   }
 
@@ -210,11 +215,12 @@ export function Generator({ children }: { children?: ReactNode }) {
     const cur = ref.current
     const g = gen(cur.recipe, cur.cfg, cur.words)
     touched.current = true
-    update({ result: g, resultWords: cur.words, copied: false, note: "" })
+    update({ result: g, resultWords: cur.words, copied: false, note: "", bulkSel: 0 })
     if (!g.err) {
       const bits = metrics(cur.recipe, cur.cfg, cur.words).bits
       addHistory(cur.recipe === "bulk" ? g.bulk.join("\n") : g.password, cur.recipe, bits)
       announce((cur.recipe === "bulk" ? g.bulk.length + " new passwords cut. " : "New password cut. ") + tier(bits).name + ".")
+      window.dispatchEvent(new Event(NEW_PASSWORD_EVENT))
     }
     startRoll(g.password)
   }
@@ -432,9 +438,10 @@ export function Generator({ children }: { children?: ReactNode }) {
   const copyLabel = isBulk ? "Copy all" : "Copy"
   const regenLabel = isBulk ? "Cut " + st.cfg.bulk.count + " new" : "Cut a new one"
   const steps = NEXT_STEPS[st.recipe] ?? NEXT_STEPS._
-  const leakPassword = error ? "" : isBulk ? bulk[0] ?? "" : password
+  const bulkSel = Math.min(st.bulkSel, Math.max(0, bulk.length - 1))
+  const leakPassword = error ? "" : isBulk ? bulk[bulkSel] ?? "" : password
   const sep = st.recipe === "wifi" ? st.cfg.wifi.sep : st.recipe === "custom" ? st.cfg.custom.sep : " "
-  const bigAllowed = isWords && !error && st.recipe !== "wifi"
+  const bigAllowed = isWords && !error
 
   const drawerTrigger = (
     <button
@@ -485,7 +492,7 @@ export function Generator({ children }: { children?: ReactNode }) {
             </div>
             <div className={`${s.loreSpot} ${s.onlyWide}`}>
               <div style={{ paddingBottom: 46, maxWidth: 230 }}>
-                <LoreSpeech tone={error ? "warning" : st.copied ? "success" : "neutral"}>{lore[2]}</LoreSpeech>
+                <LoreSpeech>{lore[2]}</LoreSpeech>
               </div>
               <Lore mood={lore[0]} scene={lore[1]} size={150} />
             </div>
@@ -526,7 +533,7 @@ export function Generator({ children }: { children?: ReactNode }) {
             metrics={m}
             hasError={!!error}
             note={st.note}
-            share={<ShareStrength bits={m.bits} isWords={isWords} isPin={st.recipe === "pin"} />}
+            share={<ShareStrength bits={m.bits} isWords={isWords} isPin={st.recipe === "pin"} recipeName={def.name} />}
           />
         </div>
       </section>
@@ -544,12 +551,20 @@ export function Generator({ children }: { children?: ReactNode }) {
           onBuild={pickBuild}
           setCfg={setCfg}
           onCopyValue={(v) => copyText(v, "bulk", v.includes("\n") ? v.split("\n").length + " passwords" : "Password", v.includes("\n"))}
+          bulkSel={bulkSel}
+          onBulkSelect={(i) => {
+            update({ bulkSel: i })
+            announce("Row " + (i + 1) + " selected for the leak check.")
+          }}
+          onDownload={(name) => toast("download", "Saving " + name + " — a plain, unencrypted file. Delete it once everyone has theirs.")}
         />
         <div className={s.side}>
           <LeakCheck
             key={leakPassword}
             password={leakPassword}
-            subject={isBulk && leakPassword ? "Checks password 1 of the list." : undefined}
+            subject={isBulk && leakPassword ? "Checks the selected row (number " + (bulkSel + 1) + ")." : undefined}
+            open={st.leakOpen}
+            onOpenChange={(leakOpen) => update({ leakOpen })}
             onRegenerate={regen}
           />
           <Link href="/how-it-works" className={s.howLink}>
@@ -564,7 +579,15 @@ export function Generator({ children }: { children?: ReactNode }) {
       <div className={s.dock}>
         {st.toast && (
           <div className={s.toast}>
-            {st.toast.kind === "error" ? <Warning size={20} aria-hidden="true" /> : st.toast.kind === "ok" ? <Check size={20} aria-hidden="true" /> : <Info size={20} aria-hidden="true" />}
+            {st.toast.kind === "error" ? (
+              <Warning size={20} aria-hidden="true" />
+            ) : st.toast.kind === "ok" ? (
+              <Check size={20} aria-hidden="true" />
+            ) : st.toast.kind === "download" ? (
+              <DownloadSimple size={20} aria-hidden="true" />
+            ) : (
+              <Info size={20} aria-hidden="true" />
+            )}
             <span className="flex-1 text-[15px]">{st.toast.text}</span>
             <button type="button" className={s.toastBtn} aria-label="Dismiss" onClick={() => update({ toast: null })}>
               <X size={20} aria-hidden="true" />

@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react"
 import { motion, useReducedMotion } from "framer-motion"
-import { DiceFive } from "@phosphor-icons/react"
+import { ArrowsClockwise } from "@phosphor-icons/react"
+import { cn } from "@/lib/utils"
 import { btn } from "./styles"
 
 export const POOL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{};:,.<>/?~"
@@ -27,7 +28,7 @@ function drawNext(prev: string): Draw {
 const stepClass =
   "grid min-h-10 grid-cols-[28px_minmax(0,1fr)_auto] items-center gap-2.5 border-b border-line text-[15px]"
 const stepNum =
-  "inline-flex size-6 items-center justify-center rounded-full bg-surface-2 text-[13px] font-bold text-ink"
+  "inline-flex size-6 items-center justify-center text-[13px] font-bold text-ink"
 
 export function LiveDraw() {
   const [draw, setDraw] = useState<Draw | null>(null)
@@ -131,8 +132,8 @@ export function LiveDraw() {
         </span>
       </div>
       <div className="flex flex-wrap gap-2">
-        <button type="button" className={`${btn.primary} flex-1`} onClick={drawOne} disabled={!draw}>
-          <DiceFive className="size-5" weight="bold" aria-hidden />
+        <button type="button" className={cn(btn.primary, "flex-1")} onClick={drawOne} disabled={!draw}>
+          <ArrowsClockwise className="size-5" weight="bold" aria-hidden />
           {done ? "Start a new one" : "Draw the next character"}
         </button>
         <button type="button" className={btn.secondary} onClick={drawAll} disabled={!draw}>

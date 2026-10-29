@@ -6,6 +6,7 @@ import { CheckCircle, CircleNotch, MagnifyingGlass, Question, WifiSlash, XCircle
 import { Lore } from '@/components/Lore'
 import { checkLeak, sha1Hex } from '@/lib/generator'
 import { cn } from '@/lib/utils'
+import s from './Generator.module.css'
 
 type LeakState =
   | { status: 'idle' }
@@ -15,9 +16,9 @@ type LeakState =
   | { status: 'failed'; reason: 'offline' | 'error' }
 
 const btn =
-  'inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-sm border px-[18px] text-[15px] font-semibold transition-[background-color,border-color,transform] duration-75 ease-calm active:translate-y-px disabled:cursor-not-allowed disabled:opacity-55'
+  'inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-sm border px-[18px] text-[15px] font-semibold transition-[background-color,border-color,transform] duration-[80ms] ease-calm active:translate-y-px disabled:cursor-not-allowed disabled:opacity-55'
 const btnPrimary = cn(btn, 'border-transparent bg-primary text-on-primary hover:bg-primary-hover')
-const btnSecondary = cn(btn, 'border-line-strong bg-surface text-ink hover:bg-surface-2')
+const btnSecondary = cn(btn, 'border-line-strong bg-surface text-ink hover:bg-surface-2 [[data-theme=hc]_&]:border-2')
 
 function useOnline() {
   const [online, setOnline] = useState(true)
@@ -37,15 +38,18 @@ function useOnline() {
 export function LeakCheck({
   password,
   subject,
+  open,
+  onOpenChange,
   onRegenerate,
 }: {
   password: string
   subject?: string
+  open: boolean
+  onOpenChange: (open: boolean) => void
   onRegenerate?: () => void
 }) {
   const bodyId = useId()
   const online = useOnline()
-  const [open, setOpen] = useState(false)
   const [hash, setHash] = useState('')
   const [state, setState] = useState<LeakState>({ status: 'idle' })
   const [announce, setAnnounce] = useState('')
@@ -66,7 +70,7 @@ export function LeakCheck({
 
   const runCheck = async () => {
     if (!password) return
-    setOpen(true)
+    onOpenChange(true)
     if (!navigator.onLine) {
       setState({ status: 'failed', reason: 'offline' })
       setAnnounce('Couldn’t check: offline. Unknown.')
@@ -99,7 +103,7 @@ export function LeakCheck({
     <section
       id="leak"
       aria-labelledby={`${bodyId}-t`}
-      className="flex scroll-mt-3 flex-col gap-3 rounded-lg border border-line bg-surface px-5 py-[18px] shadow-e1"
+      className={cn(s.card, 'flex scroll-mt-3 flex-col gap-3 px-5 py-[18px]')}
     >
       <div className="flex items-center justify-between gap-2">
         <h2 id={`${bodyId}-t`} className="m-0 flex items-center gap-2 text-[17px] font-bold">
@@ -110,8 +114,9 @@ export function LeakCheck({
           type="button"
           aria-expanded={open}
           aria-controls={bodyId}
-          onClick={() => setOpen((o) => !o)}
-          className={cn(btn, 'border-transparent bg-transparent px-3 text-sm text-link hover:bg-surface-2')}
+          onClick={() => onOpenChange(!open)}
+          className={cn(s.btn, s.btnG, s.btnSm)}
+          style={{ color: 'var(--link)' }}
         >
           {open ? 'Hide' : 'Open'}
         </button>

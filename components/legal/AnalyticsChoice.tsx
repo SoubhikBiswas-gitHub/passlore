@@ -60,13 +60,13 @@ export function AnalyticsChoice() {
   const toast = useToast()
 
   const allow = () => {
-    if (!write("true")) return toast.show("Couldn’t save your choice in this browser. Nothing is collected.")
-    toast.show("Analytics allowed. You can change this any time.")
+    if (!write("true")) return toast.show("Couldn’t save your choice in this browser. Nothing is collected.", "error")
+    toast.show("Analytics allowed. You can change this any time.", "ok")
   }
 
   const decline = () => {
-    if (!write("false")) return toast.show("Couldn’t save your choice in this browser. Nothing is collected.")
-    toast.show("Analytics off. Nothing more is collected.")
+    if (!write("false")) return toast.show("Couldn’t save your choice in this browser. Nothing is collected.", "error")
+    toast.show("Analytics off. Nothing is collected.", "ok")
   }
 
   const line =
@@ -88,7 +88,7 @@ export function AnalyticsChoice() {
           No analytics
         </button>
       </div>
-      <Toast text={toast.text} onDismiss={toast.dismiss} />
+      <Toast text={toast.text} kind={toast.kind} onDismiss={toast.dismiss} />
     </div>
   )
 }

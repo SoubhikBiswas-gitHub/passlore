@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 }
 
 const big4 =
-  "hidden font-display text-[84px] font-extrabold leading-[0.85] tracking-[-0.06em] text-transparent [-webkit-text-stroke:2px_var(--text-2)] sm:block md:text-[150px]"
+  "hidden font-display text-[84px] font-extrabold leading-[0.85] tracking-[-0.06em] text-bg [-webkit-text-stroke:4px_var(--text-2)] [paint-order:stroke_fill] sm:block md:text-[150px]"
 
 export default function NotFound() {
   return (

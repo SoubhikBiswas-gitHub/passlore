@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { ChartBar, MagnifyingGlass, ShieldCheck } from "@phosphor-icons/react/dist/ssr"
+import { ChartBar, Lock, MagnifyingGlass } from "@phosphor-icons/react/dist/ssr"
 import { AnalyticsChoice, ConsentSummary } from "@/components/legal/AnalyticsChoice"
 import { LegalShell, type LegalSectionData } from "@/components/legal/LegalShell"
 import { card } from "@/components/content/styles"
@@ -87,7 +87,7 @@ function WhatLeaves() {
       </p>
       <div className={flow}>
         <span className={`${dot} bg-success-soft text-success`}>
-          <ShieldCheck className="size-6" aria-hidden />
+          <Lock className="size-6" aria-hidden />
         </span>
         <strong>Your passwords</strong>
         <span className="col-start-2 md:col-start-auto">

@@ -4,7 +4,7 @@ import {
   DotsNine,
   Key,
   Lightning,
-  Sliders,
+  SlidersHorizontal,
   Stack,
   Television,
   Vault,
@@ -32,7 +32,7 @@ export const RECIPES: RecipeDef[] = [
   { id: "master", deck: false, name: "Master password", short: "Master", line: "The one you remember", title: "Your master password", why: "The password that unlocks all the others has to live in your head. Seven random words are strong and learnable.", icon: Key },
   { id: "pin", deck: true, name: "PIN", short: "PIN", line: "Phone, card, door", title: "A PIN", why: "Digits only. A PIN is safe only where guesses are limited — the device locks after a few wrong tries. Obvious PINs are skipped.", icon: DotsNine },
   { id: "bulk", deck: false, name: "Many at once", short: "Many", line: "For a team or test accounts", title: "Many at once", why: "Up to 500 from one recipe, each cut independently. Export as text, CSV or JSON for onboarding or test accounts.", icon: Stack },
-  { id: "custom", deck: true, name: "Build your own", short: "Custom", line: "Words, site rules, many", title: "Build your own", why: "Pick characters or words, fit a site’s password rules, or make many at once.", icon: Sliders },
+  { id: "custom", deck: true, name: "Build your own", short: "Custom", line: "Words, site rules, many", title: "Build your own", why: "Pick characters or words, fit a site’s password rules, or make many at once.", icon: SlidersHorizontal },
 ]
 
 export const DECK = RECIPES.filter((r) => r.deck)

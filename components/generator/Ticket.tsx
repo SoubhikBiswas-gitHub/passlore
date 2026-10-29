@@ -1,6 +1,8 @@
 "use client"
 
-import { ArrowsClockwise, ArrowsOut, Eye, EyeSlash, TextAa, Warning } from "@phosphor-icons/react"
+import { Fragment } from "react"
+import { ArrowsClockwise, CornersOut, Eye, EyeSlash, TextAa, Warning } from "@phosphor-icons/react"
+import { Tooltip, TooltipProvider } from "@/components/ui/tooltip"
 import { SpellItOut } from "./SpellItOut"
 import { CopyButton } from "./CopyButton"
 import type { RecipeDef } from "./recipes"
@@ -70,11 +72,14 @@ export function Ticket(p: Props) {
                 className={`${s.pw} ${sizeCls}`}
                 aria-hidden="true"
                 data-testid="password-value"
-                style={{ wordBreak: p.isWords ? "normal" : "break-all" }}
+                style={p.isWords ? { wordBreak: "normal", overflowWrap: "break-word" } : { wordBreak: "break-all" }}
               >
                 {p.revealed
                   ? p.shown.split("").map((ch, i) => (
-                      <span key={i} style={{ color: COLOR[kindOf(ch)] }}>{ch}</span>
+                      <Fragment key={i}>
+                        <span style={{ color: COLOR[kindOf(ch)] }}>{ch}</span>
+                        {p.isWords && /[-._]/.test(ch) && <wbr />}
+                      </Fragment>
                     ))
                   : <span style={{ color: "var(--text-3)" }}>{"•".repeat(len)}</span>}
               </p>
@@ -94,36 +99,40 @@ export function Ticket(p: Props) {
 
           {single && p.spell && p.revealed && p.password && <SpellItOut password={p.password} />}
 
-          <div className={s.tTools}>
-            <button
-              className={s.ib}
-              type="button"
-              aria-pressed={!p.revealed}
-              aria-label={p.revealed ? "Hide password" : "Show password"}
-              title={p.revealed ? "Hide password" : "Show password"}
-              onClick={p.onToggleReveal}
-              disabled={!!p.error}
-            >
-              {p.revealed ? <EyeSlash size={20} aria-hidden="true" /> : <Eye size={20} aria-hidden="true" />}
-            </button>
-            <button
-              className={s.ib}
-              type="button"
-              aria-pressed={p.spell}
-              aria-label="Spell it out, with the phonetic alphabet"
-              title="Spell it out"
-              onClick={p.onToggleSpell}
-              disabled={!single || !p.revealed}
-            >
-              <TextAa size={20} aria-hidden="true" />
-            </button>
-            {single && p.onShowBig && (
-              <button className={`${s.btn} ${s.btnG} ${s.btnSm}`} type="button" onClick={p.onShowBig}>
-                <ArrowsOut size={20} aria-hidden="true" />
-                Show big
-              </button>
-            )}
-          </div>
+          <TooltipProvider>
+            <div className={s.tTools}>
+              <Tooltip label={p.revealed ? "Hide password" : "Show password"}>
+                <button
+                  className={s.ib}
+                  type="button"
+                  aria-pressed={!p.revealed}
+                  aria-label={p.revealed ? "Hide password" : "Show password"}
+                  onClick={p.onToggleReveal}
+                  disabled={!!p.error}
+                >
+                  {p.revealed ? <EyeSlash size={20} aria-hidden="true" /> : <Eye size={20} aria-hidden="true" />}
+                </button>
+              </Tooltip>
+              <Tooltip label="Spell it out">
+                <button
+                  className={s.ib}
+                  type="button"
+                  aria-pressed={p.spell}
+                  aria-label="Spell it out, with the phonetic alphabet"
+                  onClick={p.onToggleSpell}
+                  disabled={!single || !p.revealed}
+                >
+                  <TextAa size={20} aria-hidden="true" />
+                </button>
+              </Tooltip>
+              {single && p.onShowBig && (
+                <button className={`${s.btn} ${s.btnG} ${s.btnSm}`} type="button" onClick={p.onShowBig}>
+                  <CornersOut size={20} aria-hidden="true" />
+                  Show big
+                </button>
+              )}
+            </div>
+          </TooltipProvider>
         </div>
 
         <div className={s.tStub}>
