@@ -48,7 +48,8 @@ const sections: LegalSectionData[] = [
       <p>
         If you choose “Allow”, Google Analytics counts page visits along with standard browser details such as device
         type and approximate region. Passwords, site rules you paste and network names are never included. If you
-        decline, nothing is collected and the site works exactly the same.
+        decline, nothing is collected and the site works exactly the same. Google keeps analytics data for no more
+        than 14 months, and Passlore stores none of it on servers of its own.
       </p>
     ),
   },

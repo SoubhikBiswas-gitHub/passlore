@@ -42,8 +42,6 @@ export interface BlogPost {
   dateModified?: string
   readingTime: string
   keywords?: string[]
-  // Hero image for blog cards and featured layouts — use a unique asset per post
-  coverImage?: string
   // Small badge label on the card
   dispatchTag?: string
 }
@@ -115,7 +113,6 @@ export const blogPosts: BlogPost[] = [
     readingTime: "8 min read",
     keywords: ["strong password", "how to create password", "password security 2025"],
     dispatchTag: "Industry report",
-    coverImage: "/images/covers/strong-password.png",
   },
   {
     slug: "what-is-password-entropy-explained",
@@ -185,7 +182,6 @@ export const blogPosts: BlogPost[] = [
     readingTime: "9 min read",
     keywords: ["password entropy", "entropy bits", "password strength"],
     dispatchTag: "Tutorial",
-    coverImage: "/images/covers/entropy.png",
   },
   {
     slug: "passphrase-vs-password-which-is-more-secure",
@@ -248,7 +244,6 @@ export const blogPosts: BlogPost[] = [
     readingTime: "10 min read",
     keywords: ["passphrase vs password", "passphrase security", "EFF wordlist"],
     dispatchTag: "Opinion",
-    coverImage: "/images/covers/passphrase.png",
   },
   {
     slug: "password-manager-vs-generator-comparison",
@@ -303,7 +298,6 @@ export const blogPosts: BlogPost[] = [
     readingTime: "7 min read",
     keywords: ["password manager", "password generator", "password tools"],
     dispatchTag: "Deep dive",
-    coverImage: "/images/covers/manager-generator.png",
   },
   {
     slug: "nist-password-guidelines-2025",
@@ -363,6 +357,5 @@ export const blogPosts: BlogPost[] = [
     readingTime: "6 min read",
     keywords: ["NIST password guidelines", "password policy", "security standards"],
     dispatchTag: "Standards",
-    coverImage: "/images/covers/nist.png",
   },
 ]

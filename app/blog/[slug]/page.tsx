@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: `Post Not Found — ${SITE_NAME}` }
   }
 
-  const ogImage = post.coverImage ? [{ url: `${SITE_URL}${post.coverImage}`, alt: post.title }] : undefined
+  const ogImage = `${SITE_URL}/blog/${post.slug}/opengraph-image`
   const publishedTime = `${post.datePublished}T12:00:00.000Z`
   const modifiedTime = `${post.dateModified ?? post.datePublished}T12:00:00.000Z`
 
@@ -43,13 +43,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       modifiedTime,
       authors: [post.author],
       url: `${SITE_URL}/blog/${post.slug}`,
-      ...(ogImage && { images: ogImage }),
+      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.description,
-      ...(post.coverImage && { images: [`${SITE_URL}${post.coverImage}`] }),
+      images: [ogImage],
     },
     alternates: { canonical: `${SITE_URL}/blog/${post.slug}` },
   }
@@ -84,7 +84,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     datePublished: post.datePublished,
     dateModified: post.dateModified || post.datePublished,
     keywords: post.keywords || [],
-    coverImage: post.coverImage,
+    coverImage: `/blog/${post.slug}/opengraph-image`,
   })
   const breadcrumbSchema = getBreadcrumbSchema([
     { name: "Home", url: SITE_URL },

@@ -1,15 +1,18 @@
-import { OG_COPY, OG_IMAGE_THEME, OG_LORE_SRC, OG_MARK_SRC, loadOgFonts } from "@/lib/og-image-theme"
+import { DISPLAY, OG_COLORS, UI, loadOgFonts, markSrc } from "@/lib/og-image-theme"
 import { ImageResponse } from "next/og"
 
-export const alt = "Passlore — Free strong password generator in your browser"
+export const alt = "Passlore: your next password starts in your browser. Free, open source, nothing uploaded."
 
 export const size = { width: 1200, height: 630 }
 
 export const contentType = "image/png"
 
+const HEADLINE = "Your next password starts in your browser."
+const FOOTER = "Free · open source · nothing uploaded · passlore.com"
+
 export default async function OpenGraphImage() {
-  const fonts = await loadOgFonts()
-  const { volt, ink, white } = OG_IMAGE_THEME
+  const fonts = await loadOgFonts({ display: "passlore" + HEADLINE, ui: FOOTER })
+  const { blue, blueDeep, white } = OG_COLORS
 
   return new ImageResponse(
     (
@@ -18,58 +21,27 @@ export default async function OpenGraphImage() {
           width: "100%",
           height: "100%",
           display: "flex",
-          background: volt,
-          padding: 10,
-          fontFamily: fonts.length ? "Sora" : undefined,
-          color: ink,
+          flexDirection: "column",
+          justifyContent: "space-between",
+          position: "relative",
+          overflow: "hidden",
+          background: blue,
+          color: white,
+          padding: "72px 80px",
+          fontFamily: UI,
         }}
       >
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            position: "relative",
-            border: `6px solid ${ink}`,
-            borderRadius: 28,
-            padding: "52px 60px",
-          }}
-        >
-          <div style={{ display: "flex", flexDirection: "column", flex: 1, maxWidth: 720 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <img src={OG_MARK_SRC} width={52} height={52} alt="" />
-              <span style={{ fontSize: 44, fontWeight: 600, letterSpacing: "-0.025em" }}>passlore</span>
-            </div>
-            <div style={{ marginTop: 56, fontSize: 24, fontWeight: 800, letterSpacing: 3 }}>{OG_COPY.eyebrow}</div>
-            <div
-              style={{
-                marginTop: 14,
-                fontSize: 80,
-                fontWeight: 800,
-                lineHeight: 1.02,
-                letterSpacing: "-0.04em",
-              }}
-            >
-              {OG_COPY.headline}
-            </div>
-            <div style={{ marginTop: 22, fontSize: 30, fontWeight: 600, lineHeight: 1.3, maxWidth: 640 }}>
-              {OG_COPY.subline}
-            </div>
-            <div style={{ marginTop: "auto", fontSize: 30, fontWeight: 800 }}>{OG_COPY.domain}</div>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 360 }}>
-            <img src={OG_LORE_SRC} width={360} height={309} alt="" />
-          </div>
-          <svg
-            width="56"
-            height="56"
-            viewBox="0 0 56 56"
-            style={{ position: "absolute", top: 34, right: 60 }}
-          >
-            <path d="M28 4l6 16 16 6-16 6-6 16-6-16-16-6 16-6z" fill={white} stroke={ink} strokeWidth="4" />
-          </svg>
+        <img src={markSrc(blueDeep)} width={560} height={560} alt="" style={{ position: "absolute", right: -192, bottom: -80 }} />
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <img src={markSrc(white)} width={44} height={44} alt="" />
+          <span style={{ fontFamily: DISPLAY, fontWeight: 600, fontSize: 36, letterSpacing: "-0.02em" }}>passlore</span>
         </div>
+        <p style={{ margin: 0, fontFamily: DISPLAY, fontWeight: 700, fontSize: 84, lineHeight: 1.02, letterSpacing: "-0.03em", maxWidth: 720 }}>
+          {HEADLINE}
+        </p>
+        <p style={{ margin: 0, fontSize: 28, fontWeight: 500 }}>{FOOTER}</p>
       </div>
     ),
-    { ...size, fonts }
+    { ...size, fonts },
   )
 }

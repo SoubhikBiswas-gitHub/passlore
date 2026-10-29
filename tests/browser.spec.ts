@@ -4,7 +4,7 @@ test("generator hydrates, regenerates, and switches modes", async ({ page }) => 
   const errors: string[] = []
   page.on("pageerror", error => errors.push(error.message))
   await page.goto("/")
-  await page.getByRole("button", { name: "Reject", exact: true }).click()
+  await page.getByRole("button", { name: "No thanks", exact: true }).click()
   const output = page.getByTestId("password-value")
   await expect(output).toHaveText(/^\S{16}$/)
   const previous = await output.textContent()
@@ -38,6 +38,6 @@ test("testing pages discourage indexing and do not load production analytics", a
   test.skip(process.env.NEXT_PUBLIC_DEPLOYMENT_ENV !== "play")
   await page.goto("/privacy")
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/)
-  await page.getByRole("button", { name: "Accept", exact: true }).click()
+  await page.getByRole("button", { name: "Allow", exact: true }).click()
   await expect(page.locator('script[src*="googletagmanager.com"]')).toHaveCount(0)
 })

@@ -82,10 +82,10 @@ export function GdprBanner() {
           </p>
           <div className="flex gap-2">
             <button type="button" onClick={() => decide(true)} className={choiceButton}>
-              Accept
+              Allow
             </button>
             <button type="button" onClick={() => decide(false)} className={choiceButton}>
-              Reject
+              No thanks
             </button>
           </div>
         </motion.div>

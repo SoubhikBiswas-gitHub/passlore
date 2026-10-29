@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 96 96">
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
   <style>.tile{fill:#2447F5}.mark{fill:#FFFFFF}@media (prefers-color-scheme:dark){.tile{fill:#C8FF2E}.mark{fill:#0B0D17}}</style>
-  <rect class="tile" width="96" height="96" rx="21" fill="#2447F5"/>
-  <g transform="translate(22 22) scale(1.62)">
-    <path class="mark" fill="#FFFFFF" fill-rule="evenodd" d="M6.5 3H17A8.5 8.5 0 0 1 17 20H12.5V22H17.5V24.5H12.5V26H15.5V29H6.5Z M18 8.5A3 3 0 0 1 19.4 14.15L20 16.5H16L16.6 14.15A3 3 0 0 1 18 8.5Z"/>
+  <rect class="tile" width="16" height="16" rx="3.5" fill="#2447F5"/>
+  <g transform="translate(2.2 2.2) scale(0.36)">
+    <path class="mark" fill="#FFFFFF" fill-rule="evenodd" d="M6 3H17A8.5 8.5 0 0 1 17 20H13V22.5H19V29H6Z M18 8A3.5 3.5 0 1 1 18 15A3.5 3.5 0 1 1 18 8Z"/>
   </g>
 </svg>

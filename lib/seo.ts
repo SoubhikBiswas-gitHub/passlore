@@ -5,7 +5,7 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://passlore.co
 export const SITE_NAME = "Passlore"
 
 /** Bust cached third-party / preview favicons after icon updates. */
-export const FAVICON_VERSION = "pl5"
+export const FAVICON_VERSION = "pl6"
 
 /** Stable @id for JSON-LD graph (Organization); referenced by WebSite and WebApplication. */
 export const ORGANIZATION_SCHEMA_ID = `${SITE_URL}/#organization`
@@ -36,7 +36,7 @@ export function siteIconsForOrigin(origin: string): NonNullable<Metadata["icons"
       {
         url: `${base}/favicon.ico?v=${v}`,
         type: "image/x-icon",
-        sizes: "16x16 32x32 48x48 64x64",
+        sizes: "16x16 32x32",
       },
     ],
     apple: `${base}/apple-icon.png?v=${v}`,
@@ -79,20 +79,11 @@ export const defaultMetadata: Metadata = {
     siteName: SITE_NAME,
     type: "website",
     locale: "en_US",
-    images: [
-      {
-        url: "/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "Passlore — Free strong password generator in your browser",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `Free Strong Password Generator — ${SITE_NAME}`,
     description: SITE_DESCRIPTION,
-    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: SITE_URL,
@@ -115,7 +106,7 @@ export const aboutMetadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Passlore — Free strong password generator in your browser",
+        alt: "Passlore: your next password starts in your browser.",
       },
     ],
   },
@@ -151,7 +142,7 @@ export const privacyMetadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Passlore — Free strong password generator in your browser",
+        alt: "Passlore: your next password starts in your browser.",
       },
     ],
   },
@@ -186,7 +177,7 @@ export const termsMetadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Passlore — Free strong password generator in your browser",
+        alt: "Passlore: your next password starts in your browser.",
       },
     ],
   },
@@ -217,7 +208,7 @@ export const blogMetadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Passlore — Free strong password generator in your browser",
+        alt: "Passlore: your next password starts in your browser.",
       },
     ],
   },
