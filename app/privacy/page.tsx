@@ -1,130 +1,129 @@
 import type { Metadata } from "next"
-import { LegalPageShell, LegalSection } from "@/components/legal/LegalPageShell"
-import { privacyMetadata, getBreadcrumbSchema, SITE_URL } from "@/lib/seo"
-import { LEGAL_HERO_PRIVACY } from "@/lib/legalHeroImages"
+import { ChartBar, MagnifyingGlass, ShieldCheck } from "@phosphor-icons/react/dist/ssr"
+import { AnalyticsChoice, ConsentSummary } from "@/components/legal/AnalyticsChoice"
+import { LegalShell, type LegalSectionData } from "@/components/legal/LegalShell"
+import { card } from "@/components/content/styles"
+import { privacyMetadata } from "@/lib/seo"
 
 export const metadata: Metadata = privacyMetadata
 
-const toc = [
-  { id: "overview", label: "Overview" },
-  { id: "password-generation", label: "Password generation" },
-  { id: "breach-detection", label: "Breach detection" },
-  { id: "analytics", label: "Analytics" },
-  { id: "cookies", label: "Cookies" },
-  { id: "third-party", label: "Third-party services" },
-  { id: "your-rights", label: "Your rights" },
-  { id: "contact", label: "Contact" },
-] as const
+const sections: LegalSectionData[] = [
+  {
+    id: "summary",
+    h: "The short version",
+    body: (
+      <p>
+        Passlore generates passwords in your browser. No generated password, and no password you check, is ever sent to
+        Passlore or stored on a server we run.
+      </p>
+    ),
+  },
+  {
+    id: "device",
+    h: "What stays on your device",
+    body: (
+      <p>
+        Generated passwords, your settings and the drawer (this tab’s history). The drawer is plain text in this tab’s
+        session storage, holds the last 20 items and is erased when the tab closes. Your theme and analytics choice are
+        kept in local storage so they persist between visits. The clipboard is cleared after 60 seconds only if you turn
+        that on.
+      </p>
+    ),
+  },
+  {
+    id: "breach",
+    h: "The optional breach check",
+    body: (
+      <p>
+        Only when you press it, your browser computes a SHA-1 hash of the password and sends the first 5 of its 40
+        characters to Have I Been Pwned (a third-party service). The match happens on your device. Have I Been Pwned’s
+        own privacy terms apply to that request.
+      </p>
+    ),
+  },
+  {
+    id: "analytics",
+    h: "Analytics, only with your consent",
+    body: (
+      <p>
+        If you choose “Allow”, Google Analytics counts page visits along with standard browser details such as device
+        type and approximate region. Passwords, site rules you paste and network names are never included. If you
+        decline, nothing is collected and the site works exactly the same.
+      </p>
+    ),
+  },
+  {
+    id: "hosting",
+    h: "Hosting",
+    body: (
+      <p>
+        The site is served by Cloudflare, which may process standard request data such as IP address and browser type to
+        deliver pages and prevent abuse. Cloudflare’s own privacy policy covers how long it keeps that data.
+      </p>
+    ),
+  },
+  {
+    id: "contact",
+    h: "Your rights and contact",
+    body: (
+      <p>
+        You can change your analytics choice below at any time. For questions or requests, contact{" "}
+        <a href="mailto:privacy@passlore.com">privacy@passlore.com</a>.
+      </p>
+    ),
+  },
+]
 
-const lastUpdated = new Date().toLocaleDateString("en-US", {
-  month: "long",
-  day: "numeric",
-  year: "numeric",
-})
+const flow =
+  "grid grid-cols-[44px_minmax(0,1fr)] items-center gap-3.5 border-b border-line py-4 md:grid-cols-[44px_minmax(0,1fr)_minmax(0,1.3fr)]"
+const dot = "flex size-11 items-center justify-center rounded-md"
+
+function WhatLeaves() {
+  return (
+    <div role="group" aria-labelledby="leaves" className={`${card} mt-10 px-[22px] py-2 text-base leading-normal`}>
+      <p id="leaves" className="!mb-0 mt-3.5 font-display text-[22px] font-bold tracking-[-0.02em]">
+        What leaves your device
+      </p>
+      <div className={flow}>
+        <span className={`${dot} bg-success-soft text-success`}>
+          <ShieldCheck className="size-6" aria-hidden />
+        </span>
+        <strong>Your passwords</strong>
+        <span className="col-start-2 md:col-start-auto">
+          <strong className="text-success">Never.</strong> Generated, checked and practised passwords stay in this tab.
+        </span>
+      </div>
+      <div className={flow}>
+        <span className={`${dot} bg-lore-soft text-link`}>
+          <MagnifyingGlass className="size-6" aria-hidden />
+        </span>
+        <strong>Breach check</strong>
+        <span className="col-start-2 md:col-start-auto">
+          Only when you press <em>Check</em>: 5 of the 40 hash characters, to Have I Been Pwned.
+        </span>
+      </div>
+      <div className={`${flow} border-b-0`}>
+        <span className={`${dot} bg-surface-2 text-ink-2`}>
+          <ChartBar className="size-6" aria-hidden />
+        </span>
+        <strong>Analytics</strong>
+        <span className="col-start-2 md:col-start-auto">
+          <ConsentSummary />
+        </span>
+      </div>
+    </div>
+  )
+}
 
 export default function PrivacyPage() {
-  const breadcrumbSchema = getBreadcrumbSchema([
-    { name: "Home", url: SITE_URL },
-    { name: "Privacy", url: `${SITE_URL}/privacy` },
-  ])
-
   return (
-    <LegalPageShell
-      breadcrumbJsonLd={JSON.stringify(breadcrumbSchema)}
-      documentLabel="Legal · Privacy"
-      titleLine="Privacy policy &"
-      titleAccent="data handling"
-      lastUpdatedLabel={`Last updated · ${lastUpdated}`}
-      heroImageSrc={LEGAL_HERO_PRIVACY}
-      heroImageAlt="Abstract brutalist illustration suggesting data boundaries, shield geometry, and privacy"
-      toc={toc}
-      statusLines={["Classification: public", "Transport: HTTPS (TLS negotiated)", "Scope: passlore.com"]}
-      crossLinkHref="/terms"
-      crossLinkText="Read terms of service"
-    >
-      <LegalSection id="overview" title="Overview" isFirst>
-        <p>
-          Passlore is built with privacy as a core principle. Password tools should protect your data — not
-          harvest it.
-        </p>
-      </LegalSection>
-
-      <LegalSection id="password-generation" title="Password generation">
-        <p>
-          <strong>Your passwords never leave your browser.</strong> Generation runs entirely on your device using
-          JavaScript and the Web Crypto API. We cannot see, store, or recover passwords you create.
-        </p>
-        <p>
-          Session history is kept in <strong>session storage</strong> only for your current tab session and is cleared
-          when you close the tab.
-        </p>
-      </LegalSection>
-
-      <LegalSection id="breach-detection" title="Breach detection">
-        <p>Optional checks use the Have I Been Pwned API with k-anonymity:</p>
-        <ul>
-          <li>Your password is hashed with SHA-1 locally in the browser</li>
-          <li>Only the first five characters of the hash prefix are sent to HIBP</li>
-          <li>Your browser compares the full hash against the returned bucket locally</li>
-        </ul>
-        <p>The plaintext password is not transmitted over the network.</p>
-      </LegalSection>
-
-      <LegalSection id="analytics" title="Analytics">
-        <p>
-          We may use privacy-preserving analytics (e.g. Vercel Analytics) for aggregated traffic insight — page views; device class; coarse region. We do not use it to build individual profiles or sell data.
-        </p>
-        <p>
-          If configured, Google Analytics (gtag.js) loads only after you accept optional cookies on the banner, using a measurement ID supplied via site configuration — not for selling your data.
-        </p>
-      </LegalSection>
-
-      <LegalSection id="cookies" title="Cookies">
-        <p>We use minimal first-party cookies for essential functionality:</p>
-        <ul>
-          <li>
-            <strong>Theme preference</strong> — remembers light, dark, or system theme
-          </li>
-          <li>
-            <strong>GDPR consent</strong> — stores your cookie banner choice where applicable
-          </li>
-        </ul>
-        <p>These are not used for cross-site advertising.</p>
-      </LegalSection>
-
-      <LegalSection id="third-party" title="Third-party services">
-        <ul>
-          <li>
-            <strong>Have I Been Pwned</strong> — optional breach lookup (k-anonymity as above)
-          </li>
-          <li>
-            <strong>Hosting / CDN</strong> — delivery of the static site and edge functions
-          </li>
-        </ul>
-        <p>
-          We do not load advertising or social trackers until you accept optional cookies where applicable. Core
-          password generation does not require ad scripts.
-        </p>
-      </LegalSection>
-
-      <LegalSection id="your-rights" title="Your rights">
-        <p>
-          Where GDPR and similar laws apply, you may exercise rights over personal data. Because we minimize collection,
-          most control is in your hands:
-        </p>
-        <ul>
-          <li>Clear site data in your browser to remove preferences and session history</li>
-          <li>Use browser or extension controls to limit analytics</li>
-          <li>Withdraw consent by clearing cookies and reloading the site</li>
-        </ul>
-      </LegalSection>
-
-      <LegalSection id="contact" title="Contact">
-        <p>
-          Questions about this policy:{" "}
-          <a href="mailto:privacy@passlore.com">privacy@passlore.com</a>
-        </p>
-      </LegalSection>
-    </LegalPageShell>
+    <LegalShell
+      doc="/privacy"
+      title="Privacy"
+      intro="Passlore is built so there’s almost nothing to tell you: your passwords never reach us."
+      sections={sections}
+      before={<WhatLeaves />}
+      after={<AnalyticsChoice />}
+    />
   )
 }

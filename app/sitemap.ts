@@ -5,7 +5,7 @@ import { SITE_URL } from "@/lib/seo"
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     { url: SITE_URL, changeFrequency: "weekly", priority: 1 },
-    { url: `${SITE_URL}/about`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/how-it-works`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/privacy`, changeFrequency: "yearly", priority: 0.5 },
     { url: `${SITE_URL}/terms`, changeFrequency: "yearly", priority: 0.5 },
     { url: `${SITE_URL}/blog`, changeFrequency: "weekly", priority: 0.9 },

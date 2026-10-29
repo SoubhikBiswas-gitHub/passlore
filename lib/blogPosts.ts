@@ -4,7 +4,7 @@ export interface ContentSection {
   items?: string[]
 }
 
-/** Format YYYY-MM-DD for display (UTC calendar date). */
+// Format YYYY-MM-DD for display (UTC calendar date).
 export function formatBlogDate(isoDate: string): string {
   const parts = isoDate.split("-").map(Number)
   const y = parts[0]
@@ -19,20 +19,32 @@ export function formatBlogDate(isoDate: string): string {
   })
 }
 
+export function formatReadableDate(isoDate: string): string {
+  const [y, m, d] = isoDate.split("-").map(Number)
+  if (!y || !m || !d) return isoDate
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  })
+}
+
 export interface BlogPost {
   slug: string
   title: string
   description: string
   content: ContentSection[]
   author: string
-  /** ISO 8601 date YYYY-MM-DD (schema.org, sitemap, Open Graph) */
+  // ISO 8601 date YYYY-MM-DD (schema.org, sitemap, Open Graph)
   datePublished: string
   dateModified?: string
   readingTime: string
   keywords?: string[]
-  /** Hero image for blog cards and featured layouts — use a unique asset per post */
+  // Hero image for blog cards and featured layouts — use a unique asset per post
   coverImage?: string
-  /** Small badge label on the card */
+  // Small badge label on the card
   dispatchTag?: string
 }
 

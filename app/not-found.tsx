@@ -1,7 +1,9 @@
 import Link from "next/link"
 import type { Metadata } from "next"
-import { Button } from "@/components/ui/button"
-import { ShieldCheck } from "@phosphor-icons/react/dist/ssr"
+import { Lore } from "@/components/Lore"
+import { FreshTicket } from "@/components/content/FreshTicket"
+import { RecipeDeck } from "@/components/content/RecipeDeck"
+import { eyebrow, wrap } from "@/components/content/styles"
 import { SITE_NAME } from "@/lib/seo"
 
 export const metadata: Metadata = {
@@ -9,23 +11,53 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 }
 
+const big4 =
+  "hidden font-display text-[84px] font-extrabold leading-[0.85] tracking-[-0.06em] text-transparent [-webkit-text-stroke:2px_var(--text-2)] sm:block md:text-[150px]"
+
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[60vh] px-4 text-center max-w-3xl mx-auto">
-      <div className="p-6 bg-accent-2/50 rounded-none mb-6 border border-border">
-        <ShieldCheck className="h-12 w-12 text-primary" weight="fill" />
+    <section aria-labelledby="nf-h" className="bg-bg pb-[72px] text-ink">
+      <div className={`${wrap} flex flex-col items-center gap-[18px] pt-14 text-center`}>
+        <div className="flex items-center gap-2">
+          <span className={big4} aria-hidden>
+            4
+          </span>
+          <Lore
+            mood="shocked"
+            scene="lock"
+            size={230}
+            label="Lore the key, puzzled in front of a lock it doesn’t fit"
+          />
+          <span className={big4} aria-hidden>
+            4
+          </span>
+        </div>
+        <p className={`${eyebrow} sm:hidden`}>Error 404</p>
+        <h1
+          id="nf-h"
+          className="m-0 font-display text-[40px] font-extrabold leading-[1.02] tracking-[-0.04em] text-balance md:text-[56px]"
+        >
+          This key doesn’t fit any page.
+        </h1>
+        <p className="m-0 max-w-[560px] text-lg text-ink-2 md:text-[19px]">
+          The link may be old or mistyped. Nothing was generated or sent. Here’s a fresh password while you’re here:
+        </p>
+        <FreshTicket />
+        <h2 className="m-0 mt-8 font-display text-[26px] font-bold tracking-[-0.02em]">
+          Or tell us where the password is going
+        </h2>
+        <RecipeDeck />
+        <p className="m-0 mt-2 text-base text-ink-2">
+          Looking for something to read?{" "}
+          <Link href="/how-it-works" className="text-ink underline underline-offset-[3px] hover:decoration-2">
+            How it works
+          </Link>{" "}
+          ·{" "}
+          <Link href="/blog" className="text-ink underline underline-offset-[3px] hover:decoration-2">
+            Blog
+          </Link>
+        </p>
       </div>
-      <h1 className="text-4xl font-headline font-bold text-primary mb-2 tracking-tight">404</h1>
-      <h2 className="text-xs font-semibold uppercase tracking-[0.05em] text-muted-foreground mb-6">
-        Page not found
-      </h2>
-      <p className="text-muted-foreground max-w-md mb-8 text-sm leading-relaxed">
-        The page you&apos;re looking for doesn&apos;t exist or has been moved.
-        Let&apos;s get you back to generating secure passwords.
-      </p>
-      <Button asChild>
-        <Link href="/">Go to password generator</Link>
-      </Button>
-    </div>
+    </section>
   )
 }

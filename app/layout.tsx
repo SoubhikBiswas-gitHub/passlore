@@ -11,29 +11,26 @@ import {
 } from "@/lib/seo"
 import type { Metadata, Viewport } from "next"
 import { headers } from "next/headers"
-import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google"
+import Script from "next/script"
+import { JetBrains_Mono, Plus_Jakarta_Sans, Sora } from "next/font/google"
 import "./globals.css"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const sora = Sora({
+  variable: "--font-sora",
   subsets: ["latin"],
   display: "swap",
-  adjustFontFallback: true,
 })
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
   display: "swap",
-  adjustFontFallback: true,
 })
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const jetbrains = JetBrains_Mono({
+  variable: "--font-jetbrains",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  display: "optional",
-  adjustFontFallback: true,
+  display: "swap",
 })
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -45,6 +42,9 @@ export async function generateMetadata(): Promise<Metadata> {
     icons: siteIconsForOrigin(origin),
   }
 }
+
+// Sets data-theme before first paint; next-themes' own script is patched out.
+const THEME_SCRIPT = `(function(){try{var d=document.documentElement,k="theme",t=localStorage.getItem(k);if(t==="high-contrast"){t="hc";localStorage.setItem(k,t)}if(["system","light","dark","sepia","hc"].indexOf(t)<0)t="system";d.setAttribute("data-theme",t==="system"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):t)}catch(e){}})()`
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -58,24 +58,31 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html
+      lang="en"
+      className={`${sora.variable} ${jakarta.variable} ${jetbrains.variable}`}
+      suppressHydrationWarning={true}
+    >
       <head>
+        <Script id="theme-init" strategy="beforeInteractive">
+          {THEME_SCRIPT}
+        </Script>
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} font-sans min-h-screen flex flex-col bg-background text-foreground`}
+        className="font-sans min-h-screen flex flex-col"
         suppressHydrationWarning={true}
       >
         <ThemeProvider
-          attribute="class"
+          attribute="data-theme"
           defaultTheme="system"
           enableSystem
-          themes={["light", "dark", "sepia", "high-contrast", "system"]}
-          disableTransitionOnChange={false}
+          themes={["light", "dark", "sepia", "hc"]}
+          disableTransitionOnChange
         >
           <ThemeColorMeta />
           <Header />
-          <main className="flex-1 pt-16">{children}</main>
+          <main id="main" className="flex-1">{children}</main>
           <Footer />
           <GdprBanner />
           <GoogleAnalytics />

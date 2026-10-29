@@ -1,4 +1,4 @@
-import { OG_IMAGE_THEME } from "@/lib/og-image-theme"
+import { OG_COPY, OG_IMAGE_THEME, OG_LORE_SRC, OG_MARK_SRC, loadOgFonts } from "@/lib/og-image-theme"
 import { ImageResponse } from "next/og"
 
 export const alt = "Passlore — Free strong password generator in your browser"
@@ -7,58 +7,69 @@ export const size = { width: 1200, height: 630 }
 
 export const contentType = "image/png"
 
-export default function OpenGraphImage() {
+export default async function OpenGraphImage() {
+  const fonts = await loadOgFonts()
+  const { volt, ink, white } = OG_IMAGE_THEME
+
   return new ImageResponse(
     (
       <div
         style={{
-          height: "100%",
           width: "100%",
+          height: "100%",
           display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          justifyContent: "center",
-          background: OG_IMAGE_THEME.backgroundGradient,
-          padding: 72,
+          background: volt,
+          padding: 10,
+          fontFamily: fonts.length ? "Sora" : undefined,
+          color: ink,
         }}
       >
         <div
           style={{
-            fontSize: 76,
-            fontWeight: 800,
-            color: OG_IMAGE_THEME.brand,
-            letterSpacing: "-0.03em",
-            lineHeight: 1,
+            flex: 1,
+            display: "flex",
+            position: "relative",
+            border: `6px solid ${ink}`,
+            borderRadius: 28,
+            padding: "52px 60px",
           }}
         >
-          Passlore
-        </div>
-        <div
-          style={{
-            marginTop: 28,
-            fontSize: 46,
-            fontWeight: 600,
-            color: OG_IMAGE_THEME.headline,
-            maxWidth: 920,
-            lineHeight: 1.12,
-            letterSpacing: "-0.02em",
-          }}
-        >
-          Strong passwords from your browser
-        </div>
-        <div
-          style={{
-            marginTop: 28,
-            fontSize: 26,
-            color: OG_IMAGE_THEME.subline,
-            maxWidth: 780,
-            lineHeight: 1.35,
-          }}
-        >
-          Client-side generation · Nothing uploaded
+          <div style={{ display: "flex", flexDirection: "column", flex: 1, maxWidth: 720 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <img src={OG_MARK_SRC} width={52} height={52} alt="" />
+              <span style={{ fontSize: 44, fontWeight: 600, letterSpacing: "-0.025em" }}>passlore</span>
+            </div>
+            <div style={{ marginTop: 56, fontSize: 24, fontWeight: 800, letterSpacing: 3 }}>{OG_COPY.eyebrow}</div>
+            <div
+              style={{
+                marginTop: 14,
+                fontSize: 80,
+                fontWeight: 800,
+                lineHeight: 1.02,
+                letterSpacing: "-0.04em",
+              }}
+            >
+              {OG_COPY.headline}
+            </div>
+            <div style={{ marginTop: 22, fontSize: 30, fontWeight: 600, lineHeight: 1.3, maxWidth: 640 }}>
+              {OG_COPY.subline}
+            </div>
+            <div style={{ marginTop: "auto", fontSize: 30, fontWeight: 800 }}>{OG_COPY.domain}</div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 360 }}>
+            <img src={OG_LORE_SRC} width={360} height={309} alt="" />
+          </div>
+          <svg
+            width="56"
+            height="56"
+            viewBox="0 0 56 56"
+            style={{ position: "absolute", top: 34, right: 60 }}
+          >
+            <path d="M28 4l6 16 16 6-16 6-6 16-6-16-16-6 16-6z" fill={white} stroke={ink} strokeWidth="4" />
+          </svg>
         </div>
       </div>
     ),
-    { ...size }
+    { ...size, fonts }
   )
 }
