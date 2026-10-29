@@ -6,11 +6,10 @@ import { ThemeColorMeta } from "@/components/ThemeColorMeta"
 import { ThemeProvider } from "@/components/ThemeProvider"
 import {
   defaultMetadata,
-  resolveRequestOrigin,
+  SITE_URL,
   siteIconsForOrigin,
 } from "@/lib/seo"
 import type { Metadata, Viewport } from "next"
-import { headers } from "next/headers"
 import Script from "next/script"
 import { JetBrains_Mono, Plus_Jakarta_Sans, Sora } from "next/font/google"
 import "./globals.css"
@@ -33,14 +32,11 @@ const jetbrains = JetBrains_Mono({
   display: "swap",
 })
 
-export async function generateMetadata(): Promise<Metadata> {
-  const headerList = await headers()
-  const origin = resolveRequestOrigin(headerList)
-  return {
-    ...defaultMetadata,
-    metadataBase: new URL(origin),
-    icons: siteIconsForOrigin(origin),
-  }
+// each deployment builds with its own site URL, so pages stay static instead of reading request headers
+export const metadata: Metadata = {
+  ...defaultMetadata,
+  metadataBase: new URL(SITE_URL),
+  icons: siteIconsForOrigin(SITE_URL),
 }
 
 // Sets data-theme before first paint; next-themes' own script is patched out.

@@ -15,18 +15,6 @@ export const WEBSITE_SCHEMA_ID = `${SITE_URL}/#website`
  * Same-origin icon URLs so previews (v0, *.vercel.app) load assets from the current host,
  * not metadataBase production-only URLs.
  */
-export function resolveRequestOrigin(headerList: Headers): string {
-  const hostRaw = headerList.get("x-forwarded-host") ?? headerList.get("host")
-  if (!hostRaw) return SITE_URL
-  const host = hostRaw.split(",")[0]?.trim() ?? hostRaw
-  const protoRaw =
-    headerList.get("x-forwarded-proto")?.split(",")[0]?.trim() ?? ""
-  const proto =
-    protoRaw ||
-    (host.startsWith("localhost") || host.startsWith("127.") ? "http" : "https")
-  return `${proto}://${host}`
-}
-
 export function siteIconsForOrigin(origin: string): NonNullable<Metadata["icons"]> {
   const base = origin.replace(/\/$/, "")
   const v = FAVICON_VERSION
