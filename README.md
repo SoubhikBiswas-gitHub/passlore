@@ -154,9 +154,9 @@ Testing uses `noindex` metadata, an `X-Robots-Tag` response header and a disallo
 Promote work in this order:
 
 1. Make changes on `play` and run the [required checks](#testing-and-quality).
-2. Deploy testing with `yarn deploy:play` and verify the affected flows.
+2. Push `play`. Cloudflare builds and deploys testing automatically; verify the affected flows on play.passlore.com.
 3. Open a pull request from **`play` to `main`**. The workflow rejects production pull requests from other branch names.
-4. Merge reviewed changes after checks pass, then deploy production.
+4. Merge reviewed changes after checks pass. Cloudflare builds and deploys production automatically.
 5. Fast-forward `play` to the merged `main` commit so both branches start the next change together.
 
 Keep only these two long-lived branches. Branch protection is not configured by request.
@@ -168,13 +168,14 @@ Keep only these two long-lived branches. Branch protection is not configured by 
 
 DNS uses proxied CNAMEs: root and `www` point to `passlore.soubhik481.workers.dev`, and `play` points to `passlore-play.soubhik481.workers.dev`. The configured Worker routes serve the custom hostnames. The production default `workers.dev` address and version preview URLs are disabled; the CNAME target is still a routing detail, not a second public product URL.
 
-The [GitHub workflow](.github/workflows/deploy.yml) validates pushes to both branches and pull requests into `main`. Its deployment job is conditional:
+The [GitHub workflow](.github/workflows/deploy.yml) validates pushes to both branches and pull requests into `main`; it does not deploy. Deployment uses Cloudflare's Git integration (Workers Builds), so no Cloudflare token is stored in GitHub:
 
-1. Create GitHub environments named `play` and `production`.
-2. Add a separate `CLOUDFLARE_API_TOKEN` secret to each, scoped to the hosting account with Workers Scripts Edit, Workers Routes Edit and Zone Read for the domain.
-3. Set the repository variable `CLOUDFLARE_DEPLOY_ENABLED=true` when both environments are ready.
+| Worker | Branch | Build command | Deploy command |
+| --- | --- | --- | --- |
+| `passlore` | `main` | `yarn build:cloudflare` | `yarn opennextjs-cloudflare deploy` |
+| `passlore-play` | `play` | `yarn build:play` | `yarn opennextjs-cloudflare deploy --env play` |
 
-Until that variable is `true`, validation runs and deployment jobs are skipped. Deploy instead with `yarn deploy:play` or `yarn deploy` from a machine signed in to the Cloudflare hosting account. Never store a local OAuth session token in GitHub. Hosting uses the service account; registrar access uses the separate domain account. Verify the active account before changing either service.
+Both builds use Node.js 22. The production build also sets `NEXT_PUBLIC_DEPLOYMENT_ENV=production`, `NEXT_PUBLIC_SITE_URL=https://passlore.com` and the public `NEXT_PUBLIC_GA_MEASUREMENT_ID` as build variables in Cloudflare. A manual deploy with `yarn deploy:play` or `yarn deploy` from a machine signed in to the Cloudflare hosting account still works. Hosting uses the service account; registrar access uses the separate domain account. Verify the active account before changing either service.
 
 No database, object-storage or payment bindings exist today. If those are added, provision separate test resources, credentials and payment sandbox settings before enabling them.
 
@@ -284,7 +285,7 @@ Browser checks use the Workers runtime at `http://127.0.0.1:3100`. Use `PLAYWRIG
 | A build cannot download fonts | Next.js downloads its configured Google Fonts at build time. Check network/proxy access, then rebuild. |
 | A testing page looks different from production | Verify the branch, selected build environment and deployed Worker before comparing. |
 | The default production Worker address returns 404 | Expected: use `passlore.com`. The provider URL is disabled intentionally. |
-| GitHub validation passes but no release appears | Check that `CLOUDFLARE_DEPLOY_ENABLED` is `true` and both environment secrets exist; validation alone does not publish a Worker. Otherwise deploy with `yarn deploy:play` or `yarn deploy`. |
+| GitHub validation passes but no release appears | GitHub only validates. Check the Worker's build log in Cloudflare (Workers & Pages → the Worker → Deployments), or deploy with `yarn deploy:play` or `yarn deploy`. |
 
 ## Contributing and project status
 
