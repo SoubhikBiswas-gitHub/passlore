@@ -4,7 +4,7 @@ Help make password generation easier to use, test and understand. Start with a f
 
 ## Propose work
 
-Use the bug, feature or documentation form. Explain the problem and the result you want. Only `SoubhikBiswas-gitHub` approves implementation by applying `approved`; suggestions from other accounts do not grant approval. Approved issues become tasks on the [Passlore board](https://github.com/users/SoubhikBiswas-gitHub/projects/1).
+Use the bug, feature or documentation form. Explain the problem and the result you want. Only `SoubhikBiswas-gitHub` approves implementation by applying `approved`; suggestions from other accounts do not grant approval. Approved issues become tasks on the [Passlore board](https://github.com/users/soubhik-biswas/projects/1).
 
 ## Set up and verify
 

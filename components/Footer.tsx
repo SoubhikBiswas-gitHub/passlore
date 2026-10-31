@@ -2,7 +2,7 @@ import Link from "next/link"
 import { InstallApp } from "@/components/InstallApp"
 import { PassloreMark } from "@/components/PassloreMark"
 
-export const REPO_URL = "https://github.com/SoubhikBiswas-gitHub/passlore"
+export const REPO_URL = "https://github.com/soubhik-biswas/passlore"
 const ISSUES_URL = `${REPO_URL}/issues`
 const SECURITY_URL = `${REPO_URL}/security/advisories/new`
 const LICENSE_URL = `${REPO_URL}/blob/main/LICENSE`

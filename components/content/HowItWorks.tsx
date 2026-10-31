@@ -209,7 +209,7 @@ crypto.getRandomValues(buf);   // 0 … 4,294,967,295, unpredictable`}</pre>
           <p>
             Every line is public under the MIT licence. The generation code is a few small browser-only modules you can
             read in minutes — the same ones running the demos on this page. Source:{" "}
-            <a href={REPO_URL}>github.com/SoubhikBiswas-gitHub/passlore</a>. Found something wrong?{" "}
+            <a href={REPO_URL}>github.com/soubhik-biswas/passlore</a>. Found something wrong?{" "}
             <a href={ISSUES_URL}>Open an issue</a>.
           </p>
         </article>

@@ -1,6 +1,6 @@
 # Passlore contribution workflow
 
-[Project board](https://github.com/users/SoubhikBiswas-gitHub/projects/1) · [Issue forms](https://github.com/SoubhikBiswas-gitHub/passlore/issues/new/choose)
+[Project board](https://github.com/users/soubhik-biswas/projects/1) · [Issue forms](https://github.com/soubhik-biswas/passlore/issues/new/choose)
 
 ## From an idea to production
 

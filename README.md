@@ -14,7 +14,7 @@
   <a href="https://passlore.com/"><b>Try Passlore</b></a> ·
   <a href="https://play.passlore.com/">Testing environment</a> ·
   <a href="#documentation">Documentation</a> ·
-  <a href="https://github.com/SoubhikBiswas-gitHub/passlore/issues">Report an issue</a>
+  <a href="https://github.com/soubhik-biswas/passlore/issues">Report an issue</a>
 </p>
 
 <p align="center">
@@ -110,7 +110,7 @@ Use **Node.js 22** (the version used in CI), **Yarn Classic 1.22** and Git. Next
 From a terminal with access to this GitHub repository:
 
 ```bash
-git clone https://github.com/SoubhikBiswas-gitHub/passlore.git
+git clone https://github.com/soubhik-biswas/passlore.git
 cd passlore
 yarn install --frozen-lockfile
 yarn dev
@@ -289,7 +289,7 @@ Browser checks use the Workers runtime at `http://127.0.0.1:3100`. Use `PLAYWRIG
 
 ## Contributing and project status
 
-Start with a focused bug report or small improvement. In an [issue](https://github.com/SoubhikBiswas-gitHub/passlore/issues), include the affected URL, browser/OS, reproduction steps, expected result and a screenshot with sensitive values removed. Propose larger changes before implementing them.
+Start with a focused bug report or small improvement. In an [issue](https://github.com/soubhik-biswas/passlore/issues), include the affected URL, browser/OS, reproduction steps, expected result and a screenshot with sensitive values removed. Propose larger changes before implementing them.
 
 Use `play`, keep changes grouped into meaningful commits, run the required checks, and promote through a pull request to `main`. Include screenshots for visible changes and an honest validation summary. Use neutral names and omit attribution trailers. [AGENTS.md](AGENTS.md) records the repository workflow.
 
@@ -311,7 +311,7 @@ Use `play`, keep changes grouped into meaningful commits, run the required check
 
 ## Support, security and licence
 
-Passlore is open source. Use [repository issues](https://github.com/SoubhikBiswas-gitHub/passlore/issues) for ordinary bugs and questions, and submit contributions through a pull request against `play`.
+Passlore is open source. Use [repository issues](https://github.com/soubhik-biswas/passlore/issues) for ordinary bugs and questions, and submit contributions through a pull request against `play`.
 
 Report vulnerabilities privately using [SECURITY.md](SECURITY.md). Do not post live passwords, licence keys, tokens or personal data in an issue. The hosted [privacy policy](https://passlore.com/privacy) covers privacy matters.
 
